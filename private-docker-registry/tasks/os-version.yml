@@ -1,7 +1,11 @@
 ---
 platform: linux
 
-image: localhost:5000/ubuntu
+image_resource:
+  type: docker-image
+  source:
+    repository: localhost:5000/ubuntu
+    insecure_registries: [ "localhost:5000" ]
 
 inputs:
   - name: concourse-pipeline-samples

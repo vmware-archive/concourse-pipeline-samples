@@ -26,5 +26,7 @@ jobs:
   plan:
   - get: concourse-pipeline-samples
     trigger: true
+    passed:
+    - issue-ls-command
   - task: check-os-version
     file: concourse-pipeline-samples/private-docker-registry/tasks/os-version.yml
