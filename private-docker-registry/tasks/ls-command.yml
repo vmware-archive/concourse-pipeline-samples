@@ -1,0 +1,10 @@
+---
+platform: linux
+
+image: localhost:5000/ubuntu
+
+inputs:
+  - name: concourse-pipeline-samples
+
+run:
+  path: concourse-pipeline-samples/private-docker-registry/tasks/ls-command.sh

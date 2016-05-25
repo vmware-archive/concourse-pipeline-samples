@@ -1,0 +1,10 @@
+---
+platform: linux
+
+image: docker:///silval/ubuntu-bosh-spruce-cf-fly
+
+inputs:
+  - name: concourse-pipeline-samples
+
+run:
+  path: concourse-pipeline-samples/common/tasks/dummy-task.sh
