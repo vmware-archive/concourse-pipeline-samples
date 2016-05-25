@@ -4,8 +4,8 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: localhost:5000/ubuntu
-    insecure_registries: [ "localhost:5000" ]
+    repository: 192.168.99.100:5000/ubuntu
+    insecure_registries: [ "192.168.99.100:5000" ]
     # username: myuser
     # password: mypass
     # email: x@x.com
