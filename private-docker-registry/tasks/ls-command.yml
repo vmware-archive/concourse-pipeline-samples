@@ -6,6 +6,7 @@ image_resource:
   source:
     repository: 192.168.99.100:5000/ubuntu
     insecure_registries: [ "192.168.99.100:5000" ]
+    tag: "latest"
     # username: myuser
     # password: mypass
     # email: x@x.com
