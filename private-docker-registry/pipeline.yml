@@ -1,6 +1,7 @@
 groups:
 - name: main
   jobs:
+  - issue-find-command
   - issue-ls-command
   - check-os-version
 
@@ -12,14 +13,6 @@ resources:
     uri: https://github.com/lsilvapvt/concourse-pipeline-samples.git
 
 jobs:
-- name: issue-ls-command
-  serial: true
-  public: true
-  plan:
-  - get: concourse-pipeline-samples
-    trigger: true
-  - task: issue-ls-command
-    file: concourse-pipeline-samples/private-docker-registry/tasks/ls-command.yml
 - name: issue-find-command
   serial: true
   public: true
@@ -28,6 +21,16 @@ jobs:
     trigger: true
   - task: issue-find-command
     file: concourse-pipeline-samples/private-docker-registry/tasks/find-command.yml
+- name: issue-ls-command
+  serial: true
+  public: true
+  plan:
+  - get: concourse-pipeline-samples
+    trigger: true
+    passed:
+    - issue-find-command
+  - task: issue-ls-command
+    file: concourse-pipeline-samples/private-docker-registry/tasks/ls-command.yml
 - name: check-os-version
   serial: true
   public: true
