@@ -1,12 +1,14 @@
 ---
 platform: linux
 
-image_resource:
-  type: docker-image
-  source:
-    repository: 192.168.99.100:5000/ubuntu-bosh-spruce-cf-fly
-    # tag: "latest"
-    insecure_registries: [ "192.168.99.100:5000" ]
+# image_resource:
+#   type: docker-image
+#   source:
+#     repository: 192.168.99.100:5000/ubuntu-bosh-spruce-cf-fly
+#     # tag: "latest"
+#     insecure_registries: [ "192.168.99.100:5000" ]
+
+image: 192.168.99.100:5000///ubuntu-bosh-spruce-cf-fly
 
 inputs:
   - name: concourse-pipeline-samples
