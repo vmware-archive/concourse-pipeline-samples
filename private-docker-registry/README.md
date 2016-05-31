@@ -2,9 +2,9 @@
 
 # Concourse pipelines with a local Docker Registry
 
-A typical question that surfaces from customers planning to adopt and deploy Concourse on their production environments is _“How do I run Concourse tasks on a protected or internetless environment where no access to Docker Hub is available?”_. The typical short answer from experts or from the [Concourse documentation](http://concourse.ci/running-tasks.html) is _“deploy your own private Docker registry and point your Concourse tasks to that registry’s images”_.
+A typical question that surfaces from customers planning to adopt and deploy Concourse on their production environments is _“How do I run Concourse tasks on a protected or internetless environment where no access to Docker Hub is available?”_. The typical short answer from experts or from the [Concourse documentation](http://concourse.ci/running-tasks.html) is _“deploy your own private Docker registry and point your Concourse pipeline tasks to that registry’s images”_.
 
-However, before getting to that final milestone and deploying Concourse to production, one may want to experiment with a local setup of Concourse and a Docker registry. And that is what this article is about.
+However, before getting to that final milestone and deploying Concourse and a Docker registry to production, one may want to experiment with a local setup of such scenario. And that is what this article is about.
 
 This article does not provide any recommendation on how to setup a private Docker repository for production nor any analysis on which products are available for such purpose (an interesting topic for a future article nevertheless). My goal here is to share my experience while deploying Concourse and a private Docker registry on a local machine.
 
@@ -26,22 +26,22 @@ This article does not provide any recommendation on how to setup a private Docke
    ```curl http://<your-machine-ip-address>:5000/v2/_catalog```
 
    **Hint**: use your machine’s ip address instead of localhost or 127.0.0.0.
-   Even though those two hostnames will work for the curl command, they will not work for the Concourse task setup, which requires your machine IP address or hostname for the registry to be found by the task.
+   Even though those two hostnames will work for the curl command, they will not work for the Concourse task setup, which requires your machine IP address or hostname for the registry to be found by a pipeline task.
 
    Here are a couple of other [Docker Registry API](https://docs.docker.com/registry/spec/api/) end-points you can try.
-   For example, using machine’s IP address 192.168.99.100:
+   For example, using my machine’s IP address 192.168.99.100:
 
      ```curl 192.168.99.100:5000/v2/ubuntu/tags/list ```
 
      ```curl 192.168.99.100:5000/v2/ubuntu/manifests/latest ```
 
-   Note: in case these curl commands fail, you could try to temporarily configure your local registry as insecure (assuming your are not exposing it to the outside world) as described in the documentation https://docs.docker.com/registry/insecure/
+   **Note**: in case these curl commands fail, you could try to temporarily configure your local registry as insecure (assuming your are not exposing it to the outside world) as described in the documentation https://docs.docker.com/registry/insecure/
 
 3. **Setup your Concourse pipeline and tasks to use the local Docker registry images**
 
    Once your local Concourse and Docker registry are appropriately configured, it is time for you to setup a test pipeline with tasks that will run with an Docker image from your local registry.
 
-   The following ```inline-pipeline.yml``` file provides a sample to test such scenario:
+   The following file ```inline-pipeline.yml``` provides a sample pipeline to test such scenario:
 
    https://github.com/lsilvapvt/concourse-pipeline-samples/blob/master/private-docker-registry/inline-pipeline.yml
 
@@ -60,6 +60,9 @@ This article does not provide any recommendation on how to setup a private Docke
     insecure_registries: [ "192.168.99.100:5000" ]
    ...
 ```
+
+  Access the Concourse web interface, unpause the pipeline you just configured and then run it to make sure its tasks appropriately download the Docker image from your local registry.
+
 
 ## References
    - [Docker Registry overview](https://docs.docker.com/registry/overview/)
