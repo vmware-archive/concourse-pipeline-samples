@@ -40,7 +40,7 @@ For more information about Bosh-lite and Concourse, please refer to the **Refere
 
         bosh upload stemcell <bosh-stemcell-local-file-path-and-name>
 
-6) Download the latest Concourse deployment manifest file for Bosh-lite from github
+6. Download the latest Concourse deployment manifest file for Bosh-lite from github
 
      For example, the v1.2.0 manifest file is in this location
      https://github.com/concourse/concourse/blob/v1.2.0/manifests/bosh-lite.yml
