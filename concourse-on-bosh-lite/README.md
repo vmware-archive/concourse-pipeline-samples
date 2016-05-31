@@ -1,3 +1,5 @@
+![Concourse on Bosh-Lite](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/concourse-and-bosh-lite.jpg)
+
 # Deploying Concourse on Bosh-lite
 
 The quickest way to install and run a local copy of Concourse is by using the provided Vagrant image as mentioned in [Concourse’s documentation page](http://concourse.ci/vagrant.html). However, in certain cases, one may have the need to experiment with the Bosh-deployed version of Concourse in a local machine prior to moving it onto a shared/production environment later. For those cases, a solution is to install Concourse on top of a local Bosh-lite deployment. The section further below describes the steps to get that done.
