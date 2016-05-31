@@ -1,6 +1,6 @@
 ![Concourse and a Private Docker Registry](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/concourse-and-private-registry.jpg)
 
-# Concourse pipelines with a local private Docker Registry
+# Concourse pipelines with a local Docker Registry
 
 A typical question that surfaces from customers planning to adopt and deploy Concourse on their production environments is _“How do I run Concourse tasks on a protected or internetless environment where no access to Docker Hub is available?”_. The typical short answer from experts or from the [Concourse documentation](http://concourse.ci/running-tasks.html) is _“deploy your own private Docker registry and point your Concourse tasks to that registry’s images”_.
 
@@ -61,6 +61,6 @@ This article does not provide any recommendation on how to setup a private Docke
    ...
 ```
 
-   ## References
+## References
    - [Docker Registry overview](https://docs.docker.com/registry/overview/)
    - [Concourse tasks overview](http://concourse.ci/running-tasks.html)
