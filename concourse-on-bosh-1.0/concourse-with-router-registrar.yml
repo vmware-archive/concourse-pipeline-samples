@@ -8,6 +8,8 @@ releases:
     version: latest
   - name: garden-linux
     version: latest
+  - name: route-registrar
+    version: latest
 
 instance_groups:
   - name: web
@@ -26,6 +28,19 @@ instance_groups:
       - release: concourse
         name: tsa
         properties: {}
+      - release: route-registrar
+        name: route-registrar
+        properties:
+          route_registrar:
+            external_ip: 10.0.16.4 # REPLACE THIS WITH YOUR LOAD BALANCER'S IP ADDRESS
+            external_host: concourse.pcfazure.com  # REPLACE THIS TO YOUR FULLY-QUALIFIED-DOMAIN-NAME OF YOUR CHOISE
+            port: 80
+            message_bus_servers:
+            - user: nats
+              password: <NATS PASSWORD HERE> # REPLACE THIS WITH YOUR NATS SERVER PASSWORD
+              host: <NATS IP ADDRESS HERE>:4222   # REPLACE THIS WITH YOUR NATS SERVER IP ADDRESS AND PORT NUMBER
+            health_checker:
+              name: hm_concourse # this doesn't actually do anything but a string is required
 
   - name: db
     instances: 1
