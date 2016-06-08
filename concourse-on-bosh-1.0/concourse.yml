@@ -1,0 +1,111 @@
+---
+name: concourse
+
+director_uuid: <TBD-enter-your-bosh-director-uuid-here>
+
+releases:
+  - name: concourse
+    version: latest
+  - name: garden-linux
+    version: latest
+
+instance_groups:
+  - name: web
+    instances: 1
+    resource_pool: concourse_resource_pool
+    networks:
+      - name: concourse
+        static_ips: [XX.XX.XX.XX] # <TBD-if you need static ips for your web instances add them here, otherwise delete this networks section>
+    jobs:
+      - release: concourse
+        name: atc
+        properties:
+          postgresql_database: &atc-db atc
+          external_url: http://XX.XX.XX.XX:8080  # ADD YOUR web instance's hostname or ip address here
+          development_mode: true
+      - release: concourse
+        name: tsa
+        properties: {}
+
+  - name: db
+    instances: 1
+    resource_pool: concourse_resource_pool
+    networks: [{name: concourse}]
+    persistent_disk: 10240
+    jobs:
+      - release: concourse
+        name: postgresql
+        properties:
+          databases:
+          - name: *atc-db
+            role: atc
+            password: YOUR-ATC-DB-PASSWORD-GOES-HERE
+
+  - name: worker
+    instances: 1
+    resource_pool: concourse_resource_pool
+    networks: [{name: concourse}]
+    jobs:
+      - release: concourse
+        name: groundcrew
+        properties:
+          http_proxy_url: http://XX.XX.XX.XX:8080   # IF PROXY CONFIG EXISTS, SETUP IT HERE. OTHERWISE REMOVE IT
+          https_proxy_url: http://XX.XX.XX.XX:8080  # IF PROXY CONFIG EXISTS, SETUP IT HERE. OTHERWISE REMOVE IT
+      - release: concourse
+        name: baggageclaim
+        properties: {}
+      - release: garden-linux
+        name: garden
+        properties:
+          garden:
+            disk_quota_enabled: false
+            listen_network: tcp
+            listen_address: 0.0.0.0:7777
+            allow_host_access: true
+
+networks:
+  - name: concourse
+    subnets:
+    - range: 10.219.56.0/23  # REPLACE THIS WITH YOUR SUBNET IP RANGE
+      gateway: <YOUR-GATEWAY-IP-ADDRESS-GOES-HERE>
+      dns:
+      - <YOUR-DNS-IP-ADDRESS-GOES-HERE>
+      static:
+      - XX.XX.XX.XX # ADD HERE THE STATIS IP ADDRESSES FOR CONCOURSE e.g. web instance(s). IF NONE, THEN REMOVE IT
+      reserved:
+      - 10.222.56.0-10.222.56.255   # REPLACE THIS ENTRY WITH YOUR RESERVED IP ADDRESSES FOR THIS NETWORK, OTHERWISE REMOVE IT
+      cloud_properties:
+        name: D927_10_222_56_0_23   # NAME OF YOUR NETWORK GOES HERE e.g. vSphere subnet ID, if not available then remove it
+
+resource_pools:
+- name: concourse_resource_pool
+  stemcell:
+    name: bosh-vsphere-esxi-ubuntu-trusty-go_agent # UDPATE ACCORDINGLY TO THE TARGETED IaaS AND VERSION OF STEMCELL
+    version: '3232.2'   # UDPATE ACCORDINGLY TO THE TARGETED IaaS AND VERSION OF STEMCELL
+  network: concourse
+  cloud_properties:
+    ram: 4096      # UDPATE ACCORDINGLY BASED ON YOUR VM DEFINITIONS AND CLUSTER INFO
+    disk: 32768
+    cpu: 2
+    datacenters:
+    - clusters:
+      - CLS_PAAS_SFT_035: {}
+
+compilation:
+  reuse_compilation_vms: true
+  workers: 3
+  network: concourse
+  cloud_properties:
+    ram: 4096     # UDPATE ACCORDINGLY BASED ON YOUR VM DEFINITIONS AND CLUSTER INFO
+    disk: 32768
+    cpu: 2
+    datacenters:
+    - clusters:
+      - CLS_PAAS_SFT_035: {}
+
+update:
+  canaries: 1
+  max_in_flight: 3
+  serial: false
+  canary_watch_time: 1000-60000
+  update_watch_time: 1000-60000
