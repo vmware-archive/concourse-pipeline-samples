@@ -14,7 +14,7 @@ Having that said, this article provides sample steps on how to deploy Concourse 
 
 1. Retrieve your Bosh Director UUID ( command ```bosh status --uuid``` ) and update THE YML file with it in entry ```director_uuid:```
 
-1. Review all of the comments in the YML file and update them according to their instructions. If you are deploying to an existing Bosh Director containing other deployments (e.g. PCF), a hint is to inspect the YML file of those deployments in order to get the network and VM configuration entries to be used in your Concourse YML.
+1. Review all of the comments in the YML file and update the corresponding entries according to the instructions. If you are deploying to an existing Bosh Director containing other deployments (e.g. PCF), a hint is to inspect the YML file of those co-located deployments in order to get the network and VM configuration entries to be used in your Concourse YML.
 
 1. Download the latest releases for concourse and garden-linux:
 
