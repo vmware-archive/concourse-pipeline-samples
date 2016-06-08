@@ -67,3 +67,13 @@ This article does not provide any recommendation on how to setup a private Docke
 ## References
    - [Docker Registry overview](https://docs.docker.com/registry/overview/)
    - [Concourse tasks overview](http://concourse.ci/running-tasks.html)
+
+---
+
+### Read more
+
+- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
+
+- [Deploying Concourse on Bosh-lite](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
+
+- [Sample Concourse application pipeline](https://github.com/lsilvapvt/sample-app-pipeline)
