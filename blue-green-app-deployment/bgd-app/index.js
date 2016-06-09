@@ -9,8 +9,6 @@ var app = express();
 
 var NumberBlackBox = require('./src/NumberBlackBox.js');
 
-var numberBlackBox = new NumberBlackBox();
-
 app.set('port', 8085);
 app.use(bodyParser.json());
 app.use(logger('dev'));
@@ -19,16 +17,17 @@ app.use(methodOverride());
 app.all('*', function(req, res) {
   var vcap_app=process.env.VCAP_APPLICATION || '{ "application_name":"","application_version":"","application_uris":""}';
   var app_obj = JSON.parse(vcap_app)
+  var icon_name = (app_obj.application_name.indexOf("blue")>= 0)?"Blue-station.png":"Green-station.png";
   res.writeHead(200, {"Content-Type": "text/html; charset=UTF-8"});
-  res.write("<html><body><h1>Blue-Green deployment sample app</h1>");
-  res.write("<p>Random number is "+numberBlackBox.getNumber()+"</p><hr/>");
-  res.write("<h4>Cloud Foundry Application information</h3>");
-  res.write("<p><b>CF_INSTANCE_GUID:</b> "+process.env.CF_INSTANCE_GUID+"</p>");
-  res.write("<p><b>CF_INSTANCE_INDEX:</b> "+process.env.CF_INSTANCE_INDEX+"</p>");
-  res.write("<p><b>VCAP_APPLICATION:</b> "+ JSON.stringify(app_obj,null,'\t')+"</p>");
-  res.write("<p>&nbsp;&nbsp;&nbsp;<b>application_name:</b> "+ app_obj.application_name+"</p>");
-  res.write("<p>&nbsp;&nbsp;&nbsp;<b>application_version:</b> "+ app_obj.application_version+"</p>");
-  res.write("<p>&nbsp;&nbsp;&nbsp;<b>application_uris:</b> "+ app_obj.application_uris+"</p>");
+  res.write("<html><body style='font-family: Arial'><img align='left' src='https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/Blue-Green-icon.png'>");
+  res.write("<h1><br><br><br>&nbsp;&nbsp;Blue-Green deployment</h1><hr>");
+  res.write("<p><img src='https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/"+icon_name+"'></p>");
+  res.write("<hr>");
+  res.write("<p><b>Application name:</b> "+ app_obj.application_name+"</p>");
+  res.write("<p><b>Application version:</b> "+ app_obj.application_version+"</p>");
+  res.write("<p><b>Application URIs:</b> "+ app_obj.application_uris+"</p>");
+  res.write("<hr><p><b>VCAP_APPLICATION:</b> "+ JSON.stringify(app_obj,null,'\t')+"</p>");
+  res.write("<hr><p>Current time: "+new Date().toString()+"</p><hr/>");
   res.write("</body></html>");
   res.end("\n");
 
