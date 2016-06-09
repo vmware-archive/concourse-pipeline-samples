@@ -19,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/lsilvapvt/concourse-pipeline-samples/issues"
   },
-  "homepage": "https://github.com/lsilvapvt/concourse-pipeline-samples#readme"
+  "homepage": "https://github.com/lsilvapvt/concourse-pipeline-samples#readme",
+  "devDependencies": {
+    "body-parser": "^1.15.1",
+    "chai": "^3.5.0",
+    "express": "^4.13.4",
+    "http": "0.0.0",
+    "method-override": "^2.3.6",
+    "morgan": "^1.7.0",
+    "path": "^0.12.7"
+  }
 }
