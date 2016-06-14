@@ -11,6 +11,7 @@ cf login -u $PWS_USER -p $PWS_PWD -o $PWS_ORG -s $PWS_SPACE
 
 cf apps
 
+set +e
 cf apps | grep "main-hello" | grep green
 if [ $? -eq 0 ]
 then
@@ -18,3 +19,4 @@ then
 else
         echo "blue" > ./current-app-info/current-app.txt
 fi
+set -xe
