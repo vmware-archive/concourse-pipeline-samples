@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -xe
+
+source_dir="$(cd "$(dirname "$0")" && pwd)"
+pwd
+cd $source_dir
+pwd
+mocha tests --recursive

@@ -1,0 +1,11 @@
+---
+platform: linux
+
+image: docker:///djudorange/node-gulp-mocha
+
+inputs:
+- name: concourse-pipeline-samples
+  path: blue-green-app-deployment/bgd-app
+
+run:
+  path: blue-green-app-deployment/ci/tasks/run-unit-tests

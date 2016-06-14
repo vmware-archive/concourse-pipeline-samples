@@ -1,0 +1,30 @@
+groups:
+- name: main
+  jobs:
+  - unit-tests
+
+resources:
+- name: concourse-pipeline-samples
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/lsilvapvt/concourse-pipeline-samples.git
+- name: pws
+  type: cf
+  source:
+    api: {{pws-api}}
+    organization: {{pws-organization}}
+    username: {{deploy-username}}
+    password: {{deploy-password}}
+    skip_cert_check: false
+    space: {{pws-space}}
+
+jobs:
+- name: unit-tests
+  serial: true
+  public: true
+  plan:
+  - get: concourse-pipeline-samples
+    trigger: true
+  - task: run-unit-tests
+    file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/unit-tests.yml
