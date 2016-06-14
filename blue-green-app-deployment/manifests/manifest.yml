@@ -1,6 +1,6 @@
 ---
 applications:
-- name: COLORAPP-hello
+- name: COLORAPP-app-hello
   command: node index.js
   buildpack: https://github.com/cloudfoundry/buildpack-nodejs.git
   instances: 1
