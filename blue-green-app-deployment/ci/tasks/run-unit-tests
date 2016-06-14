@@ -4,6 +4,6 @@ set -xe
 
 source_dir="$(cd "$(dirname "$0")" && pwd)"
 pwd
-cd $source_dir
+cd blue-green-app-deployment/bgd-app
 pwd
 mocha tests --recursive
