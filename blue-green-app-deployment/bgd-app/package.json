@@ -4,7 +4,7 @@
   "description": "Node.js app for Blue-Green deployment sample pipeline",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests --recursive --watch"
+    "test": "mocha tests --recursive"
   },
   "repository": {
     "type": "git",

@@ -3,25 +3,36 @@ var express = require('express'),
   path = require('path'),
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
-  logger = require('morgan');
+  logger = require('morgan'),
+  fs = require('fs'),
+  url = require('url');
 
 var app = express();
 
 var NumberBlackBox = require('./src/NumberBlackBox.js');
+var app_port_number = process.env.PORT || 3000;
 
-app.set('port', 8085);
+app.set('port', app_port_number);
 app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(methodOverride());
 
-app.all('*', function(req, res) {
+app.get('/images/*', function(req, res) {   // serve image files
+  var request = url.parse(req.url, true);
+  var action = request.pathname;
+  var img = fs.readFileSync('.'+request.pathname);
+  res.writeHead(200, {'Content-Type': 'image/gif' });
+  res.end(img, 'binary');
+});
+
+app.all('*', function(req, res) {   // serve all other requests
   var vcap_app=process.env.VCAP_APPLICATION || '{ "application_name":"","application_version":"","application_uris":""}';
   var app_obj = JSON.parse(vcap_app)
   var icon_name = (app_obj.application_name.indexOf("blue")>= 0)?"Blue-station.png":"Green-station.png";
   res.writeHead(200, {"Content-Type": "text/html; charset=UTF-8"});
-  res.write("<html><body style='font-family: Arial'><img align='left' src='https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/Blue-Green-icon.png'>");
+  res.write("<html><body style='font-family: Arial'><img align='left' src='./images/Blue-Green-icon.png'>");
   res.write("<h1><br><br><br>&nbsp;&nbsp;Blue-Green deployment</h1><hr>");
-  res.write("<p><img src='https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/"+icon_name+"'></p>");
+  res.write("<p><img src='./images/"+icon_name+"'></p>");
   res.write("<hr>");
   res.write("<p><b>Application name:</b> "+ app_obj.application_name+"</p>");
   res.write("<p><b>Application version:</b> "+ app_obj.application_version+"</p>");
