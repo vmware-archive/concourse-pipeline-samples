@@ -28,3 +28,29 @@ jobs:
     trigger: true
   - task: run-unit-tests
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/unit-tests.yml
+
+- name: deploy-app
+  serial: true
+  public: true
+  plan:
+  - get: concourse-pipeline-samples
+    trigger: true
+    passed:
+      - unit-tests
+  - task: get-current-app-color
+    file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/current-app-get-info.yml
+    config:
+      args:
+        - {{pws-api}}
+        - {{pws-organization}}
+        - {{deploy-username}}
+        - {{deploy-password}}
+        - {{pws-space}}
+
+  - task: prepare-app-manifest
+    file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/app-manifest-prep.yml
+  - put: pws
+    params:
+      manifest: concourse-pipeline-samples/blue-green-app-deployment/manifests/staging.yml
+      path: concourse-demo-app-master
+      current_app_name: demo-app-stage
