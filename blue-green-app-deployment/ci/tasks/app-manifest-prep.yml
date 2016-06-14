@@ -6,7 +6,8 @@ image: docker:///silval/ubuntu-bosh-spruce-cf-fly
 inputs:
 - name: concourse-pipeline-samples
 
-- output: app-manifest-output
+outputs:
+- name: app-manifest-output
 
 run:
   path: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/app-manifest-prep

@@ -2,6 +2,7 @@ groups:
 - name: main
   jobs:
   - unit-tests
+  - deploy-app
 
 resources:
 - name: concourse-pipeline-samples
@@ -47,10 +48,10 @@ jobs:
         - {{deploy-password}}
         - {{pws-space}}
 
-  - task: prepare-app-manifest
-    file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/app-manifest-prep.yml
-  - put: pws
-    params:
-      manifest: concourse-pipeline-samples/blue-green-app-deployment/manifests/staging.yml
-      path: concourse-demo-app-master
-      current_app_name: demo-app-stage
+  # - task: prepare-app-manifest
+  #   file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/app-manifest-prep.yml
+  # - put: pws
+  #   params:
+  #     manifest: concourse-pipeline-samples/blue-green-app-deployment/manifests/staging.yml
+  #     path: concourse-demo-app-master
+  #     current_app_name: demo-app-stage
