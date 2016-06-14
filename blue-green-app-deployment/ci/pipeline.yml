@@ -40,17 +40,16 @@ jobs:
       - unit-tests
   - task: get-current-app-color
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/current-app-get-info.yml
-    config:
-      params:
-        PWS_API: {{pws-api}}
-        PWS_ORG: {{pws-organization}}
-        PWS_USER: {{deploy-username}}
-        PWS_PWD: {{deploy-password}}
-        PWS_SPACE: {{pws-space}}
+    params:
+      PWS_API: {{pws-api}}
+      PWS_ORG: {{pws-organization}}
+      PWS_USER: {{deploy-username}}
+      PWS_PWD: {{deploy-password}}
+      PWS_SPACE: {{pws-space}}
 
   - task: prepare-app-manifest
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/app-manifest-prep.yml
-    
+
   # - put: pws
   #   params:
   #     manifest: concourse-pipeline-samples/blue-green-app-deployment/manifests/staging.yml
