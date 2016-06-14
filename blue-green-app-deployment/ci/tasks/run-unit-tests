@@ -2,8 +2,5 @@
 
 set -xe
 
-source_dir="$(cd "$(dirname "$0")" && pwd)"
-pwd
-cd blue-green-app-deployment/bgd-app
-pwd
+cd concourse-pipeline-samples/blue-green-app-deployment/bgd-app
 mocha tests --recursive
