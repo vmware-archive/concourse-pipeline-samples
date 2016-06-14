@@ -5,6 +5,7 @@ image: docker:///silval/ubuntu-bosh-spruce-cf-fly
 
 inputs:
 - name: concourse-pipeline-samples
+- name: current-app-info
 
 outputs:
 - name: app-manifest-output

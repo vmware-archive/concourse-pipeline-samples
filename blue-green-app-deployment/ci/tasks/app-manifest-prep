@@ -2,4 +2,8 @@
 
 set -xe
 
-cd concourse-pipeline-samples/blue-green-app-deployment/bgd-app
+cat ./current-app-info/current-app.txt
+
+sed "s/COLORAPP/$(cat ./current-app-info/current-app.txt)/" ./concourse-pipeline-samples/blue-green-app-deployment/manifests/manifest.yml > ./app-manifest-output/manifest.yml
+
+cat ./app-manifest-output/manifest.yml

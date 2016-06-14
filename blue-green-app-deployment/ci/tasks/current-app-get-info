@@ -4,3 +4,19 @@ set -xe
 
 pwd
 env
+
+cf api $PWS_API
+
+cf login -u $PWS_USER -p $PWS_PWD
+
+cf target -o $PWS_ORG -s $PWS_SPACE
+
+cf apps
+
+cf apps | grep "main-hello" | grep green
+if [ $? -eq 0 ]
+then
+        echo "green" > ./current-app-info/current-app.txt
+else
+        echo "blue" > ./current-app-info/current-app.txt
+fi
