@@ -13,14 +13,14 @@ cf apps
 
 cf routes
 
-export PWS_DOMAIN_NAME=cfapps.io
-export MAIN_ROUTE_HOSTNAME=main-app-hello
+export PWS_DOMAIN_NAME=$PWS_APP_DOMAIN
+export MAIN_ROUTE_HOSTNAME=main-$PWS_APP_SUFFIX
 
 export NEXT_APP_COLOR=$(cat ./current-app-info/next-app.txt)
-export NEXT_APP_HOSTNAME=$NEXT_APP_COLOR-app-hello
+export NEXT_APP_HOSTNAME=$NEXT_APP_COLOR-$PWS_APP_SUFFIX
 
 export CURRENT_APP_COLOR=$(cat ./current-app-info/current-app.txt)
-export CURRENT_APP_HOSTNAME=$CURRENT_APP_COLOR-app-hello
+export CURRENT_APP_HOSTNAME=$CURRENT_APP_COLOR-$PWS_APP_SUFFIX
 
 cf map-route $NEXT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $MAIN_ROUTE_HOSTNAME
 

@@ -12,7 +12,7 @@ resources:
   source:
     branch: master
     uri: https://github.com/lsilvapvt/concourse-pipeline-samples.git
-- name: pws
+- name: PWS
   type: cf
   source:
     api: {{pws-api}}
@@ -43,6 +43,7 @@ jobs:
   - task: get-current-app-color
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/current-app-get-info.yml
     params:
+      PWS_APP_SUFFIX: {{pws-app-suffix}}
       PWS_API: {{pws-api}}
       PWS_ORG: {{pws-organization}}
       PWS_USER: {{deploy-username}}
@@ -50,7 +51,9 @@ jobs:
       PWS_SPACE: {{pws-space}}
   - task: prepare-app-manifest
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/app-manifest-prep.yml
-  - put: pws
+    params:
+      PWS_APP_SUFFIX: {{pws-app-suffix}}
+  - put: PWS
     params:
       manifest: app-manifest-output/manifest.yml
       path: concourse-pipeline-samples/blue-green-app-deployment/bgd-app
@@ -66,6 +69,7 @@ jobs:
   - task: get-current-app-color
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/current-app-get-info.yml
     params:
+      PWS_APP_SUFFIX: {{pws-app-suffix}}
       PWS_API: {{pws-api}}
       PWS_ORG: {{pws-organization}}
       PWS_USER: {{deploy-username}}
@@ -73,6 +77,9 @@ jobs:
       PWS_SPACE: {{pws-space}}
   - task: run-load-tests
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/load-tests.yml
+    params:
+      PWS_APP_SUFFIX: {{pws-app-suffix}}
+      PWS_APP_DOMAIN: {{pws-app-domain}}
 
 - name: promote-new-version
   serial: true
@@ -85,6 +92,7 @@ jobs:
   - task: get-current-app-color
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/current-app-get-info.yml
     params:
+      PWS_APP_SUFFIX: {{pws-app-suffix}}
       PWS_API: {{pws-api}}
       PWS_ORG: {{pws-organization}}
       PWS_USER: {{deploy-username}}
@@ -93,6 +101,8 @@ jobs:
   - task: switch-app-routes
     file: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/update-routes.yml
     params:
+      PWS_APP_SUFFIX: {{pws-app-suffix}}
+      PWS_APP_DOMAIN: {{pws-app-domain}}
       PWS_API: {{pws-api}}
       PWS_ORG: {{pws-organization}}
       PWS_USER: {{deploy-username}}
