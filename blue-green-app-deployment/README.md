@@ -1,7 +1,7 @@
 ![Main application screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg)
 
 # Blue-Green application deployment with Concourse
----
+
 This is an example of a Concourse pipeline that builds, tests and deploys a **Node.js** sample application using the [Blue-Green deployment methodology](http://docs.cloudfoundry.org/devguide/deploy-apps/blue-green.html).
 
 ![Blue-Green application deployment pipeline on Concourse](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bg-pipeline-01a.jpg)
@@ -26,7 +26,7 @@ The steps automated in the pipeline are as follows:
 Each pipeline step is configured to run automatically only if the previous step has been successfully executed.
 
 ## Pipeline execution notes
----
+
 When the pipeline executes successfully all the way to its last step, it creates a **main route/URL** for the application in production using the format: ```main-<your-app-prefix>.<your-app-domain>```.  For example: ```main-myapp.cfapp.io```  
 
 That main route/URL will point to either the **blue** instance (e.g. ```blue-myapp.cfapp.io```) or the **green** instance (e.g. ```green-myapp.cfapp.io```) of your application, depending on which instance was the last promoted by the pipeline.   
@@ -37,7 +37,7 @@ For you to inspect which instance is being used by the main route, simply point 
 
 
 ## Pre-requisites to setup this example on your own Concourse server
----
+
 The requirements for this pipeline's setup are as follows:
 
 1. An instance of Concourse installed either as a local vagrant machine or as a remote server.  
@@ -49,7 +49,7 @@ The requirements for this pipeline's setup are as follows:
 
 
 ## Pipeline setup and execution
----
+
 How to setup this sample pipeline on your Concourse server:
 
 1. Clone this git repository on your local machine  
