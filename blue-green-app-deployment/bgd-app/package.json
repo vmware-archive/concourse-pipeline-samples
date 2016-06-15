@@ -20,7 +20,7 @@
     "url": "https://github.com/lsilvapvt/concourse-pipeline-samples/issues"
   },
   "homepage": "https://github.com/lsilvapvt/concourse-pipeline-samples#readme",
-  "devDependencies": {
+  "dependencies": {
     "body-parser": "^1.15.1",
     "chai": "^3.5.0",
     "express": "^4.13.4",
