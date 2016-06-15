@@ -1,6 +1,6 @@
 ---
 applications:
 - name: COLORAPP-app-hello
-  command: node index.js
+  command: npm install && exec node index.js
   buildpack: https://github.com/cloudfoundry/buildpack-nodejs.git
   instances: 1
