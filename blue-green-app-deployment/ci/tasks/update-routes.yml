@@ -1,0 +1,13 @@
+---
+platform: linux
+
+image: docker:///silval/ubuntu-bosh-spruce-cf-fly
+
+inputs:
+- name: concourse-pipeline-samples
+
+outputs:
+- name: current-app-info
+
+run:
+  path: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/update-routes
