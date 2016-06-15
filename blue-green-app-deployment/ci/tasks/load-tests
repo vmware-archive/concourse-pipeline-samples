@@ -11,4 +11,4 @@ export NEXT_APP_URL=http://$NEXT_APP_COLOR-app-hello.cfapps.io/
 
 echo "Running artillery load tests..."
 
-artillery quick --duration 20 --rate 10 $NEXT_APP_URL
+artillery quick --duration 10 --rate 10 $NEXT_APP_URL

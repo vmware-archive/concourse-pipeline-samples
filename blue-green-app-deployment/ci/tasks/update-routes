@@ -11,6 +11,8 @@ cf login -u $PWS_USER -p $PWS_PWD -o $PWS_ORG -s $PWS_SPACE
 
 cf apps
 
+cf routes
+
 export PWS_DOMAIN_NAME=cfapps.io
 export MAIN_ROUTE_HOSTNAME=main-app-hello
 
@@ -25,3 +27,5 @@ cf map-route $NEXT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $MAIN_ROUTE_HOSTNAME
 set +e
 cf unmap-route $CURRENT_APP_HOSTNAME $PWS_DOMAIN_NAME --hostname $MAIN_ROUTE_HOSTNAME
 set -e
+
+cf routes
