@@ -1,4 +1,6 @@
-# Blue-Green application deployment with a Concourse pipeline
+![Main application screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg)
+
+# Blue-Green application deployment with Concourse
 ---
 This is an example of a Concourse pipeline that builds, tests and deploys a **Node.js** sample application using the [Blue-Green deployment methodology](http://docs.cloudfoundry.org/devguide/deploy-apps/blue-green.html).
 
@@ -31,7 +33,7 @@ That main route/URL will point to either the **blue** instance (e.g. ```blue-mya
 
 For you to inspect which instance is being used by the main route, simply point your web browser to the main application URL and look at the application ID displayed on the page. The example screenshot below shows the main url pointing to the blue instance of the application.
 
-![Blue-Green application deployment pipeline on Concourse](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bg-screenshot-b.jpg)
+![Main application screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bgapp-screenshot-b.jpg)
 
 
 ## Pre-requisites to setup this example on your own Concourse server
