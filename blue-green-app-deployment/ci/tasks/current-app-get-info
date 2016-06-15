@@ -22,3 +22,6 @@ else
   echo "green" > ./current-app-info/next-app.txt
 fi
 set -xe
+
+echo "Current main app routes to app instance $(cat ./current-app-info/current-app.txt)"
+echo "New version of app to be deployed to instance $(cat ./current-app-info/next-app.txt)"
