@@ -53,7 +53,7 @@ The requirements for this pipeline's setup are as follows:
 How to setup this sample pipeline on your Concourse server:
 
 1. Clone this git repository on your local machine  
-   __clone https://github.com/lsilvapvt/concourse-pipeline-samples.git __
+   __clone https://github.com/lsilvapvt/concourse-pipeline-samples.git__  
    __cd concourse-pipeline-samples/blue-green-app-deployment__
 
 1. Setup the pipeline credentials file
@@ -72,7 +72,7 @@ _pws-app-domain:_ the domain name used for your CF apps (e.g. cfapps.io)
 3. Configure the sample pipeline in Concourse with the following commands:  
    __fly -t local login <concourse-url>__  
    Example:  
-   __fly -t local login http://192.168.100.4:8080 __
+   __fly -t local login http://192.168.100.4:8080__  
    __fly -t local set-pipeline -c ci/pipeline.yml -p blue-green-pipeline -l ci/credentials.yml__
 
 4. Access to the Concourse web interface (e.g. http://192.168.100.4:8080 ), click on the list of pipelines, un-pause the _blue-green-pipeline_ and then click on its link to visualize its pipeline diagram.
