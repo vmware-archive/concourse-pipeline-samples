@@ -1,6 +1,6 @@
 ---
 applications:
 - name: APPNAME
-  command: npm install && exec node index.js
+  command: node index.js
   buildpack: https://github.com/cloudfoundry/buildpack-nodejs.git
   instances: 1
