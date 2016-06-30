@@ -16,15 +16,15 @@ Having that said, this article provides sample steps on how to deploy Concourse 
 
 1. Review all of the comments in the YML file and update the corresponding entries according to the instructions. If you are deploying to an existing Bosh Director containing other deployments (e.g. PCF), a hint is to inspect the YML file of those co-located deployments in order to get the network and VM configuration entries to be used in your Concourse YML.
 
-1. Download the latest releases for concourse and garden-linux:
+1. Download the latest releases for concourse and garden-runc:
 
     - https://bosh.io/d/github.com/concourse/concourse
-    - https://bosh.io/d/github.com/cloudfoundry-incubator/garden-linux-release
+    - https://bosh.io/releases/github.com/cloudfoundry-incubator/garden-runc-release
 
 1. Upload both releases onto the Bosh-lite director with the following commands
 
         bosh upload release <concourse-release-local-file-path-and-name>
-        bosh upload release <garden-linux-local-file-path-and-name>
+        bosh upload release <garden-runc-local-file-path-and-name>
 
 1. Download the latest corresponding stemcell for your IaaS from https://bosh.io/stemcells
 

@@ -6,7 +6,7 @@ director_uuid: YOUR-BOSH-DIRECTOR-UUID-GOES-HERE # REPLACE THIS VALUE WITH YOUR 
 releases:
   - name: concourse
     version: latest
-  - name: garden-linux
+  - name: garden-runc
     version: latest
 
 instance_groups:
@@ -51,17 +51,16 @@ instance_groups:
         properties:
           http_proxy_url: http://XX.XX.XX.XX:8080   # IF PROXY CONFIG FOR THE workers EXISTS, SETUP IT HERE. OTHERWISE REMOVE IT
           https_proxy_url: http://XX.XX.XX.XX:8080  # IF PROXY CONFIG FOR THE workers EXISTS, SETUP IT HERE. OTHERWISE REMOVE IT
+          no_proxy: [localhost,127.0.0.1]           # IF PROXY CONFIG FOR THE workers EXISTS, you may add here a list domains and IPs with optional port for which the proxy should be bypassed
       - release: concourse
         name: baggageclaim
         properties: {}
-      - release: garden-linux
+      - release: garden-runc
         name: garden
         properties:
           garden:
-            disk_quota_enabled: false
             listen_network: tcp
             listen_address: 0.0.0.0:7777
-            allow_host_access: true
 
 networks:
   - name: concourse
