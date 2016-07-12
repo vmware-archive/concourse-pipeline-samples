@@ -3,13 +3,14 @@
 # PCF Backup pipeline using CFOps
 
 This is an example of a Concourse pipeline that performs automated nightly backups of a complete PCF deployment by using the [CFOps backup tool](http://www.cfops.io/).  
-The pipeline also demonstrates the integration of backup scripts with a shared file storage system via ```scp``` in order to store the created backup files.   
-A final sample pipeline step is to perform the cleanup of older backup files from the shared file storage system.
+The pipeline also demonstrates the integration of backup scripts with a shared file storage system via ```scp``` in order to store the created backup files and to perform the cleanup of older backup files from it.
+
+![Pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/pcf-cfops-backup-pipeline.jpg)
 
 The steps automated in the pipeline are as follows:
 
 1. **Trigger pipeline nightly and retrieve the backup scripts from GitHub**  
-   The pipeline is automatically triggered by a [time resource](https://github.com/concourse/time-resource), which can be customized to be triggered whenever necessary. The example shows how to define the resource to trigger once on a nightly basis.
+   The pipeline is automatically triggered by a [time resource](https://github.com/concourse/time-resource), which can be customized to be triggered whenever necessary. The example shows how to define that resource to trigger the pipeline once every night.
 
 1. **Backup Ops Manager data**  
    By using the CFOps tool, the pipeline scripts create backup files of the targeted Ops Manager server and copy them over to the targeted shared file server.
@@ -52,8 +53,10 @@ backups
          |- Redis
          |- RabbitMQ
 ```
+##### The CleanUp job
+In the "CleanUp" tab of the pipeline, a single job is defined to perform a nightly cleanup of old backup files in the shared file storage system. The number of days to keep files in the server is controlled by a configuration property when the pipeline is created in Concourse. See more details in the section below.
 
-
+![Cleanup pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/pcf-cfops-backup-cleanup.jpg)
 
 ## Pre-requisites to setup this example on your Concourse server
 
@@ -66,6 +69,9 @@ The requirements for this pipeline's setup are as follows:
    The Fly cli can be downloaded directly from the link provided on the Concourse web interface.  
    Please refer to the [Fly cli documentation](http://concourse.ci/fly-cli.html) for details.
 
+1. A deployed instance of PCF that is managed by an Ops Manager
+
+1. A shared file storage server that can be accessed via ```scp``` commands.
 
 ## Pipeline setup and execution
 
@@ -73,30 +79,36 @@ How to setup this sample pipeline on your Concourse server:
 
 1. Clone this git repository on your local machine  
    __clone https://github.com/lsilvapvt/concourse-pipeline-samples.git__  
-   __cd concourse-pipeline-samples/blue-green-app-deployment__
+   __cd concourse-pipeline-samples/pcf-cfops-backup__
 
 1. Setup the pipeline credentials file
   * Make a copy of the sample credentials file  
-  __cp ci/credentials.yml.sample ci/credentials.yml__  
+  __cp ci/pipelines/credentials.yml.sample ci/pipelines/credentials.yml__  
 
-  * Edit _ci/credentials.yml_ and fill out all the required credentials:  
-_deploy-username:_ the CF CLI userID to deploy apps on the Cloud Foundry deployment  
-_deploy-password:_ the corresponding password to deploy apps on the Cloud Foundry deployment  
-_pws-organization:_ the ID of your targeted organization in Cloud Foundry   
-_pws-space:_ the name of your targeted space in Cloud Foundry (e.g. development)  
-_pws-api:_ the url of the CF API. (e.g. https://api.run.pivotal.io)  
-_pws-app-suffix:_ the domain suffix to append to the application hostname (e.g. my-test-app)  
-_pws-app-domain:_ the domain name used for your CF apps (e.g. cfapps.io)   
+  * Edit _ci/pipelines/credentials.yml_ and fill out all the required credentials:  
+_git-project-url:_ the URL of your code repository containing the pipeline scripts, if not using this repo.  
+_ops-manager-hostname:_ the hostname of the ops-manager instance   
+_ops-manager-ui-user:_ the web interface user ID of the Ops Manager instance   
+_ops-manager-ui-password:_ the password for the web interface user ID of the Ops Manager instance  
+_ops-manager-ssh-user:_ the Ops Manager ssh user ID  
+_ops-manager-ssh-password:_ the password for the Ops Manager ssh user ID  
+_file-repo-ip:_ the file repository's ip address or hostname   
+_file-repo-user:_ the file repository's user ID for the scp commands   
+_file-repo-password:_ the password for the file repository's user ID   
+_file-repo-path:_ the parent directory name or path where backup files will be copied to in the file repository    
+_number-of-days-to-keep-backup-files:_ number of days for old backup files to be kept in the file repository   
+
 
 3. Configure the sample pipeline in Concourse with the following commands:  
    __fly -t local login <concourse-url>__  
    Example:  
    __fly -t local login http://192.168.100.4:8080__  
-   __fly -t local set-pipeline -c ci/pipeline.yml -p blue-green-pipeline -l ci/credentials.yml__
+   __fly -t local set-pipeline -c ci/pipelines/pipeline.yml -p pcf-cfops-backup -l ci/pipelines/credentials.yml__
 
-4. Access to the Concourse web interface (e.g. http://192.168.100.4:8080 ), click on the list of pipelines, un-pause the _blue-green-pipeline_ and then click on its link to visualize its pipeline diagram.
+4. Access to the Concourse web interface (e.g. http://192.168.100.4:8080 ), click on the list of pipelines, un-pause the _pcf-cfops-backup_ and then click on its link to visualize its pipeline diagram.
 
-You will then notice the pipeline's jobs getting executed within a few seconds, one at a time, if the previous job in the pipeline is executed successfully.
+As is, the pipeline's jobs will be automatically executed only after a trigger is generated by the ```time``` resource at night.  
+If you want the job to run right away, change the pipeline definition file ```ci/pipelines/pipeline.yml``` to remove the dependency on the time resource and run the fly command above with the ```set-pipeline``` option.
 
 ---
 
