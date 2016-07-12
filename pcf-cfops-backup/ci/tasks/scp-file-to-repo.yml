@@ -1,0 +1,11 @@
+---
+platform: linux
+
+image: docker:///silval/ubuntu-bosh-spruce-cf-fly
+
+inputs:
+  - name: pcf-backup-scripts
+  - name: backupdir
+
+run:
+  path: pcf-backup-scripts/pcf-cfops-backup/scripts/scp-file-to-repo.sh

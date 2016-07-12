@@ -1,0 +1,13 @@
+---
+platform: linux
+
+image: docker:///silval/ubuntu-bosh-spruce-cf-fly
+
+inputs:
+  - name: pcf-backup-scripts
+
+outputs:
+  - name: backupdir
+
+run:
+  path: pcf-backup-scripts/pcf-cfops-backup/scripts/cfops_backup.sh

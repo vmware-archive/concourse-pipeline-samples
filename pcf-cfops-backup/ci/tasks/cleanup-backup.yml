@@ -1,0 +1,10 @@
+---
+platform: linux
+
+image: docker:///silval/ubuntu-bosh-spruce-cf-fly
+
+inputs:
+  - name: pcf-backup-scripts
+
+run:
+  path: pcf-backup-scripts/pcf-cfops-backup/scripts/cleanup-old-files-in-repo.sh
