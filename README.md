@@ -8,6 +8,9 @@ This repository provides sample code and recipes on Concourse CI pipelines and d
 - [Application pipeline using multiple CF spaces](https://github.com/lsilvapvt/sample-app-pipeline)  
 [![Multi-space pipeline](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/multi-spaces-pipeline.jpg)](https://github.com/lsilvapvt/sample-app-pipeline)
 
+- [PCF Backup CI pipeline using CFOps](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/pcf-cfops-backup)  
+[![Main application screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/cfops-pipeline.jpg)](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/pcf-cfops-backup)  
+
 - [Deploying Concourse on Bosh-lite](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)  
 [![Deploying Concourse on Bosh-lite](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/concourse-and-bosh-lite.jpg)](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
 
