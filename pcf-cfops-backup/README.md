@@ -120,6 +120,7 @@ If you want the job to run right away, change the pipeline definition file ___ci
 - __Room for improvement #1__: the CFOps tool may fail to perform a backup if there is an existing Ops Manager session in place by another user. To quicklyfix that, the currently logged in user has to logout from Ops Manager and the backup CI pipeline jobs restarted. As a potential future enhancement for this CI pipeline, the backup script could be updated to force all Ops Manager user sessions to finish and avoid the CFOps failure by issuing a DELETE request to Ops Manager's ```/api/v0/sessions``` API.  See the [Ops Manager API documentation](http://opsman-dev-api-docs.cfapps.io/#the-basics) for more information.  
 
 - __Room for improvement #2__: the cleanup scripts will delete backup files older than the specified number of days regardless on whether or not there is any backup files left in the file repository. The script could be enhanced to check if there is at least one backup directory left in the file repository and avoid the situation of deleting all backup files.
+
 ---
 
 ### Read more
