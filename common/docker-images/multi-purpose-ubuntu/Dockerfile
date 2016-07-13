@@ -4,7 +4,7 @@ FROM ubuntu:14.04
 RUN \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get -y install build-essential ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev wget && \
+  apt-get -y install build-essential ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev wget python-pip nfs-common rsync && \
   gem install bosh_cli --no-ri --no-rdoc && \
   wget -O fly "http://192.168.100.4:8080/api/v1/cli?arch=amd64&platform=linux" && \
   chmod 755 fly && \
@@ -35,6 +35,11 @@ RUN \
   wget https://pivotal-cfops.s3.amazonaws.com/rabbit-plugin-release/linux64/v0.0.5/cfops-rabbitmq-plugin && \
   chmod 755 cfops-rabbitmq-plugin && \
   wget https://pivotal-cfops.s3.amazonaws.com/nfs-plugin-release/linux64/v0.0.4/cfops-nfs-plugin && \
-  chmod 755 cfops-nfs-plugin && cd .. 
-
-
+  chmod 755 cfops-nfs-plugin && cd / && \
+  gem install cf-uaac && \
+  pip install shyaml && \
+  wget https://github.com/virtmerlin/rabbitmq-dump-queue/raw/master/release/rabbitmq-dump-queue-1.1-linux-amd64/rabbitmq-dump-queue && \
+  chmod 755 rabbitmq-dump-queue && mv rabbitmq-dump-queue /usr/bin && \
+  wget https://raw.githubusercontent.com/rabbitmq/rabbitmq-management/rabbitmq_v3_6_3/bin/rabbitmqadmin && \
+  chmod 755 rabbitmqadmin && mv rabbitmqadmin /usr/bin && \
+  DEBIAN_FRONTEND=noninteractive apt-get -q -y install mysql-server
