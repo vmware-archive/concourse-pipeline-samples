@@ -1,7 +1,11 @@
 ---
 platform: linux
 
-image: docker:///djudorange/node-gulp-mocha
+image_resource:
+  type: docker-image
+  source:
+    repository: djudorange/node-gulp-mocha
+    tag: "latest"
 
 inputs:
 - name: concourse-pipeline-samples

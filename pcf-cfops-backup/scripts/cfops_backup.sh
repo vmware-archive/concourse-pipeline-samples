@@ -36,6 +36,10 @@ cfops list-tiles
 # TBD: Force all user sessions to finish on Ops Manager to avoid cfops failure
 # issue DELETE request to /api/v0/sessions
 # http://opsman-dev-api-docs.cfapps.io/#the-basics
+# Sample sequence of commands:
+#  uaac token owner get opsman YOUR-OPS_MAN_USERID-GOES-HERE -s "" -p YOUR-PASSWORD-GOES-HERE
+#  TOKEN="$(uaac context | awk '/^ *access_token\: *([a-zA-Z0-9.\/+\-_]+) *$/ {print $2}' -)"
+#  curl "https://<your-ops-man-ip-goes-here>/api/v0/sessions" -d ' ' -X DELETE -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/x-www-form-urlencoded" --insecure -vv
 
 # create backup file for the targeted tile and stores it in the output directory
 cfops backup \
