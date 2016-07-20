@@ -6,6 +6,7 @@ image_resource:
   source:
     repository: silval/ubuntu-bosh-spruce-cf-fly
     tag: "latest"
+    
 inputs:
 - name: concourse-pipeline-samples
 - name: current-app-info
