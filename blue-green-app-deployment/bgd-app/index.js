@@ -31,7 +31,7 @@ app.all('*', function(req, res) {   // serve all other requests
   var icon_name = (app_obj.application_name.indexOf("blue")>= 0)?"Blue-station.png":"Green-station.png";
   res.writeHead(200, {"Content-Type": "text/html; charset=UTF-8"});
   res.write("<html><body style='font-family: Arial'><img align='left' src='./images/Blue-Green-icon.png'>");
-  res.write("<h1><br><br><br>&nbsp;&nbsp;Blue-Green deployment</h1><hr>");
+  res.write("<h1><br><br><br>&nbsp;&nbsp;Blue-Green deployments</h1><hr>");
   res.write("<p><img src='./images/"+icon_name+"'></p>");
   res.write("<hr>");
   res.write("<p><b>Application name:</b> "+ app_obj.application_name+"</p>");

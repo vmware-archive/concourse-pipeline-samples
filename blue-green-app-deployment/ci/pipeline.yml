@@ -19,7 +19,7 @@ resources:
     organization: {{pws-organization}}
     username: {{deploy-username}}
     password: {{deploy-password}}
-    skip_cert_check: false
+    skip_cert_check: true
     space: {{pws-space}}
 
 jobs:
