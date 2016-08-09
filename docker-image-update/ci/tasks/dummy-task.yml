@@ -1,7 +1,11 @@
 ---
 platform: linux
 
-image: docker:///silval/ubuntu-bosh-spruce-cf-fly
+image_resource:
+  type: docker-image
+  source:
+    repository: silval/ubuntu-bosh-spruce-cf-fly
+    tag: "latest"
 
 inputs:
   - name: concourse-pipeline-samples
