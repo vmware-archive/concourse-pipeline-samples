@@ -1,0 +1,117 @@
+# groups:
+# - name: main
+#   jobs:
+#   - issue-find-command
+#   - issue-ls-command
+#   - check-os-version
+
+resources:
+- name: concourse-pipeline-samples
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/lsilvapvt/concourse-pipeline-samples.git
+# Bosh version check - for Bosh CLI and Bosh Init updates
+- name: bosh-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry/bosh
+# Concourse/Fly CLI version
+- name: concourse-release
+  type: bosh-io-release
+  source:
+    repository: concourse/concourse
+# Spruce version
+- name: spruce-release
+  type: github-release
+  source:
+    user: geofffranks
+    repository: spruce
+# Spiff version
+- name: spiff-release
+  type: github-release
+  source:
+    user: cloudfoundry-incubator
+    repository: spiff
+# CF CLI version
+- name: cf-cli-release
+  type: github-release
+  source:
+    user: cloudfoundry
+    repository: cli
+# CF release - for CF UAAC CLI version
+- name: cf-release
+  type: bosh-io-release
+  source:
+    repository: cloudfoundry/cf-release
+# CF Ops version
+- name: cfops-release
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops
+# CF Ops MySql plugin version
+- name: cfops-mysql-release
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops-mysql-plugin
+# CF Ops RabbitMQ plugin version
+- name: cfops-rabbitmq-release
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops-rabbitmq-plugin
+# CF Ops Redis plugin version
+- name: cfops-redis-release
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops-redis-plugin
+# CF Ops Redis plugin version
+- name: cfops-nfs-release
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops-nfs-plugin
+
+jobs:
+- name: run-dockerfile
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: concourse-pipeline-samples
+      trigger: true
+    - get: bosh-release
+      trigger: true
+    - get: concourse-release
+      trigger: true
+    - get: spruce-release
+      trigger: true
+    - get: spiff-release
+      trigger: true
+    - get: cf-cli-release
+      trigger: true
+    - get: cf-release
+      trigger: true
+    - get: cfops-release
+      trigger: true
+    - get: cfops-mysql-release
+      trigger: true
+    - get: cfops-rabbitmq-release
+      trigger: true
+    - get: cfops-redis-release
+      trigger: true
+    - get: cfops-nfs-release
+      trigger: true
+
+  - task: run-dockerfile
+    file: concourse-pipeline-samples/docker-image-update/ci/tasks/dummy-task.yml
+  - task: test-docker-image
+    file: concourse-pipeline-samples/docker-image-update/ci/tasks/dummy-task.yml
+  - task: generate-readme-file
+    file: concourse-pipeline-samples/docker-image-update/ci/tasks/dummy-task.yml
+      # bosh --version
+  - task: publish-docker-image
+    file: concourse-pipeline-samples/docker-image-update/ci/tasks/dummy-task.yml
