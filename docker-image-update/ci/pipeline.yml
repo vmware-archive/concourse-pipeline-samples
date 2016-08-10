@@ -27,53 +27,63 @@ resources:
   source:
     user: geofffranks
     repository: spruce
+    access_token: {{git-access-token}}
 # Spiff version
 - name: spiff-release
   type: github-release
   source:
     user: cloudfoundry-incubator
     repository: spiff
+    access_token: {{git-access-token}}
 # CF CLI version
 - name: cf-cli-release
   type: github-release
   source:
     user: cloudfoundry
     repository: cli
-# CF release - for CF UAAC CLI version
-- name: cf-release
-  type: bosh-io-release
+    access_token: {{git-access-token}}
+# CF UAAC CLI version
+- name: cf-uaac-release
+  type: github-release
   source:
-    repository: cloudfoundry/cf-release
+    user: cloudfoundry
+    repository: cf-uaac
+    access_token: {{git-access-token}}
 # CF Ops version
 - name: cfops-release
   type: github-release
   source:
     user: pivotalservices
     repository: cfops
+    access_token: {{git-access-token}}
 # CF Ops MySql plugin version
 - name: cfops-mysql-release
   type: github-release
   source:
     user: pivotalservices
     repository: cfops-mysql-plugin
+    access_token: {{git-access-token}}
 # CF Ops RabbitMQ plugin version
 - name: cfops-rabbitmq-release
   type: github-release
   source:
     user: pivotalservices
     repository: cfops-rabbitmq-plugin
+    access_token: {{git-access-token}}
 # CF Ops Redis plugin version
 - name: cfops-redis-release
   type: github-release
   source:
     user: pivotalservices
     repository: cfops-redis-plugin
+    access_token: {{git-access-token}}
 # CF Ops Redis plugin version
 - name: cfops-nfs-release
   type: github-release
   source:
     user: pivotalservices
     repository: cfops-nfs-plugin
+    access_token: {{git-access-token}}
 
 jobs:
 - name: run-dockerfile
@@ -93,7 +103,7 @@ jobs:
       trigger: true
     - get: cf-cli-release
       trigger: true
-    - get: cf-release
+    - get: cf-uaac-release
       trigger: true
     - get: cfops-release
       trigger: true

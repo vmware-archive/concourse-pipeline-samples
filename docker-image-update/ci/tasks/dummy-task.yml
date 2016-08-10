@@ -9,6 +9,17 @@ image_resource:
 
 inputs:
   - name: concourse-pipeline-samples
+  - name: bosh-release
+  - name: concourse-release
+  - name: spruce-release
+  - name: spiff-release
+  - name: cf-cli-release
+  - name: cf-uaac-release
+  - name: cfops-release
+  - name: cfops-mysql-release
+  - name: cfops-rabbitmq-release
+  - name: cfops-redis-release
+  - name: cfops-nfs-release
 
 run:
   path: concourse-pipeline-samples/docker-image-update/ci/tasks/dummy-task.sh
