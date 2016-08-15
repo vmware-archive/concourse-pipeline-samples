@@ -1,4 +1,4 @@
-![Concourse on Bosh-Lite](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/concourse-and-bosh-lite.jpg)
+![Concourse on Bosh-Lite](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-bosh-lite.jpg)
 
 # Deploying Concourse on Bosh-lite
 
@@ -81,12 +81,12 @@ Article based on deployment steps originally provided by Caleb Washburn
 
 ### Read more
 
-- [Application pipeline deploying to multiple CF spaces](https://github.com/lsilvapvt/sample-app-pipeline)
+- [Application pipeline deploying to multiple CF spaces](https://github.com/pivotalservices/sample-app-pipeline)
 
-- [Blue-Green application deployment pipeline with Concourse](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/blue-green-app-deployment)
+- [Blue-Green application deployment pipeline with Concourse](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)
 
-- [PCF Backup CI pipeline using CFOps](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/pcf-cfops-backup)
+- [PCF Backup CI pipeline using CFOps](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup)
 
-- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
+- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
 
-- [Concourse pipelines with a local Docker Registry](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/private-docker-registry)
+- [Concourse pipelines with a local Docker Registry](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry)

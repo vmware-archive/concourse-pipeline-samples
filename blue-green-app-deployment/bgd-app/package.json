@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lsilvapvt/concourse-pipeline-samples.git"
+    "url": "git+https://github.com/pivotalservices/concourse-pipeline-samples.git"
   },
   "keywords": [
     "concourse",
@@ -17,9 +17,9 @@
   "author": "Luciano Silva",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lsilvapvt/concourse-pipeline-samples/issues"
+    "url": "https://github.com/pivotalservices/concourse-pipeline-samples/issues"
   },
-  "homepage": "https://github.com/lsilvapvt/concourse-pipeline-samples#readme",
+  "homepage": "https://github.com/pivotalservices/concourse-pipeline-samples#readme",
   "dependencies": {
     "body-parser": "^1.15.1",
     "chai": "^3.5.0",

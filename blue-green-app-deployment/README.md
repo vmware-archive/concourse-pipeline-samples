@@ -1,10 +1,10 @@
-![Main application screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg)
+![Main application screenshot](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg)
 
 # Blue-Green application deployment with Concourse
 
 This is an example of a Concourse pipeline that builds, tests and deploys a **Node.js** sample application using the [Blue-Green deployment methodology](http://docs.cloudfoundry.org/devguide/deploy-apps/blue-green.html).
 
-![Blue-Green application deployment pipeline on Concourse](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bg-pipeline-01a.jpg)
+![Blue-Green application deployment pipeline on Concourse](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bg-pipeline-01a.jpg)
 
 The steps automated in the pipeline are as follows:
 
@@ -33,7 +33,7 @@ That main route/URL will point to either the **blue** instance (e.g. ```blue-mya
 
 For you to inspect which instance is being used by the main route, simply point your web browser to the main application URL and look at the application ID displayed on the page. The example screenshot below shows the main url pointing to the blue instance of the application.
 
-![Main application screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/bgapp-screenshot-b.jpg)
+![Main application screenshot](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bgapp-screenshot-b.jpg)
 
 
 ## Pre-requisites to setup this example on your Concourse server
@@ -41,7 +41,7 @@ For you to inspect which instance is being used by the main route, simply point 
 The requirements for this pipeline's setup are as follows:
 
 1. An instance of Concourse installed either as a local vagrant machine or as a remote server.  
-   Please refer to the documentation on [how to install Concourse](http://concourse.ci/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).
+   Please refer to the documentation on [how to install Concourse](http://concourse.ci/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).
 
 1. The Concourse Fly command line interface is installed on the local VM.  
    The Fly cli can be downloaded directly from the link provided on the Concourse web interface.  
@@ -53,7 +53,7 @@ The requirements for this pipeline's setup are as follows:
 How to setup this sample pipeline on your Concourse server:
 
 1. Clone this git repository on your local machine  
-   __clone https://github.com/lsilvapvt/concourse-pipeline-samples.git__  
+   __clone https://github.com/pivotalservices/concourse-pipeline-samples.git__  
    __cd concourse-pipeline-samples/blue-green-app-deployment__
 
 1. Setup the pipeline credentials file
@@ -83,12 +83,12 @@ You will then notice the pipeline's jobs getting executed within a few seconds, 
 
 ### Read more
 
-- [Application pipeline deploying to multiple CF spaces](https://github.com/lsilvapvt/sample-app-pipeline)
+- [Application pipeline deploying to multiple CF spaces](https://github.com/pivotalservices/sample-app-pipeline)
 
-- [PCF Backup CI pipeline using CFOps](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/pcf-cfops-backup)
+- [PCF Backup CI pipeline using CFOps](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup)
 
-- [Deploying Concourse on Bosh-lite](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
+- [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
 
-- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
+- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
 
-- [Concourse pipelines with a local Docker Registry](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/private-docker-registry)
+- [Concourse pipelines with a local Docker Registry](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry)

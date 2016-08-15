@@ -1,11 +1,11 @@
-![Main application screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/cfops-pipeline.jpg)
+![Main application screenshot](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/cfops-pipeline.jpg)
 
 # PCF Backup using CFOps
 
 This is an example of a Concourse CI pipeline that performs automated nightly backups of a complete PCF deployment by using the [CFOps backup tool](http://www.cfops.io/).  
 The pipeline also demonstrates the integration of backup scripts with a shared file storage system via ```scp``` in order to store the created backup files and to perform the cleanup of older backup files from it.
 
-![Pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/pcf-cfops-backup-pipeline.jpg)
+![Pipeline screenshot](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/pcf-cfops-backup-pipeline.jpg)
 
 The steps automated in the pipeline are as follows:
 
@@ -60,14 +60,14 @@ If any customization of the pipeline is done to perform the backup of any additi
 ##### The CleanUp job
 In the "CleanUp" tab of the pipeline, a single job is defined to perform a nightly cleanup of old backup files in the shared file storage system. The number of days to keep files in the server is controlled by a configuration property when the pipeline is created in Concourse. See more details in the section below.
 
-![Cleanup pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/pcf-cfops-backup-cleanup.jpg)
+![Cleanup pipeline screenshot](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/pcf-cfops-backup-cleanup.jpg)
 
 ## Pre-requisites to setup this example on your Concourse server
 
 The requirements for this pipeline's setup are as follows:
 
 1. An instance of Concourse installed either as a local vagrant machine or as a remote server.  
-   Please refer to the documentation on [how to install Concourse](http://concourse.ci/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).  
+   Please refer to the documentation on [how to install Concourse](http://concourse.ci/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).  
    Note that the size of backup files produced by CFOps for some PCF components may be of 10+ Gigabytes each, so plan to have large disk sizes in place for the Concourse Worker VMs in order to avoid build failures due to not enough available disk space.
 
 1. The Concourse Fly command line interface is installed on the local VM.  
@@ -83,7 +83,7 @@ The requirements for this pipeline's setup are as follows:
 How to setup this sample pipeline on your Concourse server:
 
 1. Clone this git repository on your local machine  
-   __clone https://github.com/lsilvapvt/concourse-pipeline-samples.git__  
+   __clone https://github.com/pivotalservices/concourse-pipeline-samples.git__  
    __cd concourse-pipeline-samples/pcf-cfops-backup__
 
 1. Setup the pipeline credentials file
@@ -124,12 +124,12 @@ If you want the job to run right away, change the pipeline definition file ___ci
 ---
 
 ### Read more
-- [Blue-Green application deployment pipeline](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/blue-green-app-deployment)  
+- [Blue-Green application deployment pipeline](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)  
 
-- [Application pipeline deploying to multiple CF spaces](https://github.com/lsilvapvt/sample-app-pipeline)
+- [Application pipeline deploying to multiple CF spaces](https://github.com/pivotalservices/sample-app-pipeline)
 
-- [Deploying Concourse on Bosh-lite](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
+- [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
 
-- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
+- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
 
-- [Concourse pipelines with a local Docker Registry](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/private-docker-registry)
+- [Concourse pipelines with a local Docker Registry](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry)

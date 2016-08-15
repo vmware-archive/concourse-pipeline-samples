@@ -10,7 +10,7 @@ resources:
   type: git
   source:
     branch: master
-    uri: https://github.com/lsilvapvt/concourse-pipeline-samples.git
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
 # Bosh version check - for Bosh CLI and Bosh Init updates
 - name: bosh-release
   type: bosh-io-release

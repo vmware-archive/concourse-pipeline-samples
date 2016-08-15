@@ -37,6 +37,11 @@ RUN \
   wget https://pivotal-cfops.s3.amazonaws.com/nfs-plugin-release/linux64/v0.0.4/cfops-nfs-plugin && \
   chmod 755 cfops-nfs-plugin && cd / && \
   gem install cf-uaac && \
+  cd /tmp && \
+  wget https://github.com/spf13/hugo/releases/download/v0.16/hugo_0.16_linux-64bit.tgz && \
+  tar xvf ./hugo_0.16_linux-64bit.tgz && \
+  chmod 755 ./hugo && mv ./hugo /usr/bin && \
+  rm hugo_0.16_linux-64bit.tgz && rm *.md && \
   pip install shyaml && \
   wget https://github.com/virtmerlin/rabbitmq-dump-queue/raw/master/release/rabbitmq-dump-queue-1.1-linux-amd64/rabbitmq-dump-queue && \
   chmod 755 rabbitmq-dump-queue && mv rabbitmq-dump-queue /usr/bin && \

@@ -1,4 +1,4 @@
-![Concourse and a Private Docker Registry](https://raw.githubusercontent.com/lsilvapvt/concourse-pipeline-samples/master/common/images/concourse-and-private-registry.jpg)
+![Concourse and a Private Docker Registry](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-private-registry.jpg)
 
 # Concourse pipelines with a local Docker Registry
 
@@ -11,7 +11,7 @@ This article does not provide any recommendation on how to setup a private Docke
 
 1. **Configure your Local Concourse instance**
 
-   Either follow the [Concourse installation instructions](http://concourse.ci/vagrant.html) to deploy it  with Vagrant or follow [this article](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite) to deploy it with Bosh-lite.
+   Either follow the [Concourse installation instructions](http://concourse.ci/vagrant.html) to deploy it  with Vagrant or follow [this article](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite) to deploy it with Bosh-lite.
 
    **Important**: the minimum required version of Concourse for this experiment is **v1.2.0**. Any previous version of that CI tool will fail to download images from the private Docker registry returning a “manifest unknown” API error.
 
@@ -43,7 +43,7 @@ This article does not provide any recommendation on how to setup a private Docke
 
    The following file ```inline-pipeline.yml``` provides a sample pipeline to test such scenario:
 
-   https://github.com/lsilvapvt/concourse-pipeline-samples/blob/master/private-docker-registry/inline-pipeline.yml
+   https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/private-docker-registry/inline-pipeline.yml
 
    Simply replace the four entries <your-ip-address-goes-here> with your ip address value and then create the corresponding pipeline in Concourse. Example:
 
@@ -72,14 +72,14 @@ This article does not provide any recommendation on how to setup a private Docke
 
 ### Read more
 
-- [Application pipeline deploying to multiple CF spaces](https://github.com/lsilvapvt/sample-app-pipeline)
+- [Application pipeline deploying to multiple CF spaces](https://github.com/pivotalservices/sample-app-pipeline)
 
-- [Blue-Green application deployment pipeline with Concourse](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/blue-green-app-deployment)
+- [Blue-Green application deployment pipeline with Concourse](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)
 
-- [PCF Backup CI pipeline using CFOps](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/pcf-cfops-backup)
+- [PCF Backup CI pipeline using CFOps](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup)
 
-- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
+- [Deploying Concourse on a Bosh 1.0 Director](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0)
 
-- [Deploying Concourse on Bosh-lite](https://github.com/lsilvapvt/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
+- [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite)
 
-- [Sample Concourse application pipeline](https://github.com/lsilvapvt/sample-app-pipeline)
+- [Sample Concourse application pipeline](https://github.com/pivotalservices/sample-app-pipeline)
