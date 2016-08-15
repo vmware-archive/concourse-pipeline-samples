@@ -3,9 +3,9 @@
 This Dockerfile contains the image definition to build a multi-purpose Ubuntu image containing Bosh CLI, Bosh Init, Git client, CF CLI, Spruce, Spiff and CFOps cli.
 
 A complete description of the image and current sofware versions installed in it can be found at its Docker Hub location:
-https://hub.docker.com/r/silval/ubuntu-bosh-spruce-cf-fly/
+https://hub.docker.com/r/pcfservices/docker-concourse-cf-tools/
 
-In Concourse task's definition, refer to the image as docker:///silval/ubuntu-bosh-spruce-cf-fly
+In Concourse task's definition, refer to the image as docker:///pcfservices/docker-concourse-cf-tools
 
 In order to create your own image with this file, perform the following steps after saving it on your local system:
 - Install the [Docker Toolbox](https://www.docker.com/products/docker-toolbox) on your system
