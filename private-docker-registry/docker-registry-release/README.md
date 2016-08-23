@@ -1,3 +1,5 @@
+![Concourse and a Private Docker Registry](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/docker-and-bosh.jpg)
+
 # Deploying a Private Docker Registry using Bosh
 
 A bosh release is available for Docker Registry at https://github.com/cloudfoundry-community/docker-registry-boshrelease and can be used to deploy a private docker registry using Bosh.
