@@ -4,7 +4,7 @@ FROM ubuntu:14.04
 RUN \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get -y install build-essential ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev wget python-pip nfs-common rsync cifs-utils && \
+  apt-get -y install build-essential ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev wget nfs-common cifs-utils smbclient && \
   gem install bosh_cli --no-ri --no-rdoc && \
   wget -O cfcli.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" && \
   tar -xvzf cfcli.tgz && \

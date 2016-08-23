@@ -1,0 +1,90 @@
+name: docker-registry
+director_uuid: <REPLACE_WITH_DIRECTOR_ID>
+releases:
+- name: docker-registry
+  url: <REPLACE_WITH_URL_OF_REGISTRY_RELEASE>
+  # https://github.com/cloudfoundry-community/docker-registry-boshrelease ...
+  sha1: <REPLACE_WITH_SHA_OF_REGISTRY_RELEASE>
+  version: <REPLACE_WITH_VERSION_OF_REGISTRY_RELEASE>
+  # e.g. "3"
+stemcells:
+- alias: trusty
+  os: ubuntu-trusty
+  url: <REPLACE_WITH_URL_OF_STEMCELL>
+  sha1: <REPLACE_WITH_SHA_OF_STEMCELL>
+  # e.g. 4b8055aee6f80a4de13d0c972df3f62427b159d3
+  version: <REPLACE_WITH_VERSION_OF_STEMCELL>
+  # e.g. "3262.5"
+instance_groups:
+- name: nfs-server
+  persistent_disk_type: xlarge
+  instances: 1
+  vm_type: medium
+  stemcell: trusty
+  azs: [z1]
+  networks: [{name: <REPLACE_WITH_NETWORK_NAME>, static_ips: [<REPLACE_WITH_RESERVED_IP_OF_NFS_SERVER>]}]
+  jobs:
+  - name: debian_nfs_server
+    release: docker-registry
+    properties:
+      nfs_server:
+        allow_from_entries:
+        - <REPLACE_WITH_IP_OF_REGISTRY_INSTANCE_1>
+        - <REPLACE_WITH_IP_OF_REGISTRY_INSTANCE_2...>
+        # e.g.
+        # - 192.168.10.34
+        # - 192.168.10.35
+- name: registry
+  instances: 2
+  vm_type: medium
+  stemcell: trusty
+  azs: [z1]
+  networks: [{name: <REPLACE_WITH_NETWORK_NAME>, static_ips: [<REPLACE_WITH_COMMA_SEPARATED_LIST_OF_RESERVED_IPS_FOR_REGISTRY_INSTANCES>]}]
+  # e.g. [192.168.10.34, 192.168.10.35]
+  jobs:
+  - name: registry
+    release: docker-registry
+    properties:
+      docker:
+        registry:
+          cookie: docker
+          root: /var/vcap/nfs/shared
+  - name: nfs_mounter
+    release: docker-registry
+    properties:
+      nfs_server:
+        address: <REPLACE_WITH_RESERVED_IP_OF_NFS_SERVER>
+        share_path: /var/vcap/nfs
+- name: proxy
+  instances: 1
+  vm_type: medium
+  stemcell: trusty
+  azs: [z1]
+  networks: [{name: <REPLACE_WITH_NETWORK_NAME>, static_ips: [<REPLACE_WITH_RESERVED_IP_OF_PROXY>]}]
+  jobs:
+  - name: proxy
+    release: docker-registry
+    properties:
+      docker:
+        proxy:
+          backend:
+            hosts:
+            - <REPLACE_WITH_IP_OF_REGISTRY_INSTANCE_1>
+            - <REPLACE_WITH_IP_OF_REGISTRY_INSTANCE_2>
+            # e.g.
+            # - 192.168.10.34
+            # - 192.168.10.35
+          ssl:
+            cert: |
+              -----BEGIN CERTIFICATE-----
+              <REPLACE_WITH_SSL_CERT>
+              -----END CERTIFICATE-----
+            key: |
+              -----BEGIN RSA PRIVATE KEY-----
+              <REPLACE_WITH_PRIVATE_KEY>
+              -----END RSA PRIVATE KEY-----
+update:
+  canaries: 1
+  max_in_flight: 3
+  canary_watch_time: 1000-60000
+  update_watch_time: 1000-60000
