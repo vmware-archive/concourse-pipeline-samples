@@ -6,7 +6,7 @@ A typical question that surfaces from customers planning to adopt and deploy Con
 
 However, before getting to that final milestone and deploying Concourse and a Docker registry to production, one may want to experiment with a local setup of such scenario. And that is what this article is about.
 
-This article does not provide any recommendation on how to setup a private Docker repository for production (see article ["Deploying a Private Docker Registry using Bosh"](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry/docker-registry-release) nor any analysis on which products are available for such purpose. My goal here is to share my experience while deploying Concourse and a private Docker registry on a local machine.
+This article does not provide any recommendation on how to setup a private Docker repository for production (for that see article ["Deploying a Private Docker Registry using Bosh"](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry/docker-registry-release)) nor any analysis on which products are available for such purpose. My goal here is to share my experience while deploying Concourse and a private Docker registry on a local machine.
 
 
 1. **Configure your Local Concourse instance**
