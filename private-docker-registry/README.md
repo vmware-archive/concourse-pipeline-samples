@@ -72,6 +72,8 @@ This article does not provide any recommendation on how to setup a private Docke
 
 ### Read more
 
+- [Deploying a Private Docker Registry with Bosh](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry/docker-registry-release)
+
 - [Application pipeline deploying to multiple CF spaces](https://github.com/pivotalservices/sample-app-pipeline)
 
 - [Blue-Green application deployment pipeline with Concourse](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)

@@ -1,4 +1,4 @@
-![Concourse and a Private Docker Registry](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/docker-and-bosh.jpg)
+![Docker Registry with Bosh](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/docker-and-bosh.jpg)
 
 # Deploying a Private Docker Registry using Bosh
 

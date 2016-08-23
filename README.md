@@ -19,3 +19,6 @@ This repository provides sample code and recipes on Concourse CI pipelines and d
 
 - [Concourse pipeline integration with local Docker Registry](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry)  
 [![Concourse and a Private Docker Registry](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-private-registry.jpg)](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry)
+
+- [Deploying a Private Docker Registry with Bosh](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry/docker-registry-release)  
+[![Docker Registry with Bosh](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/docker-and-bosh.jpg)](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry/docker-registry-release)
