@@ -41,13 +41,11 @@ jobs:
     params:
       TARGET_TILE: ops-manager
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
       OPS_MANAGER_UI_USER: {{ops-manager-ui-user}}
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-  - task: scp-file-to-repo
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/scp-file-to-repo.yml
-    params:
       TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
@@ -69,14 +67,12 @@ jobs:
     params:
       TARGET_TILE: elastic-runtime
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
       OPS_MANAGER_UI_USER: {{ops-manager-ui-user}}
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-  - task: scp-file-to-repo
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/scp-file-to-repo.yml
-    params:
-      TARGET_TILE: elastic-runtime
+      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
@@ -97,14 +93,12 @@ jobs:
     params:
       TARGET_TILE: mysql-tile
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
       OPS_MANAGER_UI_USER: {{ops-manager-ui-user}}
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-  - task: scp-file-to-repo
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/scp-file-to-repo.yml
-    params:
-      TARGET_TILE: mysql-tile
+      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
@@ -125,14 +119,12 @@ jobs:
     params:
       TARGET_TILE: redis-tile
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
       OPS_MANAGER_UI_USER: {{ops-manager-ui-user}}
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-  - task: scp-file-to-repo
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/scp-file-to-repo.yml
-    params:
-      TARGET_TILE: redis-tile
+      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
@@ -153,14 +145,12 @@ jobs:
     params:
       TARGET_TILE: rabbitmq
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
       OPS_MANAGER_UI_USER: {{ops-manager-ui-user}}
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-  - task: scp-file-to-repo
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/scp-file-to-repo.yml
-    params:
-      TARGET_TILE: rabbitmq
+      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
