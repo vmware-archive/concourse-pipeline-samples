@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+MANIFEST_FILE=./pipeline-scripts/pcf-monitoring/firehose-to-syslog/app/manifest.yml
+
+
+
+echo "API_ENDPOINT=$API_ENDPOINT"
+
+echo "Manifest file BEFORE updates:"
+cat $MANIFEST_FILE
+
+
+sed -i "s/REPLACE_API_ENDPOINT/$API_ENDPOINT/" $MANIFEST_FILE
+sed -i "s/REPLACE_DOPPLER_ENDPOINT/$DOPPLER_ENDPOINT/" $MANIFEST_FILE
+sed -i "s/REPLACE_FIREHOSE_USER/$FIREHOSE_USER/" $MANIFEST_FILE
+sed -i "s/REPLACE_FIREHOSE_PASSWORD/$FIREHOSE_PASSWORD/" $MANIFEST_FILE
+sed -i "s/REPLACE_SYSLOG_ENDPOINT/$SYSLOG_ENDPOINT/" $MANIFEST_FILE
+
+echo "Manifest file AFTER updates:"
+cat $MANIFEST_FILE
+
+echo "Copying updated manifest file to output directory"
+cp $MANIFEST_FILE ./app-manifest-output/.

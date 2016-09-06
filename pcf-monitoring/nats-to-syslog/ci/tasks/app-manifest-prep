@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+MANIFEST_FILE=./pipeline-scripts/pcf-monitoring/nats-to-syslog/app/manifest.yml
+
+# echo "Manifest file BEFORE updates:"
+# cat $MANIFEST_FILE
+
+sed -i "s/NATS_USERID/$NATS_USER_ID/" $MANIFEST_FILE
+sed -i "s/NATS_PASSWORD/$NATS_PASSWORD/" $MANIFEST_FILE
+sed -i "s/NTAS_IP_ADDRESS/$NATS_IP/" $MANIFEST_FILE
+sed -i "s/NATS_PORT_NUMBER/$NATS_PORT/" $MANIFEST_FILE
+sed -i "s/NATS_SUBJECT/$NATS_SUBJECT/" $MANIFEST_FILE
+sed -i "s/SYSLOG_SERVER_ADDRESS/$SYSLOG_ENDPOINT/" $MANIFEST_FILE
+
+
+# echo "Manifest file AFTER updates:"
+# cat $MANIFEST_FILE
+
+echo "Copying updated manifest file to output directory"
+cp $MANIFEST_FILE ./app-manifest-output/.

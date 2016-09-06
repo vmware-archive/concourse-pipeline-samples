@@ -1,0 +1,37 @@
+resources:
+- name: pipeline-scripts
+  type: git
+  source:
+    branch: master
+    uri: {{git-project-url}}
+
+- name: PCF
+  type: cf
+  source:
+    api: {{pcf-api}}
+    organization: {{deploy-organization}}
+    space: {{deploy-space}}
+    username: {{deploy-username}}
+    password: {{deploy-password}}
+    skip_cert_check: true
+
+jobs:
+- name: prepare-and-deploy-firehose-to-syslog
+  serial: true
+  public: true
+  plan:
+  - aggregate:
+    - get: pipeline-scripts
+      trigger: true
+  - task: prep-manifest
+    file: pipeline-scripts/pcf-monitoring/firehose-to-syslog/ci/tasks/app-manifest-prep.yml
+    params:
+      API_ENDPOINT: {{pcf-api}}
+      DOPPLER_ENDPOINT: {{doppler_endpoint}}
+      FIREHOSE_USER: {{firehose_user}}
+      FIREHOSE_PASSWORD: {{firehose_password}}
+      SYSLOG_ENDPOINT: {{syslog_endpoint}}
+  - put: PCF
+    params:
+      manifest: app-manifest-output/manifest.yml
+      path: pipeline-scripts/pcf-monitoring/firehose-to-syslog/app
