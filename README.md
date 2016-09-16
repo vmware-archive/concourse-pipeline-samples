@@ -5,8 +5,8 @@ This repository provides sample code and recipes on Concourse CI pipelines and d
 - [Blue-Green application deployment pipeline](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)  
 [![Blue-Green application deployment pipeline](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg)](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)
 
-- [Application pipeline using multiple CF spaces](https://github.com/pivotalservices/sample-app-pipeline)  
-[![Multi-space pipeline](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/multi-spaces-pipeline.jpg)](https://github.com/pivotalservices/sample-app-pipeline)
+- [Application pipeline using multiple CF spaces](https://github.com/lsilvapvt/sample-app-pipeline)  
+[![Multi-space pipeline](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/multi-spaces-pipeline.jpg)](https://github.com/lsilvapvt/sample-app-pipeline)
 
 - [PCF Backup CI pipeline using CFOps](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup)  
 [![Main application screenshot](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/cfops-pipeline.jpg)](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup)  
