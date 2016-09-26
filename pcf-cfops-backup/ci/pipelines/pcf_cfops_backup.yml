@@ -46,7 +46,6 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
@@ -72,7 +71,6 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
@@ -98,7 +96,6 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
@@ -124,7 +121,6 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
@@ -150,7 +146,6 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-      TARGET_TILE: ops-manager
       FILE_REPO_IP: {{file-repo-ip}}
       FILE_REPO_USER_ID: {{file-repo-user}}
       FILE_REPO_PASSWORD: {{file-repo-password}}
