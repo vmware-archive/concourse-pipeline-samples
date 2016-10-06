@@ -1,4 +1,4 @@
-![Email with attachments in Concourse pipelines](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg)
+![Email with attachments in Concourse pipelines](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/email_with_attachment.png)
 
 # Email with attachments in Concourse pipelines
 
