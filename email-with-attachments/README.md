@@ -54,9 +54,9 @@ If you want to see the full sample pipeline provided in action, here is how you 
 
 ##### Configuration steps
 1. Clone the sample git repository on your local machine  
-     __clone https://github.com/pivotalservices/concourse-pipeline-samples.git __
+     __clone https://github.com/pivotalservices/concourse-pipeline-samples.git__  
      __cd concourse-pipeline-samples/email-with-attachments__  
-     
+
 1. Setup the pipeline credentials file
   * Make a copy of the sample credentials file  
   __cp ci/credentials.yml.sample ci/credentials.yml__  
