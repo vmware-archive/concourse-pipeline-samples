@@ -3,7 +3,7 @@
 # Emails with file attachments in Concourse pipelines
 This is an example of a Concourse pipeline that sends emails with file attachments by leveraging the [Nodemailer Node.js package](https://nodemailer.com/).  
 
-To add it to your pipeline, extract [this project](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/email-with-attachments) from github and add the following files to your pipeline scripts and tasks directory:
+To add it to your pipeline, extract [this project](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/email-with-attachments) from github and copy the following files to your pipeline scripts and tasks directory:
 - [send-email.yml](https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/email-with-attachments/ci/tasks/send-email.yml)
 - [send-email.js](https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/email-with-attachments/ci/scripts/send-email.js)
 
@@ -12,7 +12,7 @@ Then update the last line of *send-email.yml* to point to your resource name and
       node <your-resource-directory-path-goes-here>/send-email.js     
 ```  
 
-In your pipeline definition file, this is how you define a task to send an email:
+In your pipeline definition file, this is how you define a task to send an email with attachments:
 ```
     - task: email-notification-failure
       file: <your-resource-directory-location-goes-here>/send-email.yml
@@ -36,6 +36,11 @@ Example of input for the the ```EMAIL_ATTACHMENTS``` parameter:
 ```
    EMAIL_ATTACHMENTS: '[{ "filename": "myfile1.txt","path": "./my-path/myfile1.txt", "contentType":"text/plain"},{ "filename": "report.json","path": "./my-path/report.json", "contentType":"application/json"}]'
 ```
+
+
+You are now ready to run your pipeline and send emails with attachments from it.
+
+
 **Note**: some SMTP hosts, such as Gmail, enforce restrict security roles about the source app that requests emails. See [this note](https://nodemailer.com/using-gmail/) on how to configure your account to avoid your emails from being rejected by the server.  
 
 ---
@@ -49,12 +54,10 @@ If you want to see the full sample pipeline provided in action, here is how you 
 
 ##### Configuration steps
 1. Clone the sample git repository on your local machine  
-```  
-     clone https://github.com/pivotalservices/concourse-pipeline-samples.git  
-     cd concourse-pipeline-samples/email-with-attachments  
-```  
-
-2. Setup the pipeline credentials file
+     __clone https://github.com/pivotalservices/concourse-pipeline-samples.git __
+     __cd concourse-pipeline-samples/email-with-attachments__  
+     
+1. Setup the pipeline credentials file
   * Make a copy of the sample credentials file  
   __cp ci/credentials.yml.sample ci/credentials.yml__  
 
