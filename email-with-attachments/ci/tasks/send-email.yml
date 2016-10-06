@@ -16,5 +16,6 @@ run:
   args:
   - -exc
   - |
+    find .
     mv /app/node_modules .
-    node pipeline-scripts/email-with-attachments/scripts/send-email.js
+    node pipeline-scripts/email-with-attachments/ci/scripts/send-email.js
