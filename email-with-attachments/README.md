@@ -77,7 +77,7 @@ _```email-to```:_ the list of comma separated destination emails without encodin
 4. Access to the Concourse web interface, click on the list of pipelines, un-pause the _email-pipeline_ and then click on its link to visualize its pipeline diagram
 5. To execute the pipeline, click on the ```send-email-with-attachment``` job and then click on the ```+``` sign to execute the pipeline.
 
-The recipients listed you your ```email-from``` parameter should receive an email shortly after the pipeline is run successfully.
+The recipients listed you your ```email-to``` parameter should receive an email shortly after the pipeline is run successfully.
 
 --------------
 **Note 1**: as of the writing of this sample, the existing email resources for Concourse do not provide a mechanism to attach files to emails (or at least they are not documented), thus the motivation to write another simple email mechanism like this.  
