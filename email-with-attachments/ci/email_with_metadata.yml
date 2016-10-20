@@ -1,0 +1,69 @@
+---
+resource_types:
+  - name: email
+    type: docker-image
+    source:
+      repository: mdomke/concourse-email-resource
+
+resources:
+- name: send-email
+  type: email
+  source:
+    from: YOUR-SENDER-EMAIL-ADDRESS-GOES-HERE
+
+jobs:
+- name: send-email-with-metadata
+  serial: true
+  public: true
+  plan:
+  - do:
+    - task: prep-email-text
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ubuntu
+            tag: "latest"
+        outputs:
+          - name: email-text
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            env
+            echo "Successfull build for pipeline {{ BUILD_PIPELINE_NAME }}" >  ./email-text/email-subject.txt
+            echo "Build {{ BUILD_NAME }} of job {{ BUILD_JOB_NAME }} for pipeline {{ BUILD_PIPELINE_NAME }} ran successfully." >  ./email-text/email-body.txt
+            echo "Build {{ BUILD_NAME }} of {{ BUILD_PIPELINE_NAME }} pipeline failed" >  ./email-text/email-subject-failure.txt
+            echo "Build {{ BUILD_NAME }} of job {{ BUILD_JOB_NAME }} for pipeline {{ BUILD_PIPELINE_NAME }} failed." >  ./email-text/email-body-failure.txt
+
+    - task: do-your-stuff-here
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ubuntu
+            tag: "latest"
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            env
+            echo "Hello!!"
+            # exit 1    # uncomment this line and reconfigure your pipeline to generate an error
+
+    - put: send-email
+      params:
+        to: [YOUR-DESTINATION-EMAIL-ADDRESS-GOES-HERE]
+        subject: ./email-text/email-subject.txt
+        body: ./email-text/email-body.txt
+
+    on_failure:
+      put: send-email
+      params:
+        to: [YOUR-DESTINATION-EMAIL-ADDRESS-GOES-HERE]
+        subject: ./email-text/email-subject-failure.txt
+        body: ./email-text/email-body-failure.txt
