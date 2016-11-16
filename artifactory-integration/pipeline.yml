@@ -1,0 +1,65 @@
+resource_types:
+- name: artifactory
+  type: docker-image
+  source:
+    repository: pivotalservices/artifactory-resource
+
+resources:
+- name: artifactory-repository
+  type: artifactory
+  check_every: 1m
+  source:
+    endpoint: http://192.168.99.100:8081/artifactory
+    # endpoint: http://ARTIFACTORY-HOST-NAME-GOES-HERE:8081/artifactory
+    # repository: "/repository-name/sub-folder"
+    repository: "/ext-release-local/myapp"
+    regex: "myapp-(?<version>.*).txt"
+    # username: YOUR-ARTIFACTORY-USERNAME
+    # password: YOUR-ARTIFACTORY-PASSWORD
+    username: admin
+    password: password
+
+jobs:
+- name: 1-build-an-artifact
+  plan:
+  - task: create-artifact
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ubuntu
+      outputs:
+      - name: build
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          echo "This is my file content." > ./build/myapp-$(date +"%Y%m%d%H%S").txt
+          find .
+  - put: artifactory-repository
+    params: { file: ./build/myapp-*.txt }
+
+- name: 2-trigger-when-new-file-is-added-to-artifactory
+  plan:
+  - get: artifactory-repository
+    trigger: true
+    passed:
+      - 1-build-an-artifact
+  - task: use-new-file
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ubuntu
+      inputs:
+      - name: artifactory-repository
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          ls -la artifactory-repository
+          cat ./artifactory-repository/myapp*.txt
