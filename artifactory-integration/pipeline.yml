@@ -1,3 +1,4 @@
+---
 resource_types:
 - name: artifactory
   type: docker-image
@@ -9,15 +10,10 @@ resources:
   type: artifactory
   check_every: 1m
   source:
-    endpoint: http://192.168.99.100:8081/artifactory
-    # endpoint: http://ARTIFACTORY-HOST-NAME-GOES-HERE:8081/artifactory
-    # repository: "/repository-name/sub-folder"
-    repository: "/ext-release-local/myapp"
-    regex: "myapp-(?<version>.*).txt"
-    # username: YOUR-ARTIFACTORY-USERNAME
-    # password: YOUR-ARTIFACTORY-PASSWORD
-    username: admin
-    password: password
+    endpoint: http://ARTIFACTORY-HOST-NAME-GOES-HERE:8081/artifactory
+    repository: "/repository-name/sub-folder"
+    username: YOUR-ARTIFACTORY-USERNAME
+    password: YOUR-ARTIFACTORY-PASSWORD
 
 jobs:
 - name: 1-build-an-artifact
