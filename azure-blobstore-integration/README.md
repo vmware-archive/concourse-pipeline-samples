@@ -5,11 +5,11 @@ This article provides an example of the integration of [Azure Blobstore containe
 
 The example uses the [Azure Blobstore resource](https://github.com/pivotal-cloudops/azure-blobstore-concourse-resource) to save a build artifact to an Azure Blobstore container and then retrieve it back later.  
 
-This sample pipeline illustrates the implementation of the "[only build packages once](https://continuousdelivery.com/implementing/patterns/)" pattern by (1) saving a produced versioned build artifact to a blobstore in Azure and then (2) retrieving the same versioned artifact in a subsequent pipeline step, which is triggered once a new file version is detected in the blobstore container.
+This pipeline illustrates the implementation of the "[only build packages once](https://continuousdelivery.com/implementing/patterns/)" pattern by (1) saving a versioned build artifact to a blobstore in Azure and then (2) retrieving the same artifact in a subsequent pipeline step automatically triggered by the detection of the new file in the blobstore container.
 
 ## Sample pipeline definition file
 
-The pipeline definition below can be downloaded from [this repository](https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/azure-blobstore-integration/pipeline.yml).
+The pipeline definition file below can also be downloaded from [this repository](https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/azure-blobstore-integration/pipeline.yml).
 
 
 ``` yaml
@@ -95,7 +95,7 @@ jobs:
 1. An instance of [Concourse installed](http://concourse.ci/installing.html) up-and-running.  
 1. The [Concourse Fly command line interface](http://concourse.ci/fly-cli.html) installed on your local machine.  
 1. A Azure Blobstore container setup.  
-   In your Azure account, [create a blobstore storage account](https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account#create-a-storage-account). For example, for "Account kind", choose "Blob storage".
+   In your Azure account, [create a blobstore storage account](https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account#create-a-storage-account). For example, for "Account kind", choose "Blob storage".  
    Then, create a container for the storage account. Choose the appropriate "Access type" that matches your needs (e.g. for "Private" and "Blob" you will have to provide your storage access key to the pipeline. I chose "Blob" for my tests). The name given to this container will be used in the pipeline definition file.
 
 
@@ -122,5 +122,6 @@ jobs:
 
 
 After job ```1-build-and-save-release-to-blobstore``` is executed, you should see a new version of the created file in the Azure blobstore container. Subsequently, you should see job ```2-trigger-when-new-file-is-added-to-azure-blobstore``` automatically triggered to retrieve that latest file version from the blobstore.
+
 
 ![Azure Blobstore portal](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/azure-blobstore-portal.jpg)
