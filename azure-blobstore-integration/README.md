@@ -1,4 +1,4 @@
-![Azure Blobstore integration with Concourse pipelines](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-artifactory.png)
+![Azure Blobstore integration with Concourse pipelines](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-azureblob.png)
 
 ## Azure Blobstore integration with Concourse pipelines
 This article provides an example of the integration of [Azure Blobstore containers](https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account#overview)  with Concourse pipelines.  
