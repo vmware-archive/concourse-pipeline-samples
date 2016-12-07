@@ -122,3 +122,5 @@ jobs:
 
 
 After job ```1-build-and-save-release-to-blobstore``` is executed, you should see a new version of the created file in the Azure blobstore container. Subsequently, you should see job ```2-trigger-when-new-file-is-added-to-azure-blobstore``` automatically triggered to retrieve that latest file version from the blobstore.
+
+![Azure Blobstore portal](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/azure-blobstore-portal.jpg)
