@@ -11,6 +11,10 @@ This repository provides sample code and recipes on Concourse CI pipelines and d
 - [Artifactory integration with Concourse pipelines](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/artifactory-integration)  
 [![Artifactory integration with Concourse pipelines](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-artifactory.png)](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/artifactory-integration)
 
+- [Azure blobstore integration with Concourse pipelines](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/azure-blobstore-integration)  
+[![Azure blobstore integration with Concourse pipelines](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-azureblob.png)](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/azure-blobstore-integration)
+
+
 - [PCF Backup CI pipeline using CFOps](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup)  
 [<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/cfops-pipeline.jpg" alt="PCF Backup CI pipeline using CFOps" width="225"/>](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup)  
 
