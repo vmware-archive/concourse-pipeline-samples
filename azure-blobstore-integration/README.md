@@ -94,7 +94,7 @@ jobs:
 
 1. An instance of [Concourse installed](http://concourse.ci/installing.html) up-and-running.  
 1. The [Concourse Fly command line interface](http://concourse.ci/fly-cli.html) installed on your local machine.  
-1. A Azure Blobstore container setup.  
+1. An Azure Blobstore container setup.  
    In your Azure account, [create a blobstore storage account](https://docs.microsoft.com/en-us/azure/storage/storage-create-storage-account#create-a-storage-account). For example, for "Account kind", choose "Blob storage".  
    Then, create a container for the storage account. Choose the appropriate "Access type" that matches your needs (e.g. for "Private" and "Blob" you will have to provide your storage access key to the pipeline. I chose "Blob" for my tests). The name given to this container will be used in the pipeline definition file.
 
