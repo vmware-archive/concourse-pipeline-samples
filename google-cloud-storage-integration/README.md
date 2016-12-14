@@ -114,12 +114,13 @@ jobs:
    - click on *Create Bucket*, enter a Name, select the appropriate storage class for you (e.g. Coldline for simple tests) and the region location;   
    - once the bucket is created, you may choose to *Create Folder* for your tests (e.g. releases)       
 1. A GCS Account JSON Key file  
+   To create one:  
    - go to your [GCP account dashboard](https://console.cloud.google.com/home/dashboard);  
    - go to *API Manager > Credentials* page;  
    - choose *Create Credentials > Service Account Key*;  
    - select the appropriate *Service Account* (e.g. App Engine default ...);  
    - select *JSON* Key Type and click *Create*;  
-   - downloaded the created JSON file and use it in the pipeline definition file  
+   - download the created JSON file. You will have to paste its content in the pipeline definition file later.  
 
 
 ##### Configuration steps
@@ -127,8 +128,8 @@ jobs:
 
 2. Edit pipeline.yml and update the parameters for the **google-cloud-storage** definition:  
   * Replace "*YOUR-GCS-BUCKET-NAME-GOES-HERE*" with the name of your GCS bucket. e.g. *myapp-bucket*  
-  * Update the "*regexp**" property with the expression that represents the directory path plus the file name of your artifact along with the location of its version information (inside parenthesis). e.g  ```releases/myapp-release-(.*).tar.gz```  
-  * Update the "*json_key*" value with the contents of your GCS Account JSON Key file. See the _Pre-Requisites_ section above for instructions on how to create such file.  
+  * Update the "*regexp**" property with the expression that represents the directory path plus the file name of your artifact along with the location of its version information (inside parenthesis). e.g  *releases/myapp-release-(.*).tar.gz*  
+  * Update the "*json_key*" value with the contents of your GCS Account JSON Key file. See the _Pre-requisites_ section above for instructions on how to create such file.  
 
 
 3. Configure the sample pipeline in Concourse with the *fly* command:  
