@@ -128,7 +128,7 @@ jobs:
 
 2. Edit pipeline.yml and update the parameters for the **google-cloud-storage** definition:  
   * Replace "*YOUR-GCS-BUCKET-NAME-GOES-HERE*" with the name of your GCS bucket. e.g. *myapp-bucket*  
-  * Update the "*regexp**" property with the expression that represents the directory path plus the file name of your artifact along with the location of its version information (inside parenthesis). e.g  *releases/myapp-release-(.*).tar.gz*  
+  * Update the "*regexp*" property with the expression that represents the directory path plus the file name of your artifact along with the location of its version information (inside parenthesis). e.g  *releases/myapp-release-(.*).tar.gz*  
   * Update the "*json_key*" value with the contents of your GCS Account JSON Key file. See the _Pre-requisites_ section above for instructions on how to create such file.  
 
 
