@@ -54,13 +54,13 @@ cfops list-tiles
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
-touch $BACKUP_FILE_DESTINATION/installation.zip # debug
-pwd
-echo $BACKUP_FILE_DESTINATION
 # cfops backup \
 #     -t $TARGET_TILE \
 #     --omh $OPS_MANAGER_HOSTNAME \
 #     -d $BACKUP_FILE_DESTINATION
+touch $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
+touch $BACKUP_FILE_DESTINATION/installation.json #debug
+touch $BACKUP_FILE_DESTINATION/installation.zip # debug
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 cd  $BACKUP_PARENT_DIR
