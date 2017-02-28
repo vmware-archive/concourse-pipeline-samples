@@ -25,6 +25,9 @@ ls -la
 export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
 export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
 export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
+echo $BACKUP_ROOT_DIR
+echo $BACKUP_PARENT_DIR
+echo $BACKUP_FILE_DESTINATION
 
 # For environments where OpsMngr hostname is not setup in concourse subnet, otherwise comment out the echo line
 # It adds ops manager private IP to /etc/hosts, to do ssh using its hostname in the Concourse subnet
