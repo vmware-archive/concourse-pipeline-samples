@@ -82,7 +82,15 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-  - put: s3-backup-opsman
+  - put: s3-backup-opsman-deployments
+    params:
+      file: ops-manager/opsmanager/(.*).tar.gz
+  - put: s3-backup-opsman-installation-1
+    params:
+      file: ops-manager/opsmanager/(.*).json
+  - put: s3-backup-opsman-installation-2
+    params:
+      file: ops-manager/opsmanager/(.*).zip
 
 # - name: backup-elastic-runtime
 #   serial: true
