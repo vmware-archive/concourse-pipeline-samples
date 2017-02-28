@@ -55,6 +55,8 @@ echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
 touch $BACKUP_FILE_DESTINATION/installation.zip # debug
+pwd
+echo $BACKUP_FILE_DESTINATION
 # cfops backup \
 #     -t $TARGET_TILE \
 #     --omh $OPS_MANAGER_HOSTNAME \
