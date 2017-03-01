@@ -69,8 +69,9 @@ touch $BACKUP_FILE_DESTINATION/installation.json #debug
 touch $BACKUP_FILE_DESTINATION/installation.zip # debug
 
 # bundle backup artifacts
-cd $BACKUP_FILE_DESTINATION
-tar -cvzf ${TARGET_TILE}.tgz .
+tar -cvzf ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz $BACKUP_FILE_DESTINATION
+cd ${BACKUP_PARENT_DIR}
+ls -alR
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 
 # configure awscli
