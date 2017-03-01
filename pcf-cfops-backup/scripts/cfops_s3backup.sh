@@ -5,7 +5,7 @@ set -e
 
 if [ -n "$CUSTOM_CERTS" ]; then
   echo "Copying custom certs..."
-  CERT_CONTENTS=$($CUSTOM_CERTS | tr "-----BEGIN CERTIFICATE-----" "" | tr "-----END CERTIFICATE-----" "" | tr " " "\n")
+  CERT_CONTENTS=$(echo CUSTOM_CERTS | tr "-----BEGIN CERTIFICATE-----" "" | tr "-----END CERTIFICATE-----" "" | tr " " "\n")
   echo $CERT_CONTENTS
   echo "-----BEGIN CERTIFICATE-----" > custom-certs.pem
   echo $CERT_CONTENTS >> custom-certs.pem
