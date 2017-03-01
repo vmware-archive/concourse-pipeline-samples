@@ -1,10 +1,12 @@
 FROM ubuntu:14.04
 
+ENV LAST_UPDATE=2017-03-01
+
 # Install.
 RUN \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get -y install build-essential curl ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev wget nfs-common cifs-utils smbclient && \
+  apt-get -y install build-essential curl ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev wget nfs-common cifs-utils smbclient python python-pip && \
   gem install bosh_cli --no-ri --no-rdoc && \
   wget -O cfcli.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" && \
   tar -xvzf cfcli.tgz && \
@@ -33,3 +35,11 @@ RUN \
   tar xvf ./hugo_0.16_linux-64bit.tgz && \
   chmod 755 ./hugo && mv ./hugo /usr/bin && \
   rm hugo_0.16_linux-64bit.tgz && rm *.md
+
+RUN localedef -i en_US -f UTF-8 en_US.UTF-8 \
+    && useradd -m -s /bin/bash pcfdev \
+    && echo 'pcfdev ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER pcfdev
+
+RUN pip install --upgrade --user awscli
