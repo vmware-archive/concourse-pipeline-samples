@@ -3,7 +3,8 @@ set -e
 
 # This script performs a PCF backup using CFOPS tool
 
-if [ -z ${CUSTOM_CERTS+x} ]; then
+if [ -z "$CUSTOM_CERTS" ]; then
+  echo "Copying custom certs..."
   echo $CUSTOM_CERTS > custom-certs.pem
   sudo cp custom-certs.pem /etc/ssl/certs/
   sudo update-ca-certificates -f -v
