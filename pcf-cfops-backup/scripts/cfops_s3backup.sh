@@ -5,10 +5,10 @@ set -e
 
 if [ -n "$CUSTOM_CERTS" ]; then
   echo "Copying custom certs..."
-  CERT_CONTENTS=$(echo CUSTOM_CERTS | tr '-----BEGIN CERTIFICATE-----' "" | tr '-----END CERTIFICATE-----' "" | tr " " "\n")
-  echo $CERT_CONTENTS
+  CERT_CONTENTS=$(echo -e $CUSTOM_CERTS | sed -e 's/^-.*CERTIFICATE----- //' | sed -e 's/-----END CERTIFICATE-----//' | tr " " "\n")
+  echo "$CERT_CONTENTS"
   echo "-----BEGIN CERTIFICATE-----" > custom-certs.pem
-  echo $CERT_CONTENTS >> custom-certs.pem
+  echo "$CERT_CONTENTS" >> custom-certs.pem
   echo "-----END CERTIFICATE-----" >> custom-certs.pem
   cat custom-certs.pem
   sudo cp custom-certs.pem /etc/ssl/certs/
