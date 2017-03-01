@@ -88,8 +88,9 @@ echo "Configure aws cli..."
 aws --version
 aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
+aws configure set default.s3.signature_version s3v2
 
 # write artifacts to s3
 echo "Copying backup to S3..."
 pwd
-aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
+aws --debug --endpoint-url=${S3_ENDPOINT} --no-verify-ssl s3 mv . s3://${S3_BUCKET} --recursive
