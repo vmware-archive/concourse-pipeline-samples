@@ -64,9 +64,9 @@ echo "Executing cfops command..."
 #     -t $TARGET_TILE \
 #     --omh $OPS_MANAGER_HOSTNAME \
 #     -d $BACKUP_FILE_DESTINATION
-touch $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
-touch $BACKUP_FILE_DESTINATION/installation.json #debug
-touch $BACKUP_FILE_DESTINATION/installation.zip # debug
+echo "deployments.tar.gz" > $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
+echo "installation.json" > $BACKUP_FILE_DESTINATION/installation.json #debug
+echo "installation.zip" > $BACKUP_FILE_DESTINATION/installation.zip # debug
 
 # bundle backup artifacts
 tar -cvzf ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz $BACKUP_FILE_DESTINATION
