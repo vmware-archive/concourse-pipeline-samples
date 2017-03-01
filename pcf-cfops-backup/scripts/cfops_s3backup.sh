@@ -70,7 +70,7 @@ touch $BACKUP_FILE_DESTINATION/installation.zip # debug
 
 # bundle backup artifacts
 tar -cvzf ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz $BACKUP_FILE_DESTINATION
-cd ${BACKUP_PARENT_DIR}
+pushd ${BACKUP_PARENT_DIR}
 ls -alR
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 
@@ -83,8 +83,4 @@ aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
 # write artifacts to s3
 echo "Copying backup to S3..."
 pwd
-aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz s3://${S3_BUCKET} --recursive
-
-# cleanup backup file from container to minimize worker disk size usage
-cd $BACKUP_ROOT_DIR
-rm -R *
+aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv ${TARGET_TILE}.tgz s3://${S3_BUCKET} --recursive
