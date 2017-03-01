@@ -64,30 +64,24 @@ echo "Executing cfops command..."
 #     -t $TARGET_TILE \
 #     --omh $OPS_MANAGER_HOSTNAME \
 #     -d $BACKUP_FILE_DESTINATION
-echo "deployments.tar.gz" > $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
-echo "installation.json" >  $BACKUP_FILE_DESTINATION/installation.json #debug
-echo "installation.zip" > $BACKUP_FILE_DESTINATION/installation.zip # debug
-pwd
-ls -alR
+touch $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
+touch $BACKUP_FILE_DESTINATION/installation.json #debug
+touch $BACKUP_FILE_DESTINATION/installation.zip # debug
 
 # bundle backup artifacts
 tar -cvzf ${TARGET_TILE}.tgz .
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
-echo "test"
-
-ls -alR
-
-echo "Configure aws cli"
 
 # configure awscli
+echo "Configure aws cli..."
 aws --version
 aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
 
 # write artifacts to s3
-echo "Copying backup to S3"
+echo "Copying backup to S3..."
 pwd
-aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv ${TARGET_TILE}.tgz s3://${S3_BUCKET} --recursive
+aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv ${BACKUP_FILE_DESTINATION}/${TARGET_TILE}.tgz s3://${S3_BUCKET} --recursive
 
 # cleanup backup file from container to minimize worker disk size usage
 cd $BACKUP_ROOT_DIR
