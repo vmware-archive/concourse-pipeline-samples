@@ -88,7 +88,7 @@ echo "Configure aws cli..."
 aws --version
 aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
-aws configure set default.s3.signature_version s3v2
+aws configure set default.signature_version s3v2
 
 # write artifacts to s3
 echo "Copying backup to S3..."
