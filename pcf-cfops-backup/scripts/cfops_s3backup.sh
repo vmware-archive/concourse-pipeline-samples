@@ -70,8 +70,11 @@ touch $BACKUP_FILE_DESTINATION/installation.zip # debug
 
 # bundle backup artifacts
 tar -cvzf ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz $BACKUP_FILE_DESTINATION
+here=`pwd`
+echo -e "we are here: $here"
 pushd ${BACKUP_PARENT_DIR}
-ls -alR
+new=`pwd`
+echo -e "now we are here: $new"
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 
 # configure awscli
