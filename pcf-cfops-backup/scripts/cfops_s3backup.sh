@@ -3,6 +3,12 @@ set -e
 
 # This script performs a PCF backup using CFOPS tool
 
+if [ -z $CUSTOM_CERTS ]
+  echo $CUSTOM_CERTS > custom-certs.pem
+  sudo cp custom-certs.pem /etc/ssl/certs/
+  sudo update-ca-certificates -f -v
+fi
+
 # set environment variables to be used by cfops command
 export CFOPS_ADMIN_USER=$OPS_MANAGER_UI_USER
 export CFOPS_ADMIN_PASS=$OPS_MANAGER_UI_PASSWORD
@@ -62,17 +68,22 @@ echo "deployments.tar.gz" > $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
 echo "installation.json" >  $BACKUP_FILE_DESTINATION/installation.json #debug
 echo "installation.zip" > $BACKUP_FILE_DESTINATION/installation.zip # debug
 
+# bundle backup artifacts
+cd $BACKUP_PARENT_DIR
+tar -cvzf ${TARGET_TILE}.tgz .
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
-cd  $BACKUP_PARENT_DIR
 ls -alR
 
-# echo "Copying backup files to shared file server"
-#
-# cd $BACKUP_ROOT_DIR
-#
-# sshpass -p "$FILE_REPO_PASSWORD" scp -o 'StrictHostKeyChecking=no' -r $BACKUP_ROOT_DIR/* $FILE_REPO_USER_ID@$FILE_REPO_IP:$FILE_REPO_PATH
-# # smbclient //$FILE_REPO_IP/$FILE_REPO_SPACE "$FILE_REPO_PASSWORD" -W global -U $FILE_REPO_USER_ID -c "prompt off; cd $FILE_REPO_PATH; recurse on; mput *"
-#
-# # cleanup backup file from container to minimize worker disk size usage
-# cd $BACKUP_ROOT_DIR
-# rm -R *
+# configure awscli
+aws --version
+aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
+aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
+
+# write artifacts to s3
+echo "Copying backup to S3"
+pwd
+aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv ${TARGET_TILE}.tgz s3://${S3_BUCKET} --recursive
+
+# cleanup backup file from container to minimize worker disk size usage
+cd $BACKUP_ROOT_DIR
+rm -R *

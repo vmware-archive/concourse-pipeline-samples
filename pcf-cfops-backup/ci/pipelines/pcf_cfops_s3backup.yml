@@ -13,14 +13,6 @@ resources:
   source:
     branch: master
     uri: {{git-project-url}}
-- name: s3-artifact
-  type: s3
-  source:
-    bucket: {{s3-bucket}}
-    regexp: {{s3-bucket-regex}}
-    access_key_id: {{s3-access-key}}
-    secret_access_key: {{s3-secret-access-key}}
-    endpoint: {{s3-endpoint}}
 - name: trigger-daily-after-12am
   type: time
   source:
@@ -52,13 +44,8 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-  - put: s3-artifact
-    params:
-      file: backupdir/*/ops-manager/*.zip
-  - put: s3-artifact
-    params:
-      file: backupdir/*/ops-manager/*.tar.gz
-  - put: s3-artifact
-    params: 
-      file: backupdir/*/ops-manager/*.json
-
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      CUSTOM_CERTS: {{custom-certs}}
