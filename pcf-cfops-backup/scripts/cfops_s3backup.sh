@@ -83,7 +83,7 @@ aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
 # write artifacts to s3
 echo "Copying backup to S3..."
 pwd
-aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv ${BACKUP_FILE_DESTINATION}/${TARGET_TILE}.tgz s3://${S3_BUCKET} --recursive
+aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz s3://${S3_BUCKET} --recursive
 
 # cleanup backup file from container to minimize worker disk size usage
 cd $BACKUP_ROOT_DIR
