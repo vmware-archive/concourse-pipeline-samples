@@ -66,13 +66,13 @@ cfops list-tiles
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
-# cfops backup \
-#     -t $TARGET_TILE \
-#     --omh $OPS_MANAGER_HOSTNAME \
-#     -d $BACKUP_FILE_DESTINATION
-echo "deployments.tar.gz" > $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
-echo "installation.json" > $BACKUP_FILE_DESTINATION/installation.json #debug
-echo "installation.zip" > $BACKUP_FILE_DESTINATION/installation.zip # debug
+cfops backup \
+    -t $TARGET_TILE \
+    --omh $OPS_MANAGER_HOSTNAME \
+    -d $BACKUP_FILE_DESTINATION
+# echo "deployments.tar.gz" > $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
+# echo "installation.json" > $BACKUP_FILE_DESTINATION/installation.json #debug
+# echo "installation.zip" > $BACKUP_FILE_DESTINATION/installation.zip # debug
 
 # bundle backup artifacts
 tar -cvzf ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz $BACKUP_FILE_DESTINATION
