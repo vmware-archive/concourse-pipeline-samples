@@ -5,8 +5,11 @@ set -e
 
 if [ -n "$CUSTOM_CERTS" ]; then
   echo "Copying custom certs..."
-  echo $CUSTOM_CERTS | tr "  " "\n"
-  echo $CUSTOM_CERTS | tr "  " "\n" > custom-certs.pem
+  CERT_CONTENTS=$($CUSTOM_CERTS | tr "-----BEGIN CERTIFICATE-----" "" | tr "-----END CERTIFICATE-----" "" | tr " " "\n")
+  echo $CERT_CONTENTS
+  echo "-----BEGIN CERTIFICATE-----" > custom-certs.pem
+  echo $CERT_CONTENTS >> custom-certs.pem
+  echo "-----END CERTIFICATE-----" >> custom-certs.pem
   cat custom-certs.pem
   sudo cp custom-certs.pem /etc/ssl/certs/
   sudo update-ca-certificates -f -v
