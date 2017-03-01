@@ -67,10 +67,10 @@ echo "Executing cfops command..."
 echo "deployments.tar.gz" > $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
 echo "installation.json" >  $BACKUP_FILE_DESTINATION/installation.json #debug
 echo "installation.zip" > $BACKUP_FILE_DESTINATION/installation.zip # debug
-ls -al
+pwd
+ls -alR
 
 # bundle backup artifacts
-cd $BACKUP_PARENT_DIR
 tar -cvzf ${TARGET_TILE}.tgz .
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 echo "test"
