@@ -86,4 +86,4 @@ aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
 # write artifacts to s3
 echo "Copying backup to S3..."
 pwd
-aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET}
+aws --debug --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
