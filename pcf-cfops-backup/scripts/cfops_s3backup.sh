@@ -3,18 +3,6 @@ set -e
 
 # This script performs a PCF backup using CFOPS tool
 
-if [ -n "$CUSTOM_CERTS" ]; then
-  echo "Copying custom certs..."
-  CERT_CONTENTS=$(echo -e $CUSTOM_CERTS | sed -e 's/^-.*CERTIFICATE----- //' | sed -e 's/-----END CERTIFICATE-----//' | tr " " "\n")
-  echo "$CERT_CONTENTS"
-  echo "-----BEGIN CERTIFICATE-----" > custom-certs.pem
-  echo "$CERT_CONTENTS" >> custom-certs.pem
-  echo "-----END CERTIFICATE-----" >> custom-certs.pem
-  cat custom-certs.pem
-  sudo cp custom-certs.pem /etc/ssl/certs/
-  sudo update-ca-certificates -f -v
-fi
-
 # set environment variables to be used by cfops command
 export CFOPS_ADMIN_USER=$OPS_MANAGER_UI_USER
 export CFOPS_ADMIN_PASS=$OPS_MANAGER_UI_PASSWORD
@@ -24,6 +12,9 @@ export CFOPS_OM_PASS=$OPS_MANAGER_SSH_PASSWORD
 # input parameters expected as environment variables
 echo "TARGET TILE: $TARGET_TILE"
 echo "OPS_MANAGER_HOSTNAME: $OPS_MANAGER_HOSTNAME"
+echo "S3_BUCKET: $S3_BUCKET"
+echo "S3_ENDPOINT: $S3_ENDPOINT"
+echo "S3_SIGNATURE_VERSION: $S3_SIGNATURE_VERSION"
 
 # calculate date string in the format YYYYMMDDHH, which will be used as parent directory for backups
 export DATESTRING=$(date +"%Y%m%d%H")
@@ -37,9 +28,6 @@ ls -la
 export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
 export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
 export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
-echo $BACKUP_ROOT_DIR
-echo $BACKUP_PARENT_DIR
-echo $BACKUP_FILE_DESTINATION
 
 # For environments where OpsMngr hostname is not setup in concourse subnet, otherwise comment out the echo line
 # It adds ops manager private IP to /etc/hosts, to do ssh using its hostname in the Concourse subnet
@@ -70,27 +58,26 @@ cfops backup \
     -t $TARGET_TILE \
     --omh $OPS_MANAGER_HOSTNAME \
     -d $BACKUP_FILE_DESTINATION
-# echo "deployments.tar.gz" > $BACKUP_FILE_DESTINATION/deployments.tar.gz #debug
-# echo "installation.json" > $BACKUP_FILE_DESTINATION/installation.json #debug
-# echo "installation.zip" > $BACKUP_FILE_DESTINATION/installation.zip # debug
 
-# bundle backup artifacts
-tar -cvzf ${BACKUP_PARENT_DIR}/${TARGET_TILE}.tgz $BACKUP_FILE_DESTINATION
-here=`pwd`
-echo -e "we are here: $here"
-pushd ${BACKUP_PARENT_DIR}
-new=`pwd`
-echo -e "now we are here: $new"
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
+cd  $BACKUP_PARENT_DIR
+ls -alR
 
-# configure awscli
+# configure awscli and writing files
 echo "Configure aws cli..."
 aws --version
 aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
-aws configure set default.signature_version s3v2
+aws configure set default.signature_version $S3_SIGNATURE_VERSION
 
-# write artifacts to s3
-echo "Copying backup to S3..."
-pwd
-aws --debug --endpoint-url=${S3_ENDPOINT} --no-verify-ssl s3 mv . s3://${S3_BUCKET} --recursive
+echo "Copying backup files to S3..."
+
+cd $BACKUP_ROOT_DIR
+
+if [ -n "$S3_ENDPOINT" ]; then
+  # s3-compatible endpoint
+  aws --debug --no-verify-ssl --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
+elif
+  # aws s3
+  aws --debug s3 mv . s3://${S3_BUCKET} --recursive
+fi

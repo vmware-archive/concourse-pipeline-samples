@@ -3,9 +3,7 @@ groups:
   jobs:
   - backup-opsman
   - backup-elastic-runtime
-  - backup-mysql
-  - backup-redis
-  - backup-rabbitmq
+# clean up can be performed by creating a bucket lifecycle policy
 
 resources:
 - name: pcf-backup-scripts
@@ -32,10 +30,8 @@ jobs:
     trigger: false
   - get: trigger-daily-after-12am
     trigger: true
-  - get: trigger-daily-after-12pm
-    trigger: true
   - task: backup-opsman
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_backup.yml
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
     params:
       TARGET_TILE: ops-manager
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
@@ -48,4 +44,28 @@ jobs:
       S3_BUCKET: {{s3-bucket}}
       S3_ACCESS_KEY_ID: {{s3-access-key}}
       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
-      CUSTOM_CERTS: {{custom-certs}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+
+- name: backup-elastic-runtime
+  serial: true
+  plan:
+  - get: pcf-backup-scripts
+    trigger: false
+  - get: trigger-daily-after-12am
+    trigger: true
+    passed:
+      - backup-opsman
+  - task: backup-elastic-runtime
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: elastic-runtime
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
+      OPS_MANAGER_UI_USER: {{ops-manager-ui-user}}
+      OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
