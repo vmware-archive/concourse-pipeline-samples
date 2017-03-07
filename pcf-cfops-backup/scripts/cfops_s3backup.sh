@@ -91,10 +91,10 @@ echo "Copying backup files to S3..."
 
 cd $BACKUP_ROOT_DIR
 
-if [ -n "$S3_ENDPOINT" ]; then
+# if [ -n "$S3_ENDPOINT" ]; then
   # s3-compatible endpoint
   aws --debug --no-verify-ssl --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
-elif
-  # aws s3
-  aws --debug s3 mv . s3://${S3_BUCKET} --recursive
-fi
+# else
+#   # aws s3
+#   aws --debug s3 mv . s3://${S3_BUCKET} --recursive
+# fi
