@@ -26,9 +26,9 @@ RUN \
 
 # install cfops and plugins
 RUN \
-  wget https://github.com/pivotalservices/cfops/releases/download/v2.2.29/cfops_binaries.tgz && \
-  tar xvf ./cfops_binaries.tgz && \
-  mv ./pipeline/output/builds/linux64/cfops /usr/bin && \
+  wget https://github.com/pivotalservices/cfops/releases/download/v3.0.5/cfops && \
+  mv ./cfops /usr/bin && \
+  chmod 755 /usr/bin/cfops && \
   mkdir /usr/bin/plugins && \
   wget https://github.com/pivotalservices/cfops-mysql-plugin/releases/download/v0.0.22/cfops-mysql-plugin_binaries.tgz && \
   tar xvf ./cfops-mysql-plugin_binaries.tgz && \
