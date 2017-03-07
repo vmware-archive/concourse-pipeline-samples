@@ -12,6 +12,9 @@ export CFOPS_OM_PASS=$OPS_MANAGER_SSH_PASSWORD
 # input parameters expected as environment variables
 echo "TARGET TILE: $TARGET_TILE"
 echo "OPS_MANAGER_HOSTNAME: $OPS_MANAGER_HOSTNAME"
+echo "S3_BUCKET: $S3_BUCKET"
+echo "S3_ENDPOINT: $S3_ENDPOINT"
+echo "S3_SIGNATURE_VERSION: $S3_SIGNATURE_VERSION"
 
 # calculate date string in the format YYYYMMDDHH, which will be used as parent directory for backups
 export DATESTRING=$(date +"%Y%m%d%H")
@@ -25,9 +28,6 @@ ls -la
 export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
 export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
 export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
-echo $BACKUP_ROOT_DIR
-echo $BACKUP_PARENT_DIR
-echo $BACKUP_FILE_DESTINATION
 
 # For environments where OpsMngr hostname is not setup in concourse subnet, otherwise comment out the echo line
 # It adds ops manager private IP to /etc/hosts, to do ssh using its hostname in the Concourse subnet
@@ -63,13 +63,21 @@ cfops backup \
 cd  $BACKUP_PARENT_DIR
 ls -alR
 
-# echo "Copying backup files to shared file server"
-#
-# cd $BACKUP_ROOT_DIR
-#
-# sshpass -p "$FILE_REPO_PASSWORD" scp -o 'StrictHostKeyChecking=no' -r $BACKUP_ROOT_DIR/* $FILE_REPO_USER_ID@$FILE_REPO_IP:$FILE_REPO_PATH
-# # smbclient //$FILE_REPO_IP/$FILE_REPO_SPACE "$FILE_REPO_PASSWORD" -W global -U $FILE_REPO_USER_ID -c "prompt off; cd $FILE_REPO_PATH; recurse on; mput *"
-#
-# # cleanup backup file from container to minimize worker disk size usage
-# cd $BACKUP_ROOT_DIR
-# rm -R *
+# configure awscli and writing files
+echo "Configure aws cli..."
+aws --version
+aws configure set aws_access_key_id $S3_ACCESS_KEY_ID
+aws configure set aws_secret_access_key $S3_SECRET_ACCESS_KEY
+aws configure set default.signature_version $S3_SIGNATURE_VERSION
+
+echo "Copying backup files to S3..."
+
+cd $BACKUP_ROOT_DIR
+
+if [ -n "$S3_ENDPOINT" ]; then
+  # s3-compatible endpoint
+  aws --debug --no-verify-ssl --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
+elif
+  # aws s3
+  aws --debug s3 mv . s3://${S3_BUCKET} --recursive
+fi
