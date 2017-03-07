@@ -26,15 +26,16 @@ ls -la
 
 # set environment variable for cfops targeted backup directory
 export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
-export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
-export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
+export BACKUP_FILE_DESTINATION=$BACKUP_ROOT_DIR/$DATESTRING
+# export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
+# export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
 # For environments where OpsMngr hostname is not setup in concourse subnet, otherwise comment out the echo line
 # It adds ops manager private IP to /etc/hosts, to do ssh using its hostname in the Concourse subnet
 # echo "$OPS_MANAGER_PRIVATE_IP_ADDRESS $OPS_MANAGER_HOSTNAME" >> /etc/hosts
 
 # create directory for cfops to store backup files in
-mkdir $BACKUP_PARENT_DIR
+# mkdir $BACKUP_PARENT_DIR
 mkdir $BACKUP_FILE_DESTINATION
 
 # cd into diretory where cfops and plugins are located in the container
@@ -77,7 +78,8 @@ cfops backup \
 #     --nfs lite
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
-cd  $BACKUP_PARENT_DIR
+cd $BACKUP_FILE_DESTINATION
+# cd  $BACKUP_PARENT_DIR
 ls -alR
 
 # configure awscli and writing files
