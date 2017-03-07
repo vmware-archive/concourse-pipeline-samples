@@ -61,8 +61,8 @@ cfops backup \
     -clientsecret $OPS_MANAGER_UI_PASSWORD \
     -opsmanageruser ubuntu \
     -destination $BACKUP_FILE_DESTINATION \
-    -tile $TARGET_TILE
-    -nfs full
+    -tile $TARGET_TILE \
+    -nfs lite
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 cd  $BACKUP_PARENT_DIR
