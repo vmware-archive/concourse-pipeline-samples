@@ -27,7 +27,7 @@ ls -la
 # set environment variable for cfops targeted backup directory
 export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
 export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
-export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
+# export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
 # For environments where OpsMngr hostname is not setup in concourse subnet, otherwise comment out the echo line
 # It adds ops manager private IP to /etc/hosts, to do ssh using its hostname in the Concourse subnet
@@ -35,7 +35,7 @@ export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
 # create directory for cfops to store backup files in
 mkdir $BACKUP_PARENT_DIR
-mkdir $BACKUP_FILE_DESTINATION
+# mkdir $BACKUP_FILE_DESTINATION
 
 # cd into diretory where cfops and plugins are located in the container
 cd /usr/bin
@@ -67,6 +67,7 @@ cfops backup \
     --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
+    --nfs lite
 # cfops backup \
 #     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
 #     --clientid opsman \
@@ -89,12 +90,7 @@ aws configure set default.signature_version $S3_SIGNATURE_VERSION
 
 echo "Copying backup files to S3..."
 
-cd $BACKUP_ROOT_DIR
+# cd $BACKUP_ROOT_DIR
 
-# if [ -n "$S3_ENDPOINT" ]; then
-  # s3-compatible endpoint
-  aws --debug --no-verify-ssl --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
-# else
-#   # aws s3
-#   aws --debug s3 mv . s3://${S3_BUCKET} --recursive
-# fi
+# s3-compatible endpoint
+aws --no-verify-ssl --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
