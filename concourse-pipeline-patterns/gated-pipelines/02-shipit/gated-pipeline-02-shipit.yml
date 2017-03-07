@@ -1,0 +1,115 @@
+---
+resources:
+- name: fly-release
+  type: github-release
+  source:
+    user: concourse
+    repository: concourse
+    access_token: {{github-access-token}}
+- name: send-email
+  type: email
+  source:
+    from: YOUR-SOURCE-EMAIL-GOES-HERE
+
+jobs:
+- name: Build-it
+  plan:
+  - get: fly-release
+    params:
+      globs:
+      - fly_linux_amd64
+    trigger: true
+  - task: do-your-build-task-here
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          echo "Output of build job. It gets automatically triggered by any changes in the resource."
+
+- name: Test-it
+  plan:
+  - get: fly-release
+    params:
+      globs:
+      - fly_linux_amd64
+    passed:
+      - Build-it
+    trigger: true
+  - task: do-your-test-task-here
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          echo "Output of test job. It gets automatically triggered after a successful Build-it job."
+  - task: prep-email-text
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      inputs:
+        - name: fly-release
+      outputs:
+        - name: email-text
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          export LATEST_GOOD_VERSION=$(cat ./fly-release/version)
+          # export LATEST_GOOD_VERSION=$(cd my-resource && git rev-parse --short HEAD && cd ..)
+          echo "Version $LATEST_GOOD_VERSION is ready to ship!" >  ./email-text/email-subject.txt
+          echo "Version $LATEST_GOOD_VERSION is ready to ship! For details, see pipeline {{ BUILD_PIPELINE_NAME }}, job {{ BUILD_JOB_NAME }}, build {{ BUILD_NAME }}." >  ./email-text/email-body.txt
+  - put: send-email
+    params:
+      to: [YOUR-EMAIL-GOES-HERE]
+      subject: ./email-text/email-subject.txt
+      body: ./email-text/email-body.txt
+
+- name: Ship-it!
+  plan:
+  - get: fly-release
+    params:
+      globs:
+      - fly_linux_amd64
+    passed:
+      - Test-it
+    trigger: false
+  - task: do-your-shipit-task-here
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          echo "Output of your manually triggered Ship-it task."
+
+resource_types:
+  - name: email
+    type: docker-image
+    source:
+      repository: mdomke/concourse-email-resource
