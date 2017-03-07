@@ -4,8 +4,8 @@ set -e
 # This script performs a PCF backup using CFOPS tool
 
 # set environment variables to be used by cfops command
-export CFOPS_ADMIN_USER=$OPS_MANAGER_UI_USER
-export CFOPS_ADMIN_PASS=$OPS_MANAGER_UI_PASSWORD
+# export CFOPS_ADMIN_USER=$OPS_MANAGER_UI_USER
+# export CFOPS_ADMIN_PASS=$OPS_MANAGER_UI_PASSWORD
 export CFOPS_OM_USER=$OPS_MANAGER_SSH_USER
 export CFOPS_OM_PASS=$OPS_MANAGER_SSH_PASSWORD
 
@@ -44,6 +44,11 @@ cd /usr/bin
 cfops version
 cfops list-tiles
 
+# set token
+uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
+uaac token client get $OPS_MANAGER_UI_USER -s $OPS_MANAGER_UI_PASSWORD
+export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
+
 # TBD: Force all user sessions to finish on Ops Manager to avoid cfops failure
 # issue DELETE request to /api/v0/sessions
 # http://opsman-dev-api-docs.cfapps.io/#the-basics
@@ -57,12 +62,19 @@ echo "Executing cfops command..."
 # create backup file for the targeted tile and stores it in the output directory
 cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
-    --clientid $OPS_MANAGER_UI_USER \
-    --clientsecret $OPS_MANAGER_UI_PASSWORD \
+    --clientid opsman  \
+    --clientsecret ''  \
     --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
-    --tile $TARGET_TILE \
-    --nfs lite
+    --tile $TARGET_TILE
+# cfops backup \
+#     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
+#     --clientid opsman \
+#     --clientsecret  \
+#     --opsmanageruser ubuntu \
+#     -d $BACKUP_FILE_DESTINATION \
+#     --tile $TARGET_TILE \
+#     --nfs lite
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 cd  $BACKUP_PARENT_DIR
