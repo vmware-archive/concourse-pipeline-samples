@@ -41,6 +41,7 @@ mkdir $BACKUP_FILE_DESTINATION
 cd /usr/bin
 
 # for debugging purposes, check which tiles are available for cfops in the image
+cfops version
 cfops list-tiles
 
 # TBD: Force all user sessions to finish on Ops Manager to avoid cfops failure
