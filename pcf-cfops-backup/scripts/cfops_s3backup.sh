@@ -66,7 +66,7 @@ cfops backup \
     --clientsecret ''  \
     --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
-    --tile $TARGET_TILE
+    --tile $TARGET_TILE \
     --nfs lite
 # cfops backup \
 #     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
