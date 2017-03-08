@@ -43,10 +43,6 @@ mkdir $BACKUP_FILE_DESTINATION
 # cd into diretory where cfops and plugins are located in the container
 cd /usr/bin
 
-# for debugging purposes, check which tiles are available for cfops in the image
-cfops version
-cfops list-tiles
-
 # set token
 uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
 uaac token client get $OPS_MANAGER_UI_USER -s $OPS_MANAGER_UI_PASSWORD
@@ -62,6 +58,10 @@ export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s
 #  TOKEN="$(uaac context | awk '/^ *access_token\: *([a-zA-Z0-9.\/+\-_]+) *$/ {print $2}' -)"
 #  curl "https://<your-ops-man-ip-goes-here>/api/v0/sessions" -d ' ' -X DELETE -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/x-www-form-urlencoded" --insecure -vv
 
+# for debugging purposes, check which tiles are available for cfops in the image
+cfops version
+cfops list-tiles
+
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
@@ -72,6 +72,14 @@ LOG_LEVEL=debug cfops backup \
     --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
+# cfops backup \
+#     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
+#     --clientid opsman \
+#     --clientsecret  \
+#     --opsmanageruser ubuntu \
+#     -d $BACKUP_FILE_DESTINATION \
+#     --tile $TARGET_TILE \
+#     --nfs lite
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 cd $BACKUP_FILE_DESTINATION
