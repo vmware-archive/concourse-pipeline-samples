@@ -61,7 +61,7 @@ export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
-cfops backup \
+LOG_LEVEL=debug cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
     --clientid opsman \
     --clientsecret '' \
