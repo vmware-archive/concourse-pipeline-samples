@@ -1,22 +1,13 @@
 #!/bin/bash
-set -e
+set -ex
 
 # This script performs a PCF backup using CFOPS tool
 
 # set environment variables to be used by cfops command
-# export CFOPS_ADMIN_USER=$OPS_MANAGER_UI_USER
-# export CFOPS_ADMIN_PASS=$OPS_MANAGER_UI_PASSWORD
 export CFOPS_OM_USER=$OPS_MANAGER_SSH_USER
 export CFOPS_OM_PASS=$OPS_MANAGER_SSH_PASSWORD
-export BOSH_CLIENT=$BOSH_CLIENT_ID
-export BOSH_CLIENT_SECRET=$BOSH_CLIENT_SECRET
-
-# input parameters expected as environment variables
-echo "TARGET TILE: $TARGET_TILE"
-echo "OPS_MANAGER_HOSTNAME: $OPS_MANAGER_HOSTNAME"
-echo "S3_BUCKET: $S3_BUCKET"
-echo "S3_ENDPOINT: $S3_ENDPOINT"
-echo "S3_SIGNATURE_VERSION: $S3_SIGNATURE_VERSION"
+export CFOPS_CLIENT_ID=$OPS_MANAGER_UI_USER
+export CFOPS_CLIENT_SECRET=$OPS_MANAGER_UI_PASSWORD
 
 # calculate date string in the format YYYYMMDDHH, which will be used as parent directory for backups
 export DATESTRING=$(date +"%Y%m%d%H")
@@ -65,19 +56,8 @@ echo "Executing cfops command..."
 # create backup file for the targeted tile and stores it in the output directory
 LOG_LEVEL=debug cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
-    --clientid $OPS_MANAGER_UI_USER \
-    --clientsecret $OPS_MANAGER_UI_PASS \
-    --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
-# cfops backup \
-#     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
-#     --clientid opsman \
-#     --clientsecret  \
-#     --opsmanageruser ubuntu \
-#     -d $BACKUP_FILE_DESTINATION \
-#     --tile $TARGET_TILE \
-#     --nfs lite
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 cd $BACKUP_FILE_DESTINATION
