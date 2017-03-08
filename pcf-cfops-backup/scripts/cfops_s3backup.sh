@@ -48,10 +48,10 @@ cfops version
 cfops list-tiles
 
 # set token
-# uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
-# uaac token client get $OPS_MANAGER_UI_USER -s $OPS_MANAGER_UI_PASSWORD
-uaac target https://$BOSH_DIRECTOR_IP:8443 --skip-ssl-validation
-uaac token client get $BOSH_CLIENT_ID -s $BOSH_CLIENT_SECRET
+uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
+uaac token client get $OPS_MANAGER_UI_USER -s $OPS_MANAGER_UI_PASSWORD
+# uaac target https://$BOSH_DIRECTOR_IP:8443 --skip-ssl-validation
+# uaac token client get $BOSH_CLIENT_ID -s $BOSH_CLIENT_SECRET
 export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
 
 # TBD: Force all user sessions to finish on Ops Manager to avoid cfops failure
@@ -67,19 +67,11 @@ echo "Executing cfops command..."
 # create backup file for the targeted tile and stores it in the output directory
 LOG_LEVEL=debug cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
-    --clientid opsman \
-    --clientsecret '' \
+    --clientid $OPS_MANAGER_UI_USER \
+    --clientsecret $OPS_MANAGER_UI_PASS \
     --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
-# cfops backup \
-#     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
-#     --clientid opsman \
-#     --clientsecret  \
-#     --opsmanageruser ubuntu \
-#     -d $BACKUP_FILE_DESTINATION \
-#     --tile $TARGET_TILE \
-#     --nfs lite
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 cd $BACKUP_FILE_DESTINATION
@@ -104,9 +96,3 @@ cd $BACKUP_ROOT_DIR
 #   # aws s3
 #   aws --debug s3 mv . s3://${S3_BUCKET} --recursive
 # fi
-
-ls -alR
-
-# cleanup backup file from container to minimize worker disk size usage
-cd $BACKUP_ROOT_DIR
-rm -R *
