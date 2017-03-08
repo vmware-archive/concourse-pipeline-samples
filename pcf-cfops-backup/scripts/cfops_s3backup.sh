@@ -8,8 +8,8 @@ set -e
 # export CFOPS_ADMIN_PASS=$OPS_MANAGER_UI_PASSWORD
 export CFOPS_OM_USER=$OPS_MANAGER_SSH_USER
 export CFOPS_OM_PASS=$OPS_MANAGER_SSH_PASSWORD
-export BOSH_CLIENT=$OPS_MANAGER_UI_USER
-export BOSH_CLIENT_SECRET=$OPS_MANAGER_UI_PASSWORD
+export BOSH_CLIENT=$BOSH_CLIENT_ID
+export BOSH_CLIENT_SECRET=$BOSH_CLIENT_SECRET
 
 # input parameters expected as environment variables
 echo "TARGET TILE: $TARGET_TILE"
@@ -65,8 +65,8 @@ echo "Executing cfops command..."
 # create backup file for the targeted tile and stores it in the output directory
 LOG_LEVEL=debug cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
-    --clientid $OPS_MANAGER_UI_USER \
-    --clientsecret $OPS_MANAGER_UI_PASSWORD \
+    --clientid $BOSH_CLIENT_ID \
+    --clientsecret $BOSH_CLIENT_SECRET \
     --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
