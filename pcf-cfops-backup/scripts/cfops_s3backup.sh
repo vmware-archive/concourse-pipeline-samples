@@ -44,11 +44,9 @@ mkdir $BACKUP_FILE_DESTINATION
 cd /usr/bin
 
 # set token
-uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
-uaac token client get $OPS_MANAGER_UI_USER -s $OPS_MANAGER_UI_PASSWORD
-# uaac target https://$BOSH_DIRECTOR_IP:8443 --skip-ssl-validation
-# uaac token client get $BOSH_CLIENT_ID -s $BOSH_CLIENT_SECRET
-export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
+# uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
+# uaac token client get $OPS_MANAGER_UI_USER -s $OPS_MANAGER_UI_PASSWORD
+# export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
 
 # TBD: Force all user sessions to finish on Ops Manager to avoid cfops failure
 # issue DELETE request to /api/v0/sessions
