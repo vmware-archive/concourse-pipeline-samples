@@ -66,7 +66,7 @@ echo "Executing cfops command..."
 LOG_LEVEL=debug cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
     --clientid $BOSH_CLIENT_ID \
-    --clientsecret $BOSH_CLIENT_SECRET \
+    --clientsecret "${BOSH_CLIENT_SECRET}" \
     --opsmanageruser ubuntu \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
