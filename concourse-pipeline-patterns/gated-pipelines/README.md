@@ -1,8 +1,8 @@
 # Pipelines with a manually triggered step (a.k.a. "gated")
 
-Gated pipelines provide control for administrators and release managers on *when* a given release is deployed to a protected environment (e.g. production).
+Gated pipelines provide control for administrators and release managers on *when* a given release is deployed to a tightly protected environment (e.g. production).
 
-The execution of a job (e.g. deployment) that targets the downstream environment beyond the "gated" step is only done upon an explicit manual trigger of that job.
+The execution of jobs that perform certain tasks (e.g. deployment) targeting the downstream environment beyond a "gate" step is done only upon an explicit manual trigger of such step.
 
 Here are a few samples of this pattern:
 

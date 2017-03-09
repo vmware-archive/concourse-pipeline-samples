@@ -50,6 +50,6 @@ This example illustrates the typical pattern of building and unit testing code i
 
 ### See also
 
-1. [The _Ship-it!_ gated pipeline example](../02-shipit)  
+- [The _Ship-it!_ gated pipeline example](../02-shipit)  
 
-1. [A more sophisticated gated pipeline](../03-shipit-enhanced)  
+- [A more sophisticated gated pipeline](../03-shipit-enhanced)  
