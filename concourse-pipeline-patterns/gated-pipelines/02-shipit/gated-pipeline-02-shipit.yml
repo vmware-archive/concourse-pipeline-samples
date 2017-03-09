@@ -9,7 +9,7 @@ resources:
 - name: send-email
   type: email
   source:
-    from: YOUR-SOURCE-EMAIL-GOES-HERE
+    from: YOUR-SENDER-EMAIL-GOES-HERE
 
 jobs:
 - name: Build-it
