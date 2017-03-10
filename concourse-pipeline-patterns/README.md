@@ -1,3 +1,4 @@
+![Concourse Pipeline Patterns](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/pipeline-patterns-02.png)
 
 ## Concourse Pipeline Patterns
 This article provides examples of common patterns for platform operations and application development pipelines.

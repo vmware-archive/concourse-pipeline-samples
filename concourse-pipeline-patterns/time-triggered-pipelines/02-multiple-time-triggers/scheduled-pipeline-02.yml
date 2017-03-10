@@ -8,7 +8,7 @@ resources:
   type: time
   source:
     interval: 10m
-- name: manual-trigger
+- name: manualtrigger
   type: time           # technique to trigger and propagate manual execution through pipeline
   source:
     interval: 1m
@@ -16,7 +16,7 @@ resources:
 jobs:
 - name: Manual-trigger
   plan:
-  - get: manual-trigger
+  - get: manualtrigger
     trigger: false
 
 - name: Run-Forrest-Run
@@ -25,7 +25,7 @@ jobs:
     trigger: true
   - get: trigger-every-10-minutes
     trigger: true
-  - get: manual-trigger
+  - get: manualtrigger
     trigger: true
     passed:
       - Manual-trigger
@@ -54,7 +54,7 @@ jobs:
     trigger: true
     passed:
       - Run-Forrest-Run
-  - get: manual-trigger
+  - get: manualtrigger
     trigger: true
     passed:
       - Run-Forrest-Run
