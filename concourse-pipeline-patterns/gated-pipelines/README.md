@@ -1,4 +1,4 @@
-# Pipelines with a manually triggered step (a.k.a. "gated")
+# Pipelines with gated steps
 
 Gated pipelines provide control for administrators and release managers on *when* a given release is deployed to a tightly protected environment (e.g. production).
 
@@ -8,7 +8,7 @@ Here are a few samples of this pattern:
 
 1. [A very simple gated pipeline](01-simple)  
 
-1. [The _Ship-it!_ example](02-shipit)  
+1. [Ship-it!_ A sample of a gated pipeline with notifications](02-shipit)  
 
 1. [A more sophisticated gated pipeline](03-shipit-enhanced)  
 

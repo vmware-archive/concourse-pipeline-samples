@@ -1,4 +1,4 @@
-# A pipeline with multiple trigger resources
+# A CI pipeline with multiple time trigger resources
 
 As an enhancement to the previous [sample with a single time trigger](../01-single-time-trigger), this pipeline example implements _two_ [time resource triggers](https://github.com/concourse/time-resource) and the ability to manually kick it off outside of the time resources schedules.
 

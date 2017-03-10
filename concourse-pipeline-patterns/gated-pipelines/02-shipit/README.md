@@ -14,7 +14,7 @@ To create the sample pipeline in your concourse server:
 
 1. download file [gated-pipeline-02-shipit.yml](gated-pipeline-02-shipit.yml)
 
-1. edit the file and update the two variables below:  
+1. edit the file and update the entries below:  
    - YOUR-SENDER-EMAIL-GOES-HERE: replace it with your sender email address  
    - [YOUR-EMAIL-GOES-HERE]: replace it with your destination email addresses separated by comma and *keep the brackets*
 

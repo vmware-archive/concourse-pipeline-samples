@@ -23,7 +23,7 @@ resources:
 ```
 
 ### Sample pipeline
-The pipeline below provides a sample of multiple jobs that are automatically triggered by an interval time resource. Download its configuration file  [here](scheduled-pipeline-01.yml).
+The pipeline below provides a sample of multiple jobs that are automatically triggered by a single interval time resource. Download its configuration file  [here](scheduled-pipeline-01.yml).
 
 ![Time-triggered pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/time-trigger-01.png)
 
@@ -32,9 +32,9 @@ The pipeline below provides a sample of multiple jobs that are automatically tri
 To create the sample pipeline in your concourse server, download file [scheduled-pipeline-01](scheduled-pipeline-01.yml) and issue the following fly command:   
 `fly -t <your-concourse-alias> set-pipeline -p simple-timer -c scheduled-pipeline-01.yml`
 
-Then un-paused in Concourse and it will automatically be triggered within 3 minutes after the un-pause.
+Then un-paused the pipeline in Concourse and it should automatically get triggered within 3 minutes.
 
 
 ### See also
 
-- [A pipeline with multiple trigger resources](02-multiple-time-triggers)  
+- [A CI pipeline with multiple time trigger resources](../02-multiple-time-triggers)  
