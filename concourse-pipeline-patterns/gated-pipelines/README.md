@@ -1,3 +1,5 @@
+![Pipeline image](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/pipeline-with-valve.png)
+
 # Pipelines with gated steps
 
 Gated pipelines provide control for administrators and release managers on *when* a given release is deployed to a tightly protected environment (e.g. production).
@@ -12,4 +14,7 @@ Here are a few samples of this pattern:
 
 1. [A more sophisticated gated pipeline](03-shipit-enhanced)  
 
-1. Using Git Pull Requests to control a gated step of a pipeline (TBD)
+<!-- 1. Using Git Pull Requests to control a gated step of a pipeline (TBD) -->
+
+
+![ShipIt gated pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/shipit-gated-pipeline.png)
