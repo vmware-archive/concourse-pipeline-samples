@@ -1,0 +1,4 @@
+s3-bucket: <ID of the AWS S3 bucket to store the manual trigger info>
+s3-access-key-id: <Access key of the AWS S3 bucket>
+s3-secret-access-key: <Secret access key of the AWS S3 bucket>
+s3-region_name: <AWS S3 region name>

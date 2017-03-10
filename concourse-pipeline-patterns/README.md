@@ -4,7 +4,8 @@ This article provides examples of common patterns for platform operations and ap
 
 *Work in progress...*
 
-1. [Pipelines with a manually triggered job - a.k.a. "gated"](gated-pipelines)
+1. [Pipelines with "gated" or manually triggered jobs](gated-pipelines)
+1. Time triggered pipelines
 1. Data exchange across tasks and jobs (TBD)
 1. Pipelines with tasks loops - same task definition, distinct params for multiple runs (TBD)
 1. User credentials management (TBD)
