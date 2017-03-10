@@ -19,12 +19,8 @@ To create the sample pipeline in your concourse server:
 
 1. download file [scheduled-pipeline-02.yml](scheduled-pipeline-02.yml)
 
-1. download file [params.yml](params.yml)
-
-1. edit `params.yml` and enter your S3 credentials following the comments in the file
-
 1. issue the following fly command:   
-`fly -t <your-concourse-alias> set-pipeline -p multiple-timers -c scheduled-pipeline-02.yml -l params.yml`
+`fly -t <your-concourse-alias> set-pipeline -p multiple-timers -c scheduled-pipeline-02.yml`
 
 Then un-paused the `multiple-timers` pipeline in Concourse and it will be triggered either automatically in the interval of every 4 or every 10 minutes or manually by running job `manual-trigger`.
 

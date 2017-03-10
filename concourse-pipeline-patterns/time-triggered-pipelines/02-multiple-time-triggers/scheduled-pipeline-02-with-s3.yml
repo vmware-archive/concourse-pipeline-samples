@@ -8,16 +8,24 @@ resources:
   type: time
   source:
     interval: 10m
-- name: manual-trigger
-  type: time           # technique to trigger and propagate manual execution through pipeline
+- name: manualtrigger
+  type: semver
   source:
-    interval: 1m
+    initial_version: 0.1.0
+    driver: s3
+    bucket: {{s3-bucket}}
+    key: version
+    access_key_id: {{s3-access-key-id}}
+    secret_access_key: {{s3-secret-access-key}}
+    region_name: {{s3-region_name}}
 
 jobs:
 - name: Manual-trigger
   plan:
-  - get: manual-trigger
-    trigger: false
+  - put: manualtrigger
+    params:
+      bump: minor
+      key: versions
 
 - name: Run-Forrest-Run
   plan:
@@ -25,7 +33,7 @@ jobs:
     trigger: true
   - get: trigger-every-10-minutes
     trigger: true
-  - get: manual-trigger
+  - get: manualtrigger
     trigger: true
     passed:
       - Manual-trigger
@@ -54,7 +62,7 @@ jobs:
     trigger: true
     passed:
       - Run-Forrest-Run
-  - get: manual-trigger
+  - get: manualtrigger
     trigger: true
     passed:
       - Run-Forrest-Run
