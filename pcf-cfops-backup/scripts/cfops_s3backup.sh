@@ -29,7 +29,7 @@ export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
 # create directory for cfops to store backup files in
 # mkdir $BACKUP_PARENT_DIR
-mkdir $BACKUP_FILE_DESTINATION
+mkdir -p $BACKUP_FILE_DESTINATION
 
 # cd into diretory where cfops and plugins are located in the container
 cd /usr/bin
