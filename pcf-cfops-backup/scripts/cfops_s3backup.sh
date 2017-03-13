@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 # This script performs a PCF backup using CFOPS tool
 
@@ -54,7 +54,7 @@ cfops list-tiles
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
-LOG_LEVEL=debug cfops backup \
+cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
