@@ -77,7 +77,7 @@ cd $BACKUP_ROOT_DIR
 
 # if [ -n "$S3_ENDPOINT" ]; then
   # s3-compatible endpoint
-  aws --no-verify-ssl --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
+  aws --no-verify-ssl --only-show-errors --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
 # else
 #   # aws s3
 #   aws --debug s3 mv . s3://${S3_BUCKET} --recursive
