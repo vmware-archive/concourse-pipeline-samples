@@ -1,0 +1,7 @@
+github-deployment-control-repo: https://github.com/lsilvapvt/misc-support-files.git
+github-environment-control-file-path: environments/sandbox/environment.json
+github-username: YOUR-GIT-HUB-USER-NAME
+github-password: YOUR-GIT-HUB-PASSWORD
+github-access-token: YOUR-GIT-HUB-ACCESS-TOKEN
+email-address-sender: YOUR-EMAIL-GOES-HERE
+email-address-recipient: YOUR-EMAIL-GOES-HERE

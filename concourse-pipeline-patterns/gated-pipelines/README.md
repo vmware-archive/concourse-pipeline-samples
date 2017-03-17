@@ -14,7 +14,7 @@ Here are a few samples of this pattern:
 
 1. [A more sophisticated gated pipeline](03-shipit-enhanced)  
 
-<!-- 1. Using Git Pull Requests to control a gated step of a pipeline (TBD) -->
+1. [A gated pipeline controlled by GitHub Pull Requests](04-github-pull-request)  
 
 
 ![ShipIt gated pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/shipit-gated-pipeline.png)

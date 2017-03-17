@@ -3,7 +3,7 @@ resources:
 - name: send-email
   type: email
   source:
-    from: lsilva@pivotal.io  #YOUR-SENDER-EMAIL-GOES-HERE
+    from: YOUR-SENDER-EMAIL-GOES-HERE
 - name: fly-release
   type: github-release
   source:
@@ -79,7 +79,7 @@ jobs:
           echo "Version $LATEST_GOOD_VERSION is ready to ship! For details, see pipeline {{ BUILD_PIPELINE_NAME }}, build {{ BUILD_NAME }}, job {{ BUILD_JOB_NAME }}." >  ./email-text/email-body.txt
   - put: send-email
     params:
-      to: [lmpsilva73@gmail.com]  # [YOUR-EMAIL-GOES-HERE]
+      to: [YOUR-EMAIL-GOES-HERE]
       subject: ./email-text/email-subject.txt
       body: ./email-text/email-body.txt
 
@@ -173,12 +173,12 @@ jobs:
         args:
         - -exc
         - |
-          export LATEST_GOOD_VERSION=$(cd my-resource && git rev-parse --short HEAD && cd ..)
+          export LATEST_GOOD_VERSION=$(cat ./fly-release/version)
           echo "Version $LATEST_GOOD_VERSION deployed and tested!" >  ./email-text/email-subject.txt
           echo "Version $LATEST_GOOD_VERSION has been deployed and tested successfully! For details, see pipeline {{ BUILD_PIPELINE_NAME }}, build {{ BUILD_NAME }}, job {{ BUILD_JOB_NAME }}." >  ./email-text/email-body.txt
   - put: send-email
     params:
-      to: [lmpsilva73@gmail.com]  # [YOUR-EMAIL-GOES-HERE]
+      to: [YOUR-EMAIL-GOES-HERE]
       subject: ./email-text/email-subject.txt
       body: ./email-text/email-body.txt
 

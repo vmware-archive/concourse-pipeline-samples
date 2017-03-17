@@ -1,0 +1,212 @@
+---
+jobs:
+- name: Test-release
+  plan:
+  - get: project-release
+    params:
+      globs:
+      - fly_linux_amd64
+    trigger: true
+  - get: deployment-control-repo
+  - get: github-tool
+    params:
+      globs:
+      - hub-linux-amd64-*.tgz
+
+  - task: test-release-and-update-deployment-control-repo
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      inputs:
+        - name: project-release
+        - name: deployment-control-repo
+        - name: github-tool
+      outputs:
+        - name: deployment-control-repo-updated
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          echo "Your test procedures would go here. If successfull, update deployment control repo with verified version information"
+          export LATEST_GOOD_VERSION=$(cat ./project-release/version)
+          export CURRENT_TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+          cp -R deployment-control-repo/. deployment-control-repo-updated  # duplicate git repo files for update
+          cd deployment-control-repo-updated
+          git checkout build    # make changes to a branch other than master
+          sed -i "s/\"version\": .*/\"version\": \"$LATEST_GOOD_VERSION\",/g" {{github-environment-control-file-path}}
+          sed -i "s/\"date-verified\": .*/\"date-verified\": \"$CURRENT_TIMESTAMP\"/g" {{github-environment-control-file-path}}
+          cat {{github-environment-control-file-path}}
+          git add . && git commit -m "Promote version $LATEST_GOOD_VERSION"  # stage changes and prep for following PUT action against git repo
+
+  - put: deployment-control-repo
+    params:
+      repository: deployment-control-repo-updated
+      rebase: true
+
+  - task: create-pull-request
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      inputs:
+        - name: deployment-control-repo-updated
+        - name: deployment-control-repo
+        - name: project-release
+        - name: github-tool
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          export LATEST_GOOD_VERSION=$(cat ./project-release/version)
+          cd ./github-tool   # unpack Hub tool TGZ file
+          tar -xvf *.tgz -C . && rm *.tgz && mv hub-linux-amd64*/ hub
+          export PATH=$PATH:$PWD/hub/bin
+          hub --version
+          cd ../deployment-control-repo-updated
+          # git config --global user.email "lmpsilva@hotmail.com"
+          # git config --global user.name "silval"
+          # mkdir ~/.ssh
+          # echo "$GITHUB_PRIVATEKEY" >> ~/.ssh/id_rsa
+          # chmod 600 ~/.ssh/id_rsa
+          hub pull-request -m "Promote and deploy release $LATEST_GOOD_VERSION to environment Sandbox" -b master -h build
+    params:
+      GITHUB_USER: {{github-username}}   # https://hub.github.com/hub.1.html
+      GITHUB_PASSWORD: {{github-password}}
+
+- name: Deploy-Upon-PR-Approval
+  disable_manual_trigger: true
+  plan:
+  - get: deployment-approval
+    trigger: true
+  - get: project-release
+    params:
+      globs:
+      - fly_linux_amd64
+    passed:
+      - Test-release
+    trigger: false
+  - task: do-your-deploy-task-here
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      inputs:
+        - name: deployment-approval
+        - name: project-release
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          export LATEST_GOOD_VERSION=$(cat ./project-release/version)
+          echo "Deploy the new version here."
+          echo "This task is triggered when a PR is accepted with changes in deployment control file."
+          echo "Product version: $LATEST_GOOD_VERSION"
+
+- name: Acceptance-Test-it!
+  disable_manual_trigger: true
+  plan:
+  - get: deployment-approval
+    trigger: true
+    passed:
+      - Deploy-Upon-PR-Approval
+  - get: project-release
+    params:
+      globs:
+      - fly_linux_amd64
+  - task: do-your-deploy-and-AT-tasks-here
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          echo "Do you acceptance tests here."
+
+  - task: prep-email-text
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: concourse/buildroot
+          tag: "git"
+      inputs:
+        - name: project-release
+      outputs:
+        - name: email-text
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          export LATEST_GOOD_VERSION=$(cat ./project-release/version)
+          echo "Version $LATEST_GOOD_VERSION deployed and tested!" >  ./email-text/email-subject.txt
+          echo "Version $LATEST_GOOD_VERSION has been deployed and tested successfully! For details, see pipeline {{ BUILD_PIPELINE_NAME }}, build {{ BUILD_NAME }}, job {{ BUILD_JOB_NAME }}." >  ./email-text/email-body.txt
+  - put: send-email
+    params:
+      to:
+        - {{email-address-recipient}}
+      subject: ./email-text/email-subject.txt
+      body: ./email-text/email-body.txt
+
+resources:
+- name: project-release
+  type: github-release
+  source:
+    user: concourse
+    repository: concourse
+    access_token: {{github-access-token}}
+
+- name: deployment-control-repo
+  type: git
+  source:
+    uri: {{github-deployment-control-repo}}
+    branch: build
+    username: {{github-username}}
+    password: {{github-password}}
+
+- name: deployment-approval
+  type: git
+  source:
+    uri: {{github-deployment-control-repo}}
+    branch: master
+    paths:
+      - {{github-environment-control-file-path}}
+
+- name: github-tool    # https://hub.github.com
+  type: github-release
+  source:
+    user: github
+    repository: hub
+    pre_release: true
+    access_token: {{github-access-token}}
+
+- name: send-email
+  type: email
+  source:
+    from: {{email-address-sender}}
+
+resource_types:
+  - name: email
+    type: docker-image
+    source:
+      repository: mdomke/concourse-email-resource
