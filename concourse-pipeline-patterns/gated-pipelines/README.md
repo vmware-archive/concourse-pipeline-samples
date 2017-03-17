@@ -10,7 +10,7 @@ Here are a few samples of this pattern:
 
 1. [A simple gated pipeline](01-simple)  
 
-1. [Ship-it!_ A gated pipeline with notifications](02-shipit)  
+1. [Ship-it! A gated pipeline with notifications](02-shipit)  
 
 1. [A more sophisticated gated pipeline](03-shipit-enhanced)  
 
@@ -18,4 +18,4 @@ Here are a few samples of this pattern:
 
 
 
-![ShipIt gated pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/shipit-gated-pipeline.png)
+![Gated pipeline with GitHub PR](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/gated-pipeline-with-github-pr.jpg)
