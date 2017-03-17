@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 # This script performs a PCF backup using CFOPS tool
 
@@ -29,7 +29,7 @@ export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
 # create directory for cfops to store backup files in
 # mkdir $BACKUP_PARENT_DIR
-mkdir $BACKUP_FILE_DESTINATION
+mkdir -p $BACKUP_FILE_DESTINATION
 
 # cd into diretory where cfops and plugins are located in the container
 cd /usr/bin
@@ -54,7 +54,7 @@ cfops list-tiles
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
-LOG_LEVEL=debug cfops backup \
+cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
@@ -77,7 +77,7 @@ cd $BACKUP_ROOT_DIR
 
 # if [ -n "$S3_ENDPOINT" ]; then
   # s3-compatible endpoint
-  aws --no-verify-ssl --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
+  aws --no-verify-ssl --quiet --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
 # else
 #   # aws s3
 #   aws --debug s3 mv . s3://${S3_BUCKET} --recursive

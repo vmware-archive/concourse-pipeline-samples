@@ -74,6 +74,7 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
       S3_BUCKET: {{s3-bucket}}
       S3_ACCESS_KEY_ID: {{s3-access-key}}
       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
@@ -130,6 +131,7 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
       S3_BUCKET: {{s3-bucket}}
       S3_ACCESS_KEY_ID: {{s3-access-key}}
       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
@@ -150,7 +152,7 @@ jobs:
       - backup-redis
   - task: backup-rabbitmq
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
-    params:
+    params:      S3_ENDPOINT: {{s3-endpoint}}
       TARGET_TILE: rabbitmq
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
       # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
@@ -158,6 +160,7 @@ jobs:
       OPS_MANAGER_UI_PASSWORD: {{ops-manager-ui-password}}
       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
       S3_BUCKET: {{s3-bucket}}
       S3_ACCESS_KEY_ID: {{s3-access-key}}
       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
