@@ -1,6 +1,6 @@
-![Pipeline image](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/pipeline-with-clock.png)
+![Pipeline image](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/concourse-timers.png)
 
-# Time triggered pipelines
+# Time triggered CI pipelines
 
 This page provides samples of pipelines triggered by [time/scheduler resources](https://github.com/concourse/time-resource) in Concourse CI.
 

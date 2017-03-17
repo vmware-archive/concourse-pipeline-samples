@@ -4,8 +4,7 @@ In addition to the [previously provided samples](..), another gated pipeline pat
 
 This sample illustrates the usage of [GitHub's Pull Request process](https://help.github.com/articles/about-pull-requests/) to control the follow of execution of steps beyond a gated job of a CI pipeline.
 
-
-<!-- ![Gated pipeline with GitHub PR](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/shipit-gated-pipeline-enhanced.gif) -->
+![Gated pipeline with GitHub PR](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/videos/gated-pipeline-with-github-pr.mp4)
 
 
 ### Sample pipeline

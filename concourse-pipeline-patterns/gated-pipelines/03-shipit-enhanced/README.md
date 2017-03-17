@@ -1,4 +1,4 @@
-# A CI pipeline with a dynamically updated gated job name
+# A gated CI pipeline with a dynamically updated gated job name
 
 This pipeline is an enhancement to the previous [sample of a gated pipeline with notifications](../02-shipit) and contains a dynamically updated gated job name along with an additional email notification after its successful complete execution.
 
