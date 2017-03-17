@@ -45,4 +45,6 @@ Once the pipeline is un-paused in Concourse, it will:
 1. Proceed with the deployment execution only after the release manager manually triggers the gated job (e.g. click on the `Ship-version-XXX` job and then click on its `+` icon)
 
 
-##### Back to [Pipelines with gated steps](..)
+### See also
+
+- [A gated pipeline controlled by GitHub Pull Requests](../04-github-pull-request)  

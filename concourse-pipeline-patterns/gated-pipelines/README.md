@@ -8,7 +8,7 @@ The execution of jobs that perform certain tasks (e.g. deployment) targeting the
 
 Here are a few samples of this pattern:
 
-1. [A very simple gated pipeline](01-simple)  
+1. [A simple gated pipeline](01-simple)  
 
 1. [Ship-it!_ A gated pipeline with notifications](02-shipit)  
 
