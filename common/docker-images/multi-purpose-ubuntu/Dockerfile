@@ -17,9 +17,8 @@ RUN \
   mv ./jq /usr/bin && \
   apt-get -y install git && \
   apt-get -y install sshpass && \
-  wget https://github.com/pivotalservices/cfops/releases/download/v2.2.29/cfops_binaries.tgz && \
-  tar xvf ./cfops_binaries.tgz && \
-  mv ./pipeline/output/builds/linux64/cfops /usr/bin && \
+  wget https://github.com/pivotalservices/cfops/releases/download/v3.0.5/cfops && \
+  mv cfops /usr/bin && \
   cd /usr/bin && mkdir plugins && cd plugins && \
   wget https://pivotal-cfops.s3.amazonaws.com/mysql-plugin-release/linux64/v0.0.22/cfops-mysql-plugin && \
   chmod 755 cfops-mysql-plugin && \
