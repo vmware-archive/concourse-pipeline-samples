@@ -1,0 +1,49 @@
+---
+resources:
+- name: image-to-inspect
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource  # update this with targeted image repo name
+    tag: "latest-final"      # update this with targeted image tag
+
+jobs:
+- name: Inspect-Image
+  plan:
+  - get: image-to-inspect
+    params:
+      rootfs: true
+  - task: prepare-image-to-export
+    config:
+      platform: linux
+      inputs:
+        - name: image-to-inspect
+      outputs:
+        - name: export-directory
+      image_resource:
+        type: docker-image
+        source:
+          repository: pivotalservices/docker-concourse-cf-tools
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cd export-directory
+          cp ../image-to-inspect/metadata.json .
+          mkdir rootfs
+          tar -xvf ../image-to-inspect/rootfs.tar -C ./rootfs/ --exclude="dev/*"
+          cd rootfs
+          # add .keep file to all empty directories
+          find . -type d -empty -not -path "./.git/*" -exec touch {}/.keep \;
+          cd ../..
+          # hijack into container and then issue
+          # sequence of commands below to seed rootfs repo with files prepared above
+          # git clone <ROOT_FS_GIT_REPO_URL_GOES_HERE>
+          # cd <ROOT_FS_GIT_REPO_DIR>
+          # mv ../export-directory/metadata.json .
+          # mv ../export-directory/rootfs .
+          # git add .
+          # git config --global user.email "<YOUR_GIT_ACCOUNT_EMAIL_ADDRESS>"
+          # git config --global user.name "<YOUR_GIT_ACCOUNT_ID>"
+          # git commit -m "Add rootfs files"
+          # git push origin master

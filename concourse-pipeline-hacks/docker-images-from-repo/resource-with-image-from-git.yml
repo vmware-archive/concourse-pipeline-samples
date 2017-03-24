@@ -1,0 +1,36 @@
+---
+resource_types:
+- name: curl-file-resource
+  type: git
+  source:
+    uri: https://github.com/lsilvapvt/rootfs-curl-resource.git
+
+resources:
+- name: buildroot-git-image-repo
+  type: git
+  source:
+    uri: https://github.com/lsilvapvt/rootfs-buildroot-git.git
+
+- name: apache-lucene-5
+  type: curl-file-resource
+  source:
+    url: http://www-us.apache.org/dist/lucene/java/5.5.4/lucene-5.5.4.zip
+    filename: lucene-5.5.4.zip
+
+jobs:
+- name: run-and-get-files
+  plan:
+  - get: buildroot-git-image-repo
+  - get: apache-lucene-5
+  - task: run-and-get-file
+    image: buildroot-git-image-repo
+    config:
+      platform: linux
+      inputs:
+      - name: apache-lucene-5
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          find .

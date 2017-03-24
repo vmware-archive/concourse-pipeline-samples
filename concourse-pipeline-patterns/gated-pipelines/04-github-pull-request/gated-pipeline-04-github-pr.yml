@@ -72,11 +72,6 @@ jobs:
           export PATH=$PATH:$PWD/hub/bin
           hub --version
           cd ../deployment-control-repo-updated
-          # git config --global user.email "lmpsilva@hotmail.com"
-          # git config --global user.name "silval"
-          # mkdir ~/.ssh
-          # echo "$GITHUB_PRIVATEKEY" >> ~/.ssh/id_rsa
-          # chmod 600 ~/.ssh/id_rsa
           hub pull-request -m "Promote and deploy release $LATEST_GOOD_VERSION to environment Sandbox" -b master -h build
     params:
       GITHUB_USER: {{github-username}}   # https://hub.github.com/hub.1.html
