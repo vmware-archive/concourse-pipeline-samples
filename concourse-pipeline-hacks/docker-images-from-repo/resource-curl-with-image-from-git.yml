@@ -1,0 +1,35 @@
+---
+resource_types:
+- name: curl-file-resource
+  type: git
+  source:
+    uri: https://github.com/lsilvapvt/rootfs-curl-resource.git
+
+resources:
+- name: rootfs-repo
+  type: git
+  source:
+    uri: https://github.com/lsilvapvt/rootfs-curl-resource.git
+- name: apache-lucene-5
+  type: curl-file-resource
+  source:
+    url: http://www-us.apache.org/dist/lucene/java/5.5.4/lucene-5.5.4.zip
+    filename: lucene-5.5.4.zip
+
+jobs:
+- name: run-and-get-Apache-Lucene
+  plan:
+  - get: rootfs-repo
+  - get: apache-lucene-5
+  - task: run-with-rootfs-curl-repository
+    image: rootfs-repo
+    config:
+      platform: linux
+      inputs:
+      - name: apache-lucene-5
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          find .
