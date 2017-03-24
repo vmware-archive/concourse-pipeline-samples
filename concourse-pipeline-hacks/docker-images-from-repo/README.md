@@ -20,6 +20,9 @@ These are the very basic artifacts required for any [`Docker Image`](https://git
 Here is an example of a `rootfs` git repository with the required container files exported from the `curl-resource` image: https://github.com/lsilvapvt/rootfs-curl-resource.
 
 
+![Rootfs-curl-repo](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/rootfs-curl-repo.jpg)
+
+
 To use that `rootfs` repository in a pipeline, use the  [`image`](https://concourse.ci/task-step.html#task-image) parameter instead of `image_resource` when defining a task.  
 For defining [resource types](https://concourse.ci/configuring-resource-types.html) using `rootfs` repositories, use `type: git` instead of `type: docker-image` in the `resource_types` entries of the pipeline.
 
