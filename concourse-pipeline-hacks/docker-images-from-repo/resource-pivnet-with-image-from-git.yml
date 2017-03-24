@@ -1,0 +1,42 @@
+---
+resource_types:
+- name: pivnet
+  type: git
+  source:
+    uri: https://github.com/lsilvapvt/rootfs-pivnet-resource.git
+
+resources:
+- name: opsman-pivnet
+  type: pivnet
+  source:
+    api_token: YOUR-PIVNET-API-TOKEN-GOES-HERE
+    product_slug: ops-manager
+    product_version: 1.9.*
+    sort_by: semver
+  check_every: 5m
+
+- name: buildroot-git-image-repo
+  type: git
+  source:
+    uri: https://github.com/lsilvapvt/rootfs-buildroot-git.git
+
+jobs:
+- name: run-and-get-files
+  plan:
+  - get: buildroot-git-image-repo
+  - get: opsman-pivnet
+    params:
+      globs:
+      - '*AWS.pdf'
+  - task: run-and-get-file
+    image: buildroot-git-image-repo
+    config:
+      platform: linux
+      inputs:
+      - name: opsman-pivnet
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          find .
