@@ -7,8 +7,9 @@ image_resource:
     repository: concourse/buildroot
     tag: "git"
 
-inputs:
-  - name: concourse-pipeline-samples
-
 run:
-  path: concourse-pipeline-samples/common/tasks/dummy-task.sh
+  path: sh
+  args:
+  - -exc
+  - |
+    echo "Placeholder task: do something here"

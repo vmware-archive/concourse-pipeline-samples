@@ -6,9 +6,12 @@ image_resource:
   source:
     repository: concourse/buildroot
     tag: "git"
-
 inputs:
-  - name: concourse-pipeline-samples
-
+  - name: environment-artifacts
 run:
-  path: concourse-pipeline-samples/common/tasks/dummy-task.sh
+  path: sh
+  args:
+  - -exc
+  - |
+    echo "Do your integration test here"
+    find .

@@ -1,0 +1,53 @@
+---
+resources:
+- name: common-tasks
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+- name: environments
+  type: git
+  source:
+    uri: https://github.com/lsilvapvt/misc-support-files.git
+
+jobs:
+- name: Pre-tests
+  plan:
+  - get: common-tasks
+  - task: do-your-pre-test-task-here
+    file: common-tasks/common/tasks/placeholder-task.yml
+
+- name: Test-Foundation-West
+  plan:
+  - get: common-tasks
+    trigger: true
+    passed:
+      - Pre-tests
+  - get: environments
+  - task: do-your-pre-test-task-here
+    file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/integration-test.yml
+    input-mappings:
+      environment-artifacts: environments/sandbox
+
+- name: Test-Foundation-Central
+  plan:
+  - get: common-tasks
+    trigger: true
+    passed:
+      - Pre-tests
+  - get: environments
+  - task: do-your-pre-test-task-here
+    file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/integration-test.yml
+    input-mappings:
+      environment-artifacts: environments/sandbox
+
+- name: Test-Foundation-East
+  plan:
+  - get: common-tasks
+    trigger: true
+    passed:
+      - Pre-tests
+  - get: environments
+  - task: do-your-pre-test-task-here
+    file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/integration-test.yml
+    input-mappings:
+      environment-artifacts: environments/sandbox
