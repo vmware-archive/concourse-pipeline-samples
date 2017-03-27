@@ -4,7 +4,7 @@
 
 In the same fashion as a method or function in programming languages, Concourse pipeline tasks can be executed with parameterized variables, inputs and outputs.
 
-That allows for the reuse of common task definitions, for example, `package release` or `deploy application`, in multiple contexts and in multiple executions for a variety of artifacts through the use of parameters.
+That allows for the reuse of common task definitions, for example, `package release` or `deploy application`, in multiple contexts and in multiple executions for a distinct artifacts.
 
 
 ### Key-value pairs with `params`
@@ -23,6 +23,10 @@ That means that an entire input or output folder that is expected by the task (e
 Supposed that individual Docker Tutorial packages need to be created for Java
 and Go languages. Each package will contain the same tutorial files, but will
 have to ship the specific Dockerfile for the corresponding language's docker image.
+
+
+![Pipeline with parameterized task](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/tasks-param-pipeline.jpg)
+
 
 #### The generic tutorial packager task  
 

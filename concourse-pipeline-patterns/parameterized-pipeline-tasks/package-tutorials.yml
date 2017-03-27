@@ -35,7 +35,7 @@ jobs:
   - get: java-dockerfile
   - get: common-tasks
   - task: package-java-docker-tutorial
-    file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/package-with-dockerfile.yml
+    file: common-tasks/concourse-pipeline-patterns/parameterized-pipeline-tasks/tasks/package-with-dockerfile.yml
     input_mapping:
       dockerfile: java-dockerfile
     params:
@@ -50,7 +50,7 @@ jobs:
   - get: go-dockerfile
   - get: common-tasks
   - task: package-go-docker-tutorial
-    file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/package-with-dockerfile.yml
+    file: common-tasks/concourse-pipeline-patterns/parameterized-pipeline-tasks/tasks/package-with-dockerfile.yml
     input_mapping:
       dockerfile: go-dockerfile
     params:
