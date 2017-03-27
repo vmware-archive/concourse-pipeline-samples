@@ -7,7 +7,7 @@ image_resource:
     repository: concourse/buildroot
     tag: "curl-tar"
 inputs:
-  - name: tutorial-base-files
+  - name: tutorial-release
   - name: dockerfile
 outputs:
   - name: output-directory
@@ -17,8 +17,8 @@ run:
   - -exc
   - |
     echo "Add specific Dockerfile to tutorials directory"
-    cp ./dockerfile/Dockerfile ./tutorial-base-files
+    cp ./dockerfile/Dockerfile ./tutorial-release
     echo "Package Tutorials directory containing specific Dockerfile"
-    tar -cvr ./output-directory/$PACKAGE_NAME ./tutorial-base-files
+    tar -cvf ./output-directory/$PACKAGE_NAME ./tutorial-release
     ls -la ./output-directory
-    echo "After this step, save the packaged file to an artifactory repository"
+    echo "After this step, save the packaged file $PACKAGE_NAME to an artifactory repository"

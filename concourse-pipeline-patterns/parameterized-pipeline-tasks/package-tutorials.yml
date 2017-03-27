@@ -1,6 +1,6 @@
 ---
 resources:
-- name: tutorial-base-files
+- name: tutorial-release
   type: git
   source:
     uri: https://github.com/docker/labs.git
@@ -20,7 +20,7 @@ resources:
 jobs:
 - name: Check-Consistency-of-Tutorial-files
   plan:
-  - get: tutorial-base-files
+  - get: tutorial-release
     trigger: true
   - get: common-tasks
   - task: check-consistency-of-tutorial-files
@@ -28,10 +28,10 @@ jobs:
 
 - name: Package-Java-Tutorial
   plan:
-  - get: tutorial-base-files
+  - get: tutorial-release
     trigger: true
     passed:
-      - Unit-Test-Base-Tutorial-files
+      - Check-Consistency-of-Tutorial-files
   - get: java-dockerfile
   - get: common-tasks
   - task: package-java-docker-tutorial
@@ -43,10 +43,10 @@ jobs:
 
 - name: Package-Go-Tutorial
   plan:
-  - get: tutorial-base-files
+  - get: tutorial-release
     trigger: true
     passed:
-      - Unit-Test-Base-Tutorial-files
+      - Check-Consistency-of-Tutorial-files
   - get: go-dockerfile
   - get: common-tasks
   - task: package-go-docker-tutorial

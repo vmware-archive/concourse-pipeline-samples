@@ -7,6 +7,7 @@ This article provides examples of common patterns for platform operations and ap
 
 1. [Time triggered pipelines](time-triggered-pipelines)
 
+1. [Parameterized pipeline tasks](parameterized-pipeline-tasks)
 
 #### In the backlog TBD:
 
