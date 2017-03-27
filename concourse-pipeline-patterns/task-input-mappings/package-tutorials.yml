@@ -1,0 +1,57 @@
+---
+resources:
+- name: tutorial-base-files
+  type: git
+  source:
+    uri: https://github.com/docker/labs.git
+- name: java-dockerfile
+  type: git
+  source:
+    uri: https://github.com/dockerfile/java.git
+- name: go-dockerfile
+  type: git
+  source:
+    uri: https://github.com/dockerfile/go
+- name: common-tasks
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+jobs:
+- name: Check-Consistency-of-Tutorial-files
+  plan:
+  - get: tutorial-base-files
+    trigger: true
+  - get: common-tasks
+  - task: check-consistency-of-tutorial-files
+    file: common-tasks/common/tasks/placeholder-task.yml
+
+- name: Package-Java-Tutorial
+  plan:
+  - get: tutorial-base-files
+    trigger: true
+    passed:
+      - Unit-Test-Base-Tutorial-files
+  - get: java-dockerfile
+  - get: common-tasks
+  - task: package-java-docker-tutorial
+    file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/package-with-dockerfile.yml
+    input_mapping:
+      dockerfile: java-dockerfile
+    params:
+      PACKAGE_NAME: java-docker-tutorial.tgz
+
+- name: Package-Go-Tutorial
+  plan:
+  - get: tutorial-base-files
+    trigger: true
+    passed:
+      - Unit-Test-Base-Tutorial-files
+  - get: go-dockerfile
+  - get: common-tasks
+  - task: package-go-docker-tutorial
+    file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/package-with-dockerfile.yml
+    input_mapping:
+      dockerfile: go-dockerfile
+    params:
+      PACKAGE_NAME: go-docker-tutorial.tgz

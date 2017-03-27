@@ -1,0 +1,24 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: concourse/buildroot
+    tag: "curl-tar"
+inputs:
+  - name: tutorial-base-files
+  - name: dockerfile
+outputs:
+  - name: output-directory
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    echo "Add specific Dockerfile to tutorials directory"
+    cp ./dockerfile/Dockerfile ./tutorial-base-files
+    echo "Package Tutorials directory containing specific Dockerfile"
+    tar -cvr ./output-directory/$PACKAGE_NAME ./tutorial-base-files
+    ls -la ./output-directory
+    echo "After this step, save the packaged file to an artifactory repository"

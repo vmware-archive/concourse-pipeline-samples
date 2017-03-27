@@ -25,8 +25,8 @@ jobs:
   - get: environments
   - task: do-your-pre-test-task-here
     file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/integration-test.yml
-    input-mappings:
-      environment-artifacts: environments/sandbox
+    input_mapping:
+      environment-artifacts: environments/environments/sandbox
 
 - name: Test-Foundation-Central
   plan:
@@ -37,8 +37,8 @@ jobs:
   - get: environments
   - task: do-your-pre-test-task-here
     file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/integration-test.yml
-    input-mappings:
-      environment-artifacts: environments/sandbox
+    input_mapping:
+      environment-artifacts: environments/environments/sandbox
 
 - name: Test-Foundation-East
   plan:
@@ -49,5 +49,5 @@ jobs:
   - get: environments
   - task: do-your-pre-test-task-here
     file: common-tasks/concourse-pipeline-patterns/task-input-mappings/tasks/integration-test.yml
-    input-mappings:
+    input_mapping:
       environment-artifacts: environments/sandbox
