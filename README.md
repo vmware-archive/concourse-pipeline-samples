@@ -2,6 +2,12 @@
 
 This repository provides sample code and recipes on Concourse CI pipelines and deployments.
 
+- [Concourse Pipeline Patterns](concourse-pipeline-patterns)  
+[<img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/pipeline-patterns-02.png" alt="Concourse Pipeline Patterns" width="150"/>](concourse-pipeline-patterns)
+
+- [Concourse Pipeline Hacks](concourse-pipeline-hacks)  
+[<img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="150"/>](concourse-pipeline-hacks)
+
 - [Blue-Green application deployment pipeline](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)  
 [<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg" alt="Blue-Green application deployment pipeline" width="150"/>](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment)
 

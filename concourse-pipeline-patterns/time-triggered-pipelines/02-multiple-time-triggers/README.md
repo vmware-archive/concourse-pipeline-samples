@@ -10,7 +10,7 @@ Download the sample pipeline configuration file  [here](scheduled-pipeline-02.ym
 
 ![Pipeline with multiple time triggers screenshot](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/time-trigger-02.png)
 
-The sample uses a [semver resource](https://github.com/concourse/semver-resource) to control the manual triggering of the pipeline and requires an S3 repository for that.
+The sample uses a third timer resource labelled as `manualtrigger` to control the manual triggering of all steps of the pipeline in the appropriate sequence.
 
 
 ### How to test the pipeline

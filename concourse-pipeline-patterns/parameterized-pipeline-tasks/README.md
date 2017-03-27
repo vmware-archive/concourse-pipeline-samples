@@ -4,7 +4,7 @@
 
 In the same fashion as a method or function in programming languages, Concourse pipeline tasks can be executed with parameterized variables, inputs and outputs.
 
-That allows for the reuse of common task definitions, for example, `package release` or `deploy application`, in multiple contexts and in multiple executions for a distinct artifacts.
+That allows for the reuse of common task definitions, for example, `package release` or `deploy application`, in multiple contexts and in multiple executions for distinct artifacts.
 
 
 ### Key-value pairs with `params`
@@ -20,9 +20,9 @@ That means that an entire input or output folder that is expected by the task (e
 
 ### Example
 
-Supposed that individual Docker Tutorial packages need to be created for Java
-and Go languages. Each package will contain the same tutorial files, but will
-have to ship the specific Dockerfile for the corresponding language's docker image.
+Supposed that individual **Docker Tutorial packages** need to be created for `Java`
+and `Go` languages. Each package will contain the same tutorial files, but will
+have to ship the specific `Dockerfile` for the corresponding language's docker image.
 
 
 ![Pipeline with parameterized task](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/tasks-param-pipeline.jpg)
@@ -30,7 +30,7 @@ have to ship the specific Dockerfile for the corresponding language's docker ima
 
 #### The generic tutorial packager task  
 
-This is the common task that packages the tutorial files from input `tutorial-release` along with a *Dockerfile* expected from input `dockerfile` into a file name defined by environment variable `$PACKAGE_NAME`.
+The common task that packages the tutorial files from input `tutorial-release` along with a *Dockerfile* expected from input `dockerfile` into a file name defined by environment variable `$PACKAGE_NAME` would look like this:
 
 
 ```
@@ -58,10 +58,10 @@ The excerpt of a pipeline definition file below uses the task above (stored in t
 There are two jobs in the pipeline that invoke the `package-with-dockerfile.yml`
 task, each one passing in specific `input-mapping` and `params` attributes.  
 
-The `PACKAGE_NAME` param creates the environment variable that defines the package file name (e.g. `java-docker-tutorial.tgz`) to be created.
-
 The `input_mapping` section maps the expected `dockerfile` input to the resource that
 contains the corresponding *Dockerfile* for each language (e.g. `java-dockerfile` for Java, `go-dockerfile` for Go).
+
+The `PACKAGE_NAME` param creates the environment variable that defines the package file name (e.g. `java-docker-tutorial.tgz`) to be created.
 
 
 ```
