@@ -2,18 +2,21 @@
 
 # Make Concourse retrieve an older version of a resource
 
-After Concourse retrieves the latest version of a newly configured resource, it will not retrieve previous versions of that resource automatically anymore, even if refer those old versions in your pipeline parameters.
+### The problem
 
-In order to force Concourse to retrieve an older version of a resource, use the fly CLI command [`check-resource`](https://concourse.ci/fly-check-resource.html).
+After Concourse retrieves the latest version of a newly configured resource, it will not retrieve previous versions of that resource automatically anymore, even if those old versions are explicitly referred by the pipeline parameters.
 
-For example, in the sample pipeline further below, when you try to run job `unit-test` for the first time, it will be stuck waiting for the specified resource version even though [it exists](https://github.com/concourse/concourse/releases/tag/v2.6.0):
+In order to force Concourse to retrieve an older version of a resource, use the fly CLI command with [`check-resource`](https://concourse.ci/fly-check-resource.html).
 
+For example, in the sample pipeline further below, when you try to run job `unit-test` for the first time, it will get stuck waiting for Concourse to retrieve version `2.5.0` (an older version) of the `fly-release` resource while it shows the following message:
 ```
 waiting for a suitable set of input versions
-concourse-release - pinned version {"tag":"v2.6.0"} is not available
+concourse-release - pinned version {"tag":"v2.5.0"} is not available
 ```
 
-For the job to run, execute the following `fly` command to force Concourse to retrieve version `2.5.0` of the `fly-release` resource:
+### The solution
+
+For that job to run, execute the following `fly` command to force Concourse to retrieve version `2.5.0` of the `fly-release` resource:
 ```
 fly -t <your-target-alias> check-resource --resource <your-pipeline-name>/fly-release --from tag:v2.5.0
 ```

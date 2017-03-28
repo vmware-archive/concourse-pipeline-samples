@@ -2,13 +2,16 @@
 
 # Run a task container with a user other than `root`
 
+### The problem
 By default, Concourse runs pipeline tasks with user `root`.  
 Of course, this will not work for you if one of your task's image/container requires to be executed with a another user (e.g. postgres).
+
+### The solution
 
 To accommodate that requirement, Concourse provides a [`user` parameter](http://concourse.ci/running-tasks.html#task-run-user) for you to explicitly set the user to run a task container with.
 
 
-### Sample pipeline
+#### Sample pipeline
 
 The pipeline sample below declares the `user` attribute (`postgres`) as part of the task's `run` definition.
 
@@ -27,7 +30,7 @@ jobs:
           source:
             repository: postgres
         run:
-          user: postgres
+          user: postgres   # <====
           path: sh
           args:
           - -exc
