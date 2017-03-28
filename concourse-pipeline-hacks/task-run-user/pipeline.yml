@@ -1,0 +1,19 @@
+---
+jobs:
+- name: run-postgres-task
+  plan:
+  - do:
+    - task: task-with-user-postgres
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: postgres
+        run:
+          user: postgres
+          path: sh
+          args:
+          - -exc
+          - |
+            whoami

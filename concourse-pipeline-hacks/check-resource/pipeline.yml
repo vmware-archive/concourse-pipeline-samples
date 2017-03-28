@@ -1,0 +1,28 @@
+---
+resources:
+- name: fly-release
+  type: github-release
+  source:
+    user: concourse
+    repository: concourse
+jobs:
+- name: unit-test
+  plan:
+  - do:
+    - get: fly-release
+      version: { tag: 'v2.5.0' }
+      params: { globs: ["fly_linux_amd64"] }
+    - task: test-release
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source: { repository: alpine }
+        inputs:
+        - name: fly-release
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            cat ./fly-release/version
