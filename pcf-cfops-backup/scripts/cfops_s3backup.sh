@@ -25,9 +25,9 @@ export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
 # For environments where OpsMngr hostname is not setup in concourse subnet, otherwise comment out the echo line
 # It adds ops manager private IP to /etc/hosts, to do ssh using its hostname in the Concourse subnet
-if [ "$OPS_MANAGER_PRIVATE_IP_ADDRESS" -ne "0.0.0.0" ]; then
+if [[ "$OPS_MANAGER_PRIVATE_IP_ADDRESS" != "0.0.0.0" ]]; then
   echo "$OPS_MANAGER_PRIVATE_IP_ADDRESS $OPS_MANAGER_HOSTNAME" >> /etc/hosts
-fi  
+fi
 
 # create directory for cfops to store backup files in
 # mkdir $BACKUP_PARENT_DIR
