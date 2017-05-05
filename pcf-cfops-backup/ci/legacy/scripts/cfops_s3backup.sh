@@ -7,7 +7,7 @@ set -e
 export CFOPS_OM_USER=$OPS_MANAGER_SSH_USER
 export CFOPS_OM_PASS=$OPS_MANAGER_SSH_PASSWORD
 export CFOPS_CLIENT_ID=$UAA_CLIENT_ID
-export CFOPS_CLIENT_SECRET=$UAA_CLIENT_SECRET
+export CFOPS_CLIENT_SECRET=$OPS_MANAGER_UI_PASSWORD
 
 # calculate date string in the format YYYYMMDDHH, which will be used as parent directory for backups
 export DATESTRING=$(date +"%Y%m%d%H")
@@ -32,11 +32,11 @@ export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 mkdir -p $BACKUP_FILE_DESTINATION
 
 # cd into diretory where cfops and plugins are located in the container
-cd ./cfops
+cd /usr/bin
 
 # set token
 # uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
-# uaac token client get $UAA_CLIENT_ID -s $UAA_CLIENT_SECRET
+# uaac token client get $UAA_CLIENT_ID -s $OPS_MANAGER_UI_PASSWORD
 # export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
 
 # TBD: Force all user sessions to finish on Ops Manager to avoid cfops failure
@@ -48,13 +48,13 @@ cd ./cfops
 #  curl "https://<your-ops-man-ip-goes-here>/api/v0/sessions" -d ' ' -X DELETE -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/x-www-form-urlencoded" --insecure -vv
 
 # for debugging purposes, check which tiles are available for cfops in the image
-./cfops version
-./cfops list-tiles
+cfops version
+cfops list-tiles
 
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
-./cfops backup \
+cfops backup \
     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
     -d $BACKUP_FILE_DESTINATION \
     --tile $TARGET_TILE
