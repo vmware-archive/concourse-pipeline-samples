@@ -21,6 +21,7 @@ resources:
     user: pivotalservices
     repository: cfops
     access_token: {{github_token}}
+    drafts: true
 
 - name: cfops-redis-plugin
   type: github-release

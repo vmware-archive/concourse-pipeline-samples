@@ -6,10 +6,8 @@ set -e
 # set environment variables to be used by cfops command
 export CFOPS_OM_USER=$OPS_MANAGER_SSH_USER
 export CFOPS_OM_PASS=$OPS_MANAGER_SSH_PASSWORD
-# export CFOPS_CLIENT_ID=$UAA_CLIENT_ID
-# export CFOPS_CLIENT_SECRET=$UAA_CLIENT_SECRET
-export CFOPS_ADMIN_PASS=$UAA_CLIENT_ID
-export CFOPS_ADMIN_USER=$UAA_CLIENT_SECRET
+export CFOPS_CLIENT_ID=$UAA_CLIENT_ID
+export CFOPS_CLIENT_SECRET=$UAA_CLIENT_SECRET
 
 # calculate date string in the format YYYYMMDDHH, which will be used as parent directory for backups
 export DATESTRING=$(date +"%Y%m%d%H")
