@@ -71,12 +71,10 @@ jobs:
   #   trigger: true
   - get: cfops-release
     params: {globs: [cfops_linux64]}
-  - get: cfops-redis-plugin
-    params: {globs: [cfops-redis-plugin_binaries.tgz]}
   - task: prepare-cfops
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
     input_mapping:
-      plugin-release: cfops-redis-plugin
+      plugin-release: cfops-release
     params:
       PLUGIN_DIR: NONE
 
@@ -115,13 +113,11 @@ jobs:
     trigger: false
   - get: cfops-release
     params: {globs: [cfops_linux64]}
-  - get: cfops-redis-plugin
-    params: {globs: [cfops-redis-plugin_binaries.tgz]}
 
   - task: prepare-cfops
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
     input_mapping:
-      plugin-release: cfops-redis-plugin
+      plugin-release: cfops-release
     params:
       PLUGIN_DIR: NONE
 
