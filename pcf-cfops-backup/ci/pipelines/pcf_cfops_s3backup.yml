@@ -77,6 +77,8 @@ jobs:
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
     input_mapping:
       plugin-release: cfops-redis-plugin
+    params:
+      PLUGIN_DIR: NONE
 
   - task: backup-opsman
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
@@ -120,6 +122,8 @@ jobs:
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
     input_mapping:
       plugin-release: cfops-redis-plugin
+    params:
+      PLUGIN_DIR: NONE
 
   - task: backup-elastic-runtime
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
@@ -163,6 +167,8 @@ jobs:
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
     input_mapping:
       plugin-release: cfops-mysql-plugin
+    params:
+      PLUGIN_DIR: ./pipeline/output/builds/linux64
 
   - task: backup-mysql
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
@@ -204,6 +210,8 @@ jobs:
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
     input_mapping:
       plugin-release: cfops-redis-plugin
+    params:
+      PLUGIN_DIR: ./pipeline/output/builds/linux64
 
   - task: backup-redis
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
@@ -247,6 +255,8 @@ jobs:
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
     input_mapping:
       plugin-release: cfops-rabbitmq-plugin
+    params:
+      PLUGIN_DIR: ./pipeline/output/linux64
 
   - task: backup-rabbitmq
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml

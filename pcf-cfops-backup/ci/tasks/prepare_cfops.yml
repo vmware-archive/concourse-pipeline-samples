@@ -23,15 +23,17 @@ run:
   args:
   - -exc
   - |
-    find .
     # prepares cfops
     mv ./cfops-release/cfops_linux64 ./cfops/cfops
     chmod +x ./cfops/cfops
-    # prepares plugin
-    mkdir ./cfops/plugins
-    tar xvf ./plugin-release/*.tgz
-    mv ./pipeline/output/builds/linux64/* ./cfops/plugins
-    chmod 755 ./cfops/plugins/*
+
+    if [[ "$PLUGIN_DIR" != "NONE" ]]; then
+      # prepares plugin
+      mkdir ./cfops/plugins
+      tar xvf ./plugin-release/*.tgz
+      mv $PLUGIN_DIR/* ./cfops/plugins
+      chmod 755 ./cfops/plugins/*
+    fi
     find .
 
     # tar xvf ./cfops-redis-plugin/cfops-redis-plugin_binaries.tgz
