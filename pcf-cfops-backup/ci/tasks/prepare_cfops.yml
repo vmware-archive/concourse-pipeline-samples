@@ -10,10 +10,11 @@ image_resource:
 inputs:
   - name: pcf-backup-scripts
   - name: cfops-release
-  - name: cfops-redis-plugin
-  - name: cfops-rabbitmq-plugin
-  - name: cfops-mysql-plugin
-  
+  - name: plugin-release
+  # - name: cfops-redis-plugin
+  # - name: cfops-rabbitmq-plugin
+  # - name: cfops-mysql-plugin
+
 outputs:
   - name: cfops
 
@@ -26,13 +27,16 @@ run:
     # prepares cfops
     mv ./cfops-release/cfops_linux64 ./cfops/cfops
     chmod +x ./cfops/cfops
-    # prepares plugins
+    # prepares plugin
     mkdir ./cfops/plugins
-    tar xvf ./cfops-redis-plugin/cfops-redis-plugin_binaries.tgz
-    mv ./pipeline/output/builds/linux64/cfops-redis-plugin ./cfops/plugins
-    tar xvf ./cfops-rabbitmq-plugin/cfops-rabbitmq-plugin_binaries.tgz
-    mv ./pipeline/output/linux64/cfops-rabbitmq-plugin ./cfops/plugins
-    tar xvf ./cfops-mysql-plugin/cfops-mysql-plugin_binaries.tgz
-    mv ./pipeline/output/builds/linux64/cfops-mysql-plugin ./cfops/plugins
+    tar xvf ./plugin-release/*.tgz
+    mv ./pipeline/output/builds/linux64/* ./cfops/plugins
     chmod 755 ./cfops/plugins/*
     find .
+
+    # tar xvf ./cfops-redis-plugin/cfops-redis-plugin_binaries.tgz
+    # mv ./pipeline/output/builds/linux64/cfops-redis-plugin ./cfops/plugins
+    # tar xvf ./cfops-rabbitmq-plugin/cfops-rabbitmq-plugin_binaries.tgz
+    # mv ./pipeline/output/linux64/cfops-rabbitmq-plugin ./cfops/plugins
+    # tar xvf ./cfops-mysql-plugin/cfops-mysql-plugin_binaries.tgz
+    # mv ./pipeline/output/builds/linux64/cfops-mysql-plugin ./cfops/plugins

@@ -1,13 +1,3 @@
-# groups:
-# - name: Backup
-#   jobs:
-#   - backup-opsman
-#   - backup-elastic-runtime
-#   - backup-mysql
-#   - backup-redis
-#   - backup-rabbitmq
-# clean up of old backup files can be performed using an bucket lifecycle policy
-
 resources:
 - name: pcf-backup-scripts
   type: git
@@ -15,13 +5,17 @@ resources:
     branch: lsilva
     uri: {{git-project-url}}
 
+- name: manualtrigger
+  type: time           # technique to trigger and propagate manual execution through pipeline
+  source:
+    interval: 1m
+
 - name: cfops-release
   type: github-release
   source:
     user: pivotalservices
     repository: cfops
     access_token: {{github_token}}
-    drafts: true
 
 - name: cfops-redis-plugin
   type: github-release
@@ -57,53 +51,56 @@ resources:
 #     stop: 2:00 PM -0500
 
 jobs:
-# - name: backup-opsman
-#   serial: true
-#   plan:
-#   - get: pcf-backup-scripts
-#     trigger: false
-#   - get: trigger-daily-after-12am
-#     trigger: true
-#   - get: trigger-daily-after-12pm
-#     trigger: true
-#   - task: backup-opsman
-#     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
-#     params:
-#       TARGET_TILE: ops-manager
-#       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
-      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
-#       UAA_CLIENT_ID: {{uaa-client-id}}
-#       UAA_CLIENT_SECRET: {{uaa-client-secret}}
-#       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
-#       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-#       S3_ENDPOINT: {{s3-endpoint}}
-#       S3_BUCKET: {{s3-bucket}}
-#       S3_ACCESS_KEY_ID: {{s3-access-key}}
-#       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
-#       S3_SIGNATURE_VERSION: {{s3-signature-version}}
+- name: Manual-trigger
+  plan:
+  - get: manualtrigger
+    trigger: false
+
+- name: backup-opsman
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - Manual-trigger
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  # - get: trigger-daily-after-12pm
+  #   trigger: true
+  - get: cfops-release
+    params: {globs: [cfops_linux64]}
+  - get: cfops-redis-plugin
+    params: {globs: [cfops-redis-plugin_binaries.tgz]}
+  - task: prepare-cfops
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
+    input_mapping:
+      plugin-release: cfops-redis-plugin
+
+  - task: backup-opsman
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: ops-manager
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
 
 - name: backup-elastic-runtime
   serial: true
   plan:
-  - get: pcf-backup-scripts
-    trigger: false
-  - get: cfops-release
-    params:
-      globs:
-      - cfops_linux64
-  - get: cfops-redis-plugin
-    params:
-      globs:
-      - cfops-redis-plugin_binaries.tgz
-  - get: cfops-rabbitmq-plugin
-    params:
-      globs:
-      - cfops-rabbitmq-plugin_binaries.tgz
-  - get: cfops-mysql-plugin
-    params:
-      globs:
-      - cfops-mysql-plugin_binaries.tgz
-
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-opsman
   # - get: trigger-daily-after-12am
   #   trigger: true
   #   passed:
@@ -112,8 +109,17 @@ jobs:
   #   trigger: true
   #   passed:
   #     - backup-opsman
+  - get: pcf-backup-scripts
+    trigger: false
+  - get: cfops-release
+    params: {globs: [cfops_linux64]}
+  - get: cfops-redis-plugin
+    params: {globs: [cfops-redis-plugin_binaries.tgz]}
+
   - task: prepare-cfops
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
+    input_mapping:
+      plugin-release: cfops-redis-plugin
 
   - task: backup-elastic-runtime
     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
@@ -131,88 +137,154 @@ jobs:
       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
       S3_SIGNATURE_VERSION: {{s3-signature-version}}
 
-# - name: backup-mysql
-#   serial: true
-#   plan:
-#   - get: pcf-backup-scripts
-#     trigger: false
-#   - get: trigger-daily-after-12am
-#     trigger: true
-#     passed:
-#       - backup-elastic-runtime
-#   - get: trigger-daily-after-12pm
-#     trigger: true
-#     passed:
-#       - backup-elastic-runtime
-#   - task: backup-mysql
-#     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
-#     params:
-#       TARGET_TILE: mysql-tile
-#       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
-      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
-#       UAA_CLIENT_ID: {{uaa-client-id}}
-#       UAA_CLIENT_SECRET: {{uaa-client-secret}}
-#       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
-#       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-#       S3_BUCKET: {{s3-bucket}}
-#       S3_ACCESS_KEY_ID: {{s3-access-key}}
-#       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
-#       S3_SIGNATURE_VERSION: {{s3-signature-version}}
-#
-# - name: backup-redis
-#   serial: true
-#   plan:
-#   - get: pcf-backup-scripts
-#     trigger: false
-#   - get: trigger-daily-after-12am
-#     trigger: true
-#     passed:
-#       - backup-mysql
-#   - get: trigger-daily-after-12pm
-#     trigger: true
-#     passed:
-#       - backup-mysql
-#   - task: backup-redis
-#     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
-#     params:
-#       TARGET_TILE: redis-tile
-#       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
-      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
-#       UAA_CLIENT_ID: {{uaa-client-id}}
-#       UAA_CLIENT_SECRET: {{uaa-client-secret}}
-#       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
-#       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-#       S3_ENDPOINT: {{s3-endpoint}}
-#       S3_BUCKET: {{s3-bucket}}
-#       S3_ACCESS_KEY_ID: {{s3-access-key}}
-#       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
-#       S3_SIGNATURE_VERSION: {{s3-signature-version}}
-#
-# - name: backup-rabbitmq
-#   serial: true
-#   plan:
-#   - get: pcf-backup-scripts
-#     trigger: false
-#   - get: trigger-daily-after-12am
-#     trigger: true
-#     passed:
-#       - backup-redis
-#   - get: trigger-daily-after-12pm
-#     trigger: true
-#     passed:
-#       - backup-redis
-#   - task: backup-rabbitmq
-#     file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
-#     params:      S3_ENDPOINT: {{s3-endpoint}}
-#       TARGET_TILE: rabbitmq
-#       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
-      # OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
-#       UAA_CLIENT_ID: {{uaa-client-id}}
-#       UAA_CLIENT_SECRET: {{uaa-client-secret}}
-#       OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
-#       OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
-#       S3_ENDPOINT: {{s3-endpoint}}
-#       S3_BUCKET: {{s3-bucket}}
-#       S3_ACCESS_KEY_ID: {{s3-access-key}}
-#       S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
-#       S3_SIGNATURE_VERSION: {{s3-signature-version}}
+- name: backup-mysql
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-elastic-runtime
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-elastic-runtime
+  # - get: trigger-daily-after-12pm
+  #   trigger: true
+  #   passed:
+  #     - backup-elastic-runtime
+  - get: cfops-release
+    params: {globs: [cfops_linux64]}
+  - get: cfops-mysql-plugin
+    params: {globs: [cfops-mysql-plugin_binaries.tgz]}
+
+  - task: prepare-cfops
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
+    input_mapping:
+      plugin-release: cfops-mysql-plugin
+
+  - task: backup-mysql
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: mysql-tile
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+
+- name: backup-redis
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-mysql
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-mysql
+  # - get: trigger-daily-after-12pm
+  #   trigger: true
+  #   passed:
+  #     - backup-mysql
+  - get: cfops-release
+    params: {globs: [cfops_linux64]}
+  - get: cfops-redis-plugin
+    params: {globs: [cfops-redis-plugin_binaries.tgz]}
+  - task: prepare-cfops
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
+    input_mapping:
+      plugin-release: cfops-redis-plugin
+
+  - task: backup-redis
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: redis-tile
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+
+- name: backup-rabbitmq
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-redis
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-redis
+  # - get: trigger-daily-after-12pm
+  #   trigger: true
+  #   passed:
+  #     - backup-redis
+  - get: cfops-release
+    params: {globs: [cfops_linux64]}
+  - get: cfops-rabbitmq-plugin
+    params: {globs: [cfops-rabbitmq-plugin_binaries.tgz]}
+
+  - task: prepare-cfops
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops.yml
+    input_mapping:
+      plugin-release: cfops-rabbitmq-plugin
+
+  - task: backup-rabbitmq
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: rabbitmq
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      OPS_MANAGER_PRIVATE_IP_ADDRESS: {{ops-manager-private-ip}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+
+groups:
+- name: All
+  jobs:
+  - Manual-trigger
+  - backup-opsman
+  - backup-elastic-runtime
+  - backup-mysql
+  - backup-redis
+  - backup-rabbitmq
+- name: OpsMan
+  jobs:
+  - backup-opsman
+- name: Elastic Runtime
+  jobs:
+  - backup-elastic-runtime
+- name: MySQL
+  jobs:
+  - backup-mysql
+- name: Redis
+  jobs:
+  - backup-redis
+- name: RabbitMQ
+  jobs:
+  - backup-rabbitmq

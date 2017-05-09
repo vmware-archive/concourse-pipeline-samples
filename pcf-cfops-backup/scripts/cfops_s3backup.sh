@@ -56,10 +56,10 @@ cd ./cfops
 echo "Executing cfops command..."
 
 # create backup file for the targeted tile and stores it in the output directory
-./cfops backup \
-    --opsmanagerhost $OPS_MANAGER_HOSTNAME \
-    -d $BACKUP_FILE_DESTINATION \
-    --tile $TARGET_TILE
+# ./cfops backup \
+#     --opsmanagerhost $OPS_MANAGER_HOSTNAME \
+#     -d $BACKUP_FILE_DESTINATION \
+#     --tile $TARGET_TILE
 
 # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
 cd $BACKUP_FILE_DESTINATION
@@ -79,7 +79,7 @@ cd $BACKUP_ROOT_DIR
 
 # if [ -n "$S3_ENDPOINT" ]; then
   # s3-compatible endpoint
-  aws --no-verify-ssl --quiet --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
+  # aws --no-verify-ssl --quiet --endpoint-url=${S3_ENDPOINT} s3 mv . s3://${S3_BUCKET} --recursive
 # else
 #   # aws s3
 #   aws --debug s3 mv . s3://${S3_BUCKET} --recursive
