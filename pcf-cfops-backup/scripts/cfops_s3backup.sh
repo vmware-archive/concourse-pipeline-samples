@@ -83,4 +83,5 @@ cd $BACKUP_ROOT_DIR
 #   aws --debug s3 mv . s3://${S3_BUCKET} --recursive
 # fi
 # Found teh containers were still hanging around and using a lot of disk space, remvoing the backup files as workaround.
+cd $BUILD_DIR
 rm -rf $BACKUP_ROOT_DIR
