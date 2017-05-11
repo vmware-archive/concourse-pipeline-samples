@@ -1,0 +1,311 @@
+resources:
+- name: pcf-backup-scripts
+  type: git
+  source:
+    branch: lsilva
+    uri: {{git-project-url}}
+
+- name: manualtrigger
+  type: time           # technique to trigger and propagate manual execution through pipeline
+  source:
+    interval: 1m
+
+- name: cfops-release
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops
+    access_token: {{github_token}}
+
+- name: cfops-redis-plugin
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops-redis-plugin
+    access_token: {{github_token}}
+
+- name: cfops-rabbitmq-plugin
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops-rabbitmq-plugin
+    access_token: {{github_token}}
+
+- name: cfops-mysql-plugin
+  type: github-release
+  source:
+    user: pivotalservices
+    repository: cfops-mysql-plugin
+    access_token: {{github_token}}
+
+- name: s3cmd-release
+  type: github-release
+  source:
+    user: s3tools
+    repository: s3cmd
+    access_token: {{github_token}}
+
+# - name: trigger-daily-after-12am
+#   type: time
+#   source:
+#     start: 12:00 AM -0500
+#     stop: 2:00 AM -0500
+
+jobs:
+- name: Manual-trigger
+  plan:
+  - get: manualtrigger
+    trigger: false
+
+- name: Pre-backup-tasks
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - Manual-trigger
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - Manual-trigger
+  - get: cfops-release
+    params: {globs: [cfops_linux64]}
+  - get: cfops-mysql-plugin
+    params: {globs: [cfops-mysql-plugin_binaries.tgz]}
+  - get: cfops-redis-plugin
+    params: {globs: [cfops-redis-plugin_binaries.tgz]}
+  - get: cfops-rabbitmq-plugin
+    params: {globs: [cfops-rabbitmq-plugin_binaries.tgz]}
+  - get: s3cmd-release
+    params: {globs: [s3cmd-*.tar.gz]}
+
+  - task: prepare-cfops-and-all-plugins
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/prepare_cfops_and_all_plugins.yml
+
+  - task: pre-backup-tasks
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/pre_backup_tasks.yml
+    params:
+      JUMPBOX_ADDRESS: {{jumpbox-ip-or-hostname}}
+      JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
+      JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
+      FILE_TRANSFER_METHOD: {{file-transfer-method}}
+
+- name: backup-opsman
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - Pre-backup-tasks
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+
+  - task: backup-opsman
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: ops-manager
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_DESTINATION_PATH: {{s3-destination-path}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+      S3_USE_S3CMD_SSL: {{s3-use-s3cmd-ssl}}
+      JUMPBOX_ADDRESS: {{jumpbox-ip-or-hostname}}
+      JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
+      JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
+      FILE_TRANSFER_METHOD: {{file-transfer-method}}
+
+- name: backup-elastic-runtime
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-opsman
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-opsman
+  - get: pcf-backup-scripts
+    trigger: false
+
+  - task: backup-elastic-runtime
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: elastic-runtime
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_DESTINATION_PATH: {{s3-destination-path}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+      S3_USE_S3CMD_SSL: {{s3-use-s3cmd-ssl}}
+      JUMPBOX_ADDRESS: {{jumpbox-ip-or-hostname}}
+      JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
+      JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
+      FILE_TRANSFER_METHOD: {{file-transfer-method}}
+
+- name: backup-mysql
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-elastic-runtime
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-elastic-runtime
+
+  - task: backup-mysql
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: mysql-tile
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_DESTINATION_PATH: {{s3-destination-path}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+      S3_USE_S3CMD_SSL: {{s3-use-s3cmd-ssl}}
+      JUMPBOX_ADDRESS: {{jumpbox-ip-or-hostname}}
+      JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
+      JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
+      FILE_TRANSFER_METHOD: {{file-transfer-method}}
+
+- name: backup-redis
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-mysql
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-mysql
+
+  - task: backup-redis
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: redis-tile
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_DESTINATION_PATH: {{s3-destination-path}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+      S3_USE_S3CMD_SSL: {{s3-use-s3cmd-ssl}}
+      JUMPBOX_ADDRESS: {{jumpbox-ip-or-hostname}}
+      JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
+      JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
+      FILE_TRANSFER_METHOD: {{file-transfer-method}}
+
+- name: backup-rabbitmq
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-redis
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-redis
+
+  - task: backup-rabbitmq
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    params:
+      TARGET_TILE: rabbitmq
+      OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
+      UAA_CLIENT_ID: {{uaa-client-id}}
+      UAA_CLIENT_SECRET: {{uaa-client-secret}}
+      OPS_MANAGER_SSH_USER: {{ops-manager-ssh-user}}
+      OPS_MANAGER_SSH_PASSWORD: {{ops-manager-ssh-password}}
+      S3_ENDPOINT: {{s3-endpoint}}
+      S3_BUCKET: {{s3-bucket}}
+      S3_DESTINATION_PATH: {{s3-destination-path}}
+      S3_ACCESS_KEY_ID: {{s3-access-key}}
+      S3_SECRET_ACCESS_KEY: {{s3-secret-access-key}}
+      S3_SIGNATURE_VERSION: {{s3-signature-version}}
+      S3_USE_S3CMD_SSL: {{s3-use-s3cmd-ssl}}
+      JUMPBOX_ADDRESS: {{jumpbox-ip-or-hostname}}
+      JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
+      JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
+      FILE_TRANSFER_METHOD: {{file-transfer-method}}
+
+- name: Post-backup-tasks
+  serial: true
+  plan:
+  - get: manualtrigger
+    trigger: true
+    passed:
+      - backup-rabbitmq
+  - get: pcf-backup-scripts
+    trigger: false
+  # - get: trigger-daily-after-12am
+  #   trigger: true
+  #   passed:
+  #     - backup-rabbitmq
+  - task: post-backup-task
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/post_backup_tasks.yml
+    params:
+      JUMPBOX_ADDRESS: {{jumpbox-ip-or-hostname}}
+      JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
+      JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
+      FILE_TRANSFER_METHOD: {{file-transfer-method}}
+
+# groups:
+# - name: All
+#   jobs:
+#   - Manual-trigger
+#   - backup-opsman
+#   - backup-elastic-runtime
+#   - backup-mysql
+#   - backup-redis
+#   - backup-rabbitmq
+# - name: OpsMan
+#   jobs:
+#   - backup-opsman
+# - name: Elastic Runtime
+#   jobs:
+#   - backup-elastic-runtime
+# - name: MySQL
+#   jobs:
+#   - backup-mysql
+# - name: Redis
+#   jobs:
+#   - backup-redis
+# - name: RabbitMQ
+#   jobs:
+#   - backup-rabbitmq
