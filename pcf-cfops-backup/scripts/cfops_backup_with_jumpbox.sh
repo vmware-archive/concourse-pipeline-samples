@@ -11,8 +11,7 @@ export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
 export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
 export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
-s3cfops_method="s3cfops"
-if [[ "$FILE_TRANSFER_METHOD" == "$s3cmd_method"]]; then
+if [ "$FILE_TRANSFER_METHOD" == "s3cfops" ]; then
   export S3_BUCKET_NAME=$S3_BUCKET
   export S3_ACTIVE=true
   export S3_DOMAIN=$S3_ENDPOINT
@@ -51,11 +50,6 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
 
      cd $BUILD_ROOT_DIR/cfops
 
-     # cleanup lefover of scp command
-     set -e
-     rm ./plugins/._*
-     set +3
-
      ./cfops version
      ./cfops list-tiles
 
@@ -73,8 +67,7 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
 
       cd $BUILD_ROOT_DIR
 
-      s3cmd_method="s3cmd"
-      if [[ "$FILE_TRANSFER_METHOD" == "$s3cmd_method"]]; then
+      if [ "$FILE_TRANSFER_METHOD" == "s3cmd" ]; then
         SSL_PARAM=""
         trueValue="true"
         [ "${S3_USE_S3CMD_SSL,,}" = "${trueValue,,}" ] && SSL_PARAM="--ssl";

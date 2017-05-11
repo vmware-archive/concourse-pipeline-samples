@@ -8,8 +8,7 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
 # copy cfops files to jumbox
 sshpass -p "$JUMPBOX_SSH_PASSWORD" scp -o "StrictHostKeyChecking=no" -pr ./cfops/* "$JUMPBOX_SSH_USER"@$JUMPBOX_ADDRESS:$BUILD_ROOT_DIR/cfops
 
-s3cmd_method="s3cmd"
-if [[ "$FILE_TRANSFER_METHOD" == "$s3cmd_method"]]; then
+if [ "$FILE_TRANSFER_METHOD" == "s3cmd" ]; then
     # copy s3cmd tool to jumpbox
     sshpass -p "$JUMPBOX_SSH_PASSWORD" scp -o "StrictHostKeyChecking=no" -pr ./s3cmd-release/* "$JUMPBOX_SSH_USER"@$JUMPBOX_ADDRESS:$BUILD_ROOT_DIR
 fi
