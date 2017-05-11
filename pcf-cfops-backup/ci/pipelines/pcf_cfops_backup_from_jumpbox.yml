@@ -124,6 +124,7 @@ jobs:
       JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
       JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
       FILE_TRANSFER_METHOD: {{file-transfer-method}}
+      TERMINATE_USER_SESSIONS: {{auto-terminate-user-sessions}}
 
 - name: backup-elastic-runtime
   serial: true
@@ -159,6 +160,7 @@ jobs:
       JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
       JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
       FILE_TRANSFER_METHOD: {{file-transfer-method}}
+      TERMINATE_USER_SESSIONS: {{auto-terminate-user-sessions}}
 
 - name: backup-mysql
   serial: true
@@ -193,6 +195,7 @@ jobs:
       JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
       JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
       FILE_TRANSFER_METHOD: {{file-transfer-method}}
+      TERMINATE_USER_SESSIONS: {{auto-terminate-user-sessions}}
 
 - name: backup-redis
   serial: true
@@ -228,6 +231,7 @@ jobs:
       JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
       JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
       FILE_TRANSFER_METHOD: {{file-transfer-method}}
+      TERMINATE_USER_SESSIONS: {{auto-terminate-user-sessions}}
 
 - name: backup-rabbitmq
   serial: true
@@ -263,6 +267,7 @@ jobs:
       JUMPBOX_SSH_USER: {{jumpbox-ssh-user}}
       JUMPBOX_SSH_PASSWORD: {{jumpbox-ssh-password}}
       FILE_TRANSFER_METHOD: {{file-transfer-method}}
+      TERMINATE_USER_SESSIONS: {{auto-terminate-user-sessions}}
 
 - name: Post-backup-tasks
   serial: true

@@ -11,12 +11,6 @@ export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
 export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
 export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
 
-if [ "$FILE_TRANSFER_METHOD" == "s3cfops" ]; then
-  export S3_BUCKET_NAME=$S3_BUCKET
-  export S3_ACTIVE=true
-  export S3_DOMAIN=$S3_ENDPOINT
-fi
-
 sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_SSH_USER"@$JUMPBOX_ADDRESS \
    bash -c "'
      export CFOPS_OM_USER=$OPS_MANAGER_SSH_USER
@@ -25,6 +19,12 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
      export CFOPS_CLIENT_SECRET=$UAA_CLIENT_SECRET
      export DATESTRING=$(date +"%Y%m%d%H")
 
+     if [ "$FILE_TRANSFER_METHOD" == "s3cfops" ]; then
+       export S3_BUCKET_NAME=$S3_BUCKET
+       export S3_ACTIVE=true
+       export S3_DOMAIN=$S3_ENDPOINT
+     fi
+
      export BUILD_DIR=$BUILD_ROOT_DIR
      export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
      export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
@@ -32,11 +32,13 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
      env | grep CFOPS
      mkdir -p $BACKUP_FILE_DESTINATION
 
-     # Terminate current user session with OpsManager UI
-     uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
-     uaac token client get $UAA_CLIENT_ID -s $UAA_CLIENT_SECRET
-     export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
-     curl "https://$OPS_MANAGER_HOSTNAME/api/v0/sessions" -d " " -X DELETE -H "Authorization: Bearer $CFOPS_ADMIN_TOKEN" -H "Content-Type: application/x-www-form-urlencoded" --insecure -vv
+     if [ "$TERMINATE_USER_SESSIONS" == "true" ]; then
+         # Terminate current user session with OpsManager UI
+         uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
+         uaac token client get $UAA_CLIENT_ID -s $UAA_CLIENT_SECRET
+         export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
+         curl "https://$OPS_MANAGER_HOSTNAME/api/v0/sessions" -d " " -X DELETE -H "Authorization: Bearer $(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")" -H "Content-Type: application/x-www-form-urlencoded" --insecure -vv
+     fi
 
      cd $BUILD_ROOT_DIR/cfops
 
@@ -73,7 +75,7 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
 
       echo Removing produced backup files from jumpbox
       set +e
-      rm -R $BACKUP_FILE_DESTINATION
+      rm -R $BACKUP_ROOT_DIR
       set -e
 
       echo Done executing backup for tile on jumpbox
