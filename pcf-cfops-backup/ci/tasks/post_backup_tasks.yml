@@ -7,5 +7,8 @@ image_resource:
     repository: pivotalservices/awscli-ubuntu
     tag: "latest"
 
+inputs:
+  - name: pcf-backup-scripts
+
 run:
   path: pcf-backup-scripts/pcf-cfops-backup/scripts/post_backup_tasks.sh

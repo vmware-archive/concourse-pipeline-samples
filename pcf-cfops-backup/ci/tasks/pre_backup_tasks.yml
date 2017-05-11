@@ -8,6 +8,7 @@ image_resource:
     tag: "latest"
 
 inputs:
+  - name: pcf-backup-scripts
   - name: cfops
   - name: s3cmd-release
 
