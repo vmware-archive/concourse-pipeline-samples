@@ -3,7 +3,7 @@ set -xe
 
 # sudo apt-get install sshpass
 
-export BUILD_ROOT_DIR=$PWD
+export BUILD_ROOT_DIR=/tmp
 
 export DATESTRING=$(date +"%Y%m%d%H")
 export BUILD_DIR=$BUILD_ROOT_DIR
@@ -37,13 +37,14 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
      ./cfops version
      ./cfops list-tiles
 
-     echo "Executing cfops command..."
+     echo Executing cfops command...
+
      ./cfops backup \
          --opsmanagerhost $OPS_MANAGER_HOSTNAME \
          -d $BACKUP_FILE_DESTINATION \
          --tile $TARGET_TILE
 
-      echo "cfops execution for tile $TARGET_TILE completed"
+      echo cfops execution completed
 
       # for debugging purposes, list produced backup files which will be made available to next pipeline task in the output directory
       cd $BACKUP_FILE_DESTINATION
@@ -56,7 +57,7 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
         trueValue="true"
         [ "${S3_USE_S3CMD_SSL,,}" = "${trueValue,,}" ] && SSL_PARAM="--ssl";
 
-        echo "Copying produced backup files to S3 bucket using s3cmd"
+        echo Copying produced backup files to S3 bucket using s3cmd
         ./s3cmd/s3cmd --access_key=$S3_ACCESS_KEY_ID \
                       --secret_key=$S3_SECRET_ACCESS_KEY \
                       $SSL_PARAM --host=$S3_ENDPOINT \
@@ -64,11 +65,10 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
                       put backup.log s3://$S3_BUCKET$S3_DESTINATION_PATH/
       fi
 
-      echo "Removing produced backup files from jumpbox"
+      echo Removing produced backup files from jumpbox
       set +e
       rm -R $BACKUP_FILE_DESTINATION
       set -e
 
-      echo "Done executing backup for tile $TARGET_TILE on jumpbox."
-
+      echo Done executing backup for tile on jumpbox
    '"
