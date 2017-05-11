@@ -32,6 +32,12 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
      env | grep CFOPS
      mkdir -p $BACKUP_FILE_DESTINATION
 
+     # Terminate current user session with OpsManager UI
+     uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
+     uaac token client get $UAA_CLIENT_ID -s $UAA_CLIENT_SECRET
+     export CFOPS_ADMIN_TOKEN=$(uaac context | grep ".*access_token: " | sed -n -e "s/^.*access_token: //p")
+     curl "https://$OPS_MANAGER_HOSTNAME/api/v0/sessions" -d " " -X DELETE -H "Authorization: Bearer $CFOPS_ADMIN_TOKEN" -H "Content-Type: application/x-www-form-urlencoded" --insecure -vv
+
      cd $BUILD_ROOT_DIR/cfops
 
      ./cfops version
