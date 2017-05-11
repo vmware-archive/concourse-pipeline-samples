@@ -25,28 +25,12 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
      export CFOPS_CLIENT_SECRET=$UAA_CLIENT_SECRET
      export DATESTRING=$(date +"%Y%m%d%H")
 
-     # prepare s3cmd tool
-     cd $BUILD_ROOT_DIR
-     tar xfv s3cmd-*.tar.gz
-     rm s3cmd-*.tar.gz
-     mv s3cmd* s3cmd
-
-     set -e
-     sudo apt-get update
-     sudo apt-get install python-dateutil
-     set +e
-
-     ./s3cmd/s3cmd --version
-     # current directory in the build/task container
-
      export BUILD_DIR=$BUILD_ROOT_DIR
      export BACKUP_ROOT_DIR=$BUILD_DIR/backupdir
      export BACKUP_PARENT_DIR=$BACKUP_ROOT_DIR/$DATESTRING
      export BACKUP_FILE_DESTINATION=$BACKUP_PARENT_DIR/$TARGET_TILE
      env | grep CFOPS
      mkdir -p $BACKUP_FILE_DESTINATION
-     ls -laR $BUILD_DIR/cfops
-     ls -laR $BUILD_DIR/s3cmd
 
      cd $BUILD_ROOT_DIR/cfops
 
@@ -79,6 +63,7 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
                       --host-bucket=$S3_BUCKET \
                       put backup.log s3://$S3_BUCKET$S3_DESTINATION_PATH/
       fi
+
       echo "Removing produced backup files from jumpbox"
       set +e
       rm -R $BACKUP_FILE_DESTINATION

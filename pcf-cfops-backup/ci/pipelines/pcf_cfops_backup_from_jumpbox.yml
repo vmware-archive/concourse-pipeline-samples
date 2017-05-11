@@ -105,7 +105,7 @@ jobs:
   #   trigger: true
 
   - task: backup-opsman
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_backup_with_jumpbox.yml
     params:
       TARGET_TILE: ops-manager
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
@@ -140,7 +140,7 @@ jobs:
     trigger: false
 
   - task: backup-elastic-runtime
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_backup_with_jumpbox.yml
     params:
       TARGET_TILE: elastic-runtime
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
@@ -175,7 +175,7 @@ jobs:
   #     - backup-elastic-runtime
 
   - task: backup-mysql
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_backup_with_jumpbox.yml
     params:
       TARGET_TILE: mysql-tile
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
@@ -209,7 +209,7 @@ jobs:
   #     - backup-mysql
 
   - task: backup-redis
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_backup_with_jumpbox.yml
     params:
       TARGET_TILE: redis-tile
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
@@ -244,7 +244,7 @@ jobs:
   #     - backup-redis
 
   - task: backup-rabbitmq
-    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_s3backup.yml
+    file: pcf-backup-scripts/pcf-cfops-backup/ci/tasks/cfops_backup_with_jumpbox.yml
     params:
       TARGET_TILE: rabbitmq
       OPS_MANAGER_HOSTNAME: {{ops-manager-hostname}}
