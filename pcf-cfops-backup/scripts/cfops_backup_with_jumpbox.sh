@@ -32,7 +32,8 @@ sshpass -p "$JUMPBOX_SSH_PASSWORD" ssh -o "StrictHostKeyChecking=no" "$JUMPBOX_S
      env | grep CFOPS
      mkdir -p $BACKUP_FILE_DESTINATION
 
-     if [ "$TERMINATE_USER_SESSIONS" == "true" ]; then
+     trueValue="true"
+     if [ "${TERMINATE_USER_SESSIONS,,}" = "${trueValue,,}" ]; then
          # Terminate current user session with OpsManager UI
          uaac target https://$OPS_MANAGER_HOSTNAME/uaa --skip-ssl-validation
          uaac token client get $UAA_CLIENT_ID -s $UAA_CLIENT_SECRET
