@@ -118,4 +118,6 @@ Run the pipelines and you should see secret keys being replaced with the corresp
 
 For more information on Concourse and Vault integration, please refer to Concourse's [Credentials Management documentation page](http://concourse.ci/creds.html).
 
+_Many thanks go to [Rahul Jain](https://github.com/rahulkj) and [Ian Zinc](https://github.com/z4ce) for their contribution to this research effort._
+
 #### [Back to Concourse Pipeline Patterns](..)

@@ -6,10 +6,10 @@
 
 Concourse workers require an HTTP/HTTPS proxy to access external artifacts from the internet.
 
-  
+
 ### The solution
 
-Deploy Concourse workers with appropriate proxy configuration for its `groundcrew` job.
+Deploy Concourse workers with appropriate proxy configuration for the `groundcrew` job.
 
 ```
 - name: worker
