@@ -8,7 +8,7 @@ This feature eliminates the need to feed credentials to pipelines via plain-text
 
 The most involving steps to make the Concourse-Vault integration work are the actual configuration of the Vault and Concourse servers as described further below.
 
-From a pipeline definition standpoint though, to have Vault secrets retrieved by Concourse is simple: just add the desired secret to a `resources` or `params` section of the pipeline using surrounding double parenthesis. , for example:
+From a pipeline definition standpoint though, it is very simple: just add the desired secret to a `resources` or `params` section of the pipeline using surrounding double parenthesis, for example:
 
 ```
 jobs:
@@ -21,7 +21,7 @@ jobs:
 
 Then, when Concourse runs that pipeline/job, it will search for the corresponding secret in Vault, using a [pre-determined search order](http://concourse.ci/creds.html#vault), and execute the task appropriately with the retrieved values.
 
-Hint: you could even keep existing pipeline YML files untouched in order to replace the current double curly brackets `{{ }}` variables with double parenthesis `(( ))` variables. Instead, simply change the parameter files that feed the pipeline setup during the `fly` CLI command execution.
+Hint: you could keep existing pipeline YML files untouched while replacing current double curly brackets `{{ }}` variables with double parenthesis `(( ))` variables: just change the **parameter files** that feed the pipeline setup during the `fly` CLI command execution instead.
 
 For example, if your `hello-world.yml` looks like this:
 
