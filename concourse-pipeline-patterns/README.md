@@ -9,6 +9,8 @@ This article provides examples of common patterns for platform operations and ap
 
 1. [Parameterized pipeline tasks](parameterized-pipeline-tasks)
 
+1. [Credentials Management with Vault](vault-integration)
+
 <!-- #### In the backlog TBD:
 
 1. Data exchange across tasks and jobs (TBD)
