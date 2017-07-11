@@ -12,3 +12,6 @@ Hints and samples on how to get not-so-well-documented or never-thought-before f
 
 
 - [Run a task container with a user other than `root`](task-run-user)
+
+
+- [Configure Concourse with an HTTP/HTTPS proxy](http-proxy-config)
