@@ -21,9 +21,9 @@ jobs:
 Then, when Concourse runs that pipeline/job, it will search for the corresponding secret in Vault, using a [pre-determined search order](http://concourse.ci/creds.html#vault), and execute the task appropriately with the retrieved values.
 
 
-# Configuring the Vault server
+## Configuring the Vault server
 
-These instructions assume that you already have a Vault server up and running. For more information, refer to [Vault's installation documentation](https://www.vaultproject.io/docs/install/index.html) or this [sample deployment file](https://github.com/rahul-kj/concourse-vault/blob/master/vault.yml).
+These instructions assume that you already have a Vault server up and running. For more information, refer to [Vault's installation documentation](https://www.vaultproject.io/docs/install/index.html) or the [Vault Bosh release](https://github.com/cloudfoundry-community/vault-boshrelease) and this [sample deployment file](https://github.com/rahul-kj/concourse-vault/blob/master/vault.yml).
 
 On an [unsealed](https://www.vaultproject.io/docs/concepts/seal.html) Vault server while authenticated with a [root token](https://www.vaultproject.io/docs/concepts/tokens.html), perform the following configuration steps using the [Vault CLI](https://www.vaultproject.io/docs/commands/index.html):
 
@@ -58,7 +58,7 @@ On an [unsealed](https://www.vaultproject.io/docs/concepts/seal.html) Vault serv
   -  Hint: all common secrets used across multiple pipelines within a Concourse team can be defined in `concourse/<team-name>/` and pipeline specific secrets can be defined in `concourse/<team-name>/<pipeline-name>`  
 
 
-# Configuring the Concourse server
+## Configuring the Concourse server
 
 Copy the token value from the step further above and set it in the Concourse server.
 
@@ -90,7 +90,7 @@ Then, once you run the pipelines, you should see secret keys being replaced with
 For more information on Concourse and Vault integration, please refer to Concourse's [Credentials Management documentation page](http://concourse.ci/creds.html).
 
 
-## Hack hint: how to keep pipeline YML files untouched and still integrate with Vault
+#### Hint: how to keep pipeline YML files untouched and still integrate with Vault
 
 You could keep existing pipeline YML files untouched while replacing current double curly brackets `{{ }}` variables with double parenthesis `(( ))` variables: just change the **parameter files** that feed the pipeline setup during the `fly` CLI command execution instead.
 
