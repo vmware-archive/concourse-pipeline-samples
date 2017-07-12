@@ -4,7 +4,7 @@
 
 Concourse 3.3.1+ supports [credential management integration with HashiCorp's Vault](http://concourse.ci/creds.html) and eliminates the need to feed credentials to pipelines via plain-text parameter files.  
 
-The steps to make this integration work involve the configuring of both Vault and Concourse servers as described further below.
+This integration requires configuration updates to both Vault and Concourse servers as described further below.
 
 From a pipeline definition standpoint, the usage of credentials from Vault is very simple: just add the desired secret to a `resources` or `params` section of the pipeline using surrounding double parenthesis.
 
