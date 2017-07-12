@@ -2,13 +2,13 @@
 
 # How to integrate Concourse pipelines with Vault
 
-Starting in release 3.3.1, Concourse supports the [retrieval of pipeline credentials directly from a HashiCorp's Vault server](http://concourse.ci/creds.html) during a pipeline's execution time.
+Concourse 3.3.1+ supports [credential management integration with HashiCorp's Vault](http://concourse.ci/creds.html) and eliminates the need to feed credentials to pipelines via plain-text parameter files.  
 
-This feature eliminates the need to feed credentials to pipelines via plain-text parameter files, which is a major security enhancement for Concourse pipelines.  
+The steps to make this integration work involve the configuring of both Vault and Concourse servers as described further below.
 
-The most involving steps to make the Concourse-Vault integration work are the actual configuration of the Vault and Concourse servers as described further below.
+From a pipeline definition standpoint, the usage of credentials from Vault is very simple: just add the desired secret to a `resources` or `params` section of the pipeline using surrounding double parenthesis.
 
-From a pipeline definition standpoint though, it is very simple: just add the desired secret to a `resources` or `params` section of the pipeline using surrounding double parenthesis, for example:
+For example:
 
 ```
 jobs:
@@ -18,7 +18,8 @@ jobs:
     params:
       SYS_USERNAME: ((vault-system-username))
 ```
-Then, when Concourse runs that pipeline/job, it will search for the corresponding secret in Vault, using a [pre-determined search order](http://concourse.ci/creds.html#vault), and execute the task appropriately with the retrieved values.
+
+When Concourse runs that pipeline/job, it will search for the corresponding secret in Vault, using a [pre-determined search order](http://concourse.ci/creds.html#vault), and execute the task appropriately with the retrieved values.
 
 
 ## Configuring the Vault server
@@ -90,7 +91,7 @@ Then, once you run the pipelines, you should see secret keys being replaced with
 For more information on Concourse and Vault integration, please refer to Concourse's [Credentials Management documentation page](http://concourse.ci/creds.html).
 
 
-#### Hint: how to keep pipeline YML files untouched and still integrate with Vault
+### Hint: how to keep pipeline YML files untouched and still integrate with Vault
 
 You could keep existing pipeline YML files untouched while replacing current double curly brackets `{{ }}` variables with double parenthesis `(( ))` variables: just change the **parameter files** that feed the pipeline setup during the `fly` CLI command execution instead.
 
