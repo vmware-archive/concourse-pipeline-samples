@@ -18,50 +18,19 @@ jobs:
     params:
       SYS_USERNAME: ((vault-system-username))
 ```
-
 Then, when Concourse runs that pipeline/job, it will search for the corresponding secret in Vault, using a [pre-determined search order](http://concourse.ci/creds.html#vault), and execute the task appropriately with the retrieved values.
-
-Hint: you could keep existing pipeline YML files untouched while replacing current double curly brackets `{{ }}` variables with double parenthesis `(( ))` variables: just change the **parameter files** that feed the pipeline setup during the `fly` CLI command execution instead.
-
-For example, if your `hello-world.yml` looks like this:
-
-```
-jobs:
-- name: hello-world
-  plan:
-  - task: say-hello
-    params:
-      SYSTEM_PASSWORD: {{system-password}}
-    ...
-```
-
-and your `params.yml` file looked like this:
-
-```
----
-system-password: mypassw0rd123
-```
-
-Then you can simply change `params.yml` to contain the secret key from Vault:
-
-```
----
-system-password: ((system-password-from-vault-key))
-```
-
-Once you update that pipeline in Concourse with the `fly` CLI, the vault key ID will be injected into the pipeline YML along with the double parenthesis and it will work just fine.  
 
 
 # Configuring the Vault server
 
-These instructions assume that you already have a Vault server up and running. Please refer to [Vault's installation documentation](https://www.vaultproject.io/docs/install/index.html) for more information.
+These instructions assume that you already have a Vault server up and running. For more information, refer to [Vault's installation documentation](https://www.vaultproject.io/docs/install/index.html) or this [sample deployment file](https://github.com/rahul-kj/concourse-vault/blob/master/vault.yml).
 
 On an [unsealed](https://www.vaultproject.io/docs/concepts/seal.html) Vault server while authenticated with a [root token](https://www.vaultproject.io/docs/concepts/tokens.html), perform the following configuration steps using the [Vault CLI](https://www.vaultproject.io/docs/commands/index.html):
 
 * Create a mount in value for use by Concourse pipelines  
   `vault mount -path=/concourse -description="Secrets for concourse pipelines" generic`  
 
-* Create a policy file (e.g. `policy.hcl`) with the following content:  
+* Create a policy file (e.g. [`policy.hcl`](https://github.com/rahul-kj/concourse-vault/blob/master/vault-policy.hcl)) with the following content:  
 
   ```
   path "concourse/*" {
@@ -111,12 +80,48 @@ instance_groups:
           client_token: YOUR-VAULT-TOKEN-GOES-HERE
 ```  
 
+[Click here](https://github.com/rahul-kj/concourse-vault/blob/master/concourse.yml) for an example of a complete Concourse deployment manifest with Vault integration.
+
 For a complete list of Vault integration parameters for the `atc` job, please consult the [ATC job's documentation](https://bosh.io/jobs/atc?source=github.com/concourse/concourse#p=vault).
 
 
-Run the pipelines and you should see secret keys being replaced with the corresponding values retrieved from the Vault server by Concourse.
+Then, once you run the pipelines, you should see secret keys being replaced with the corresponding values retrieved from the Vault server by Concourse.
 
 For more information on Concourse and Vault integration, please refer to Concourse's [Credentials Management documentation page](http://concourse.ci/creds.html).
+
+
+## Hack hint: how to keep pipeline YML files untouched and still integrate with Vault
+
+You could keep existing pipeline YML files untouched while replacing current double curly brackets `{{ }}` variables with double parenthesis `(( ))` variables: just change the **parameter files** that feed the pipeline setup during the `fly` CLI command execution instead.
+
+For example, if your `hello-world.yml` looks like this:
+
+```
+jobs:
+- name: hello-world
+  plan:
+  - task: say-hello
+    params:
+      SYSTEM_PASSWORD: {{system-password}}
+    ...
+```
+
+and your `params.yml` file looked like this:
+
+```
+---
+system-password: mypassw0rd123
+```
+
+Then you can simply change `params.yml` to contain the secret key from Vault:
+
+```
+---
+system-password: ((system-password-from-vault-key))
+```
+
+Once you update that pipeline in Concourse with the `fly` CLI, the vault key ID will be injected into the pipeline YML along with the double parenthesis and it will work just fine.  
+
 
 _Many thanks go to [Rahul Jain](https://github.com/rahulkj) and [Ian Zink](https://github.com/z4ce) for their contribution to this research effort._
 
