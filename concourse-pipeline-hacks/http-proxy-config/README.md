@@ -44,9 +44,9 @@ fatal: unable to access ... : Failed to connect to <proxy_ip> port 1080: Connect
 ```
   ...
   properties:
-         http_proxy_url: http://10.160.0.29:80
-         https_proxy_url: http://10.160.0.29:80
-         ...
+    http_proxy_url: http://10.160.0.29:80
+    https_proxy_url: http://10.160.0.29:80
+    ...
 ```
 
 
