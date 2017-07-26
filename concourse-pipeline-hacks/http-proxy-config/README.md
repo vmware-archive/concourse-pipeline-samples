@@ -39,11 +39,15 @@ In order to verify if the proxy configuration was applied after redeploying Conc
   `Cloning into /tmp/git-resource-repo-cache\...
 fatal: unable to access ... : Failed to connect to <proxy_ip> port 1080: Connection timed out`  
   **Possible root cause**: socks proxy may be running on a non-standard port.  
-  **Potential solution**: explicitly declare the proxy port number in the deployment manifest (*even for http and port 80*) and re-deploy Concourse.  Example:  
-    `properties:
+  **Potential solution**: explicitly declare the proxy port number in the deployment manifest (*even for http and port 80*) and re-deploy Concourse.  
+  Example:  
+```
+  ...
+  properties:
          http_proxy_url: http://10.160.0.29:80
          https_proxy_url: http://10.160.0.29:80
-         ...`  
+         ...
+```
 
 
 
