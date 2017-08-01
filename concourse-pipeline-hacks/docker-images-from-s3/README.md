@@ -1,8 +1,8 @@
-![Pipeline Hacks](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/concourse-images-repo.png)
+![Pipeline Hacks](https://github.com/pivotalservices/concourse-pipeline-samples/raw/master/common/images/concourse-and-s3-images.png)
 
 # Running tasks with Docker images from an S3 bucket
 
-Pipeline tasks can be executed with images stored in repositories other than a Docker registry as described in [this article](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks/docker-images-from-repo). However, the drawback of that article's proposed solution is the fact that the `rootfs` of the image needs to be available and stored uncompressed.
+Pipeline tasks can be executed with images stored in repositories other than a Docker registry as previously described in [this article](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks/docker-images-from-repo). However, the drawback of that article's proposed solution is the fact that the `rootfs` of the image needs to be available and stored uncompressed.
 
 Enter **S3 resource's `untar` feature**: starting in Concourse 3.3.3, the S3 resource provides the ability to automatically *untar* a file after its download from a bucket. This is perfect to be used as the source of Docker images in offline/disconnected pipelines given that the `rootfs` directory of an image can now be packaged and maintained as a tar file.  
 
@@ -89,7 +89,7 @@ The `rootfs` directory and files can be created from a [`docker export`](https:/
 
 Because of that, it is easier to first export a `rootfs` directory and `metadata.json` file for a Docker image directly from a Concourse pipeline that has access to Docker Hub, and then save/tar the exported files into the S3 repository.
 
-See sample [`Pakacage-Docker-Images`](package-docker-images.yml) that produces the `rootfs` files for an ubuntu image in the right format and saves the produced tar file into an S3 bucket.  
+See sample [`Pakacage-Docker-Images`](package-docker-images.yml), which produces and packages the `rootfs` files for an ubuntu image and saves it into an S3 bucket.  
 
 
 

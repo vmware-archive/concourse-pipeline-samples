@@ -2,6 +2,9 @@
 
 # Running pipeline tasks and resources without a Docker registry
 
+**Note**: *the content of this document is still relevant, however see [this article](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks/docker-images-from-s3) for a recent update to S3 resource which makes it easier to bootstrap and run disconnected pipelines*
+
+
 For cases when the access to Docker Hub is not available from the subnet which Concourse is deployed to AND the deployment of an internal Docker Registry may take long or be difficult for any reason, there is a temporary workaround to run Concourse pipelines on that environment: **run tasks and community resources using rootfs images stored in a repository**.
 
 
@@ -100,7 +103,8 @@ The techniques described here should only be used for temporary Concourse demons
 
 ### See also
 
-- [Concourse documentation on running tasks with a rootfs image]( https://concourse.ci/running-tasks.html#task-config-image)
+- [Running tasks with Docker images from an S3 bucket]( https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks/docker-images-from-s3)
 
+- [Concourse documentation on running tasks with a rootfs image]( https://concourse.ci/running-tasks.html#task-config-image)
 
 #### [Back to Concourse Pipeline Hacks](..)
