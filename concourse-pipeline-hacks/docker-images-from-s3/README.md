@@ -89,7 +89,7 @@ The `rootfs` directory and files can be created from a [`docker export`](https:/
 
 Because of that, it is easier to first export a `rootfs` directory and `metadata.json` file for a Docker image directly from a Concourse pipeline that has access to Docker Hub, and then save/tar the exported files into the S3 repository.
 
-See sample [`Pakacage-Docker-Images`](package-docker-images.yml), which produces and packages the `rootfs` files for an ubuntu image and saves it into an S3 bucket.  
+See sample [`Package-Docker-Images`](package-docker-images.yml), which produces and packages the `rootfs` files for an ubuntu image and saves it into an S3 bucket.  
 
 
 ### See also
