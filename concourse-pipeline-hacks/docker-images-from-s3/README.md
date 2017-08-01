@@ -92,12 +92,16 @@ Because of that, it is easier to first export a `rootfs` directory and `metadata
 See sample [`Pakacage-Docker-Images`](package-docker-images.yml), which produces and packages the `rootfs` files for an ubuntu image and saves it into an S3 bucket.  
 
 
-
 ### See also
 
 - [Concourse documentation on running tasks with a rootfs image]( https://concourse.ci/running-tasks.html#task-config-image)
 
 - [Running pipeline tasks and resources without a Docker registry](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks/docker-images-from-repo)
+
+
+### Thanks
+
+Many thanks to Gavin Enns, Shaozhen Ding and Kris Hicks for their input and hints provided during the writing of this article.  
 
 
 #### [Back to Concourse Pipeline Hacks](..)
