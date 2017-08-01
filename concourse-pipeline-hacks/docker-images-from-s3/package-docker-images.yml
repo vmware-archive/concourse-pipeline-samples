@@ -1,0 +1,53 @@
+---
+resources:
+- name: ubuntu-image-to-package
+  type: docker-image
+  source:
+    repository: ubuntu       # UPDATE THIS with the targeted image repo name
+    tag: 17.04               # UPDATE THIS with the desired tag of the image
+
+- name: my-ubuntu-image-s3
+  type: s3
+  source:
+    access_key_id: ((s3-access-key-id))
+    bucket: ((s3-bucket))
+    endpoint: ((s3-endpoint))
+    secret_access_key: ((s3-secret-access-key))
+    regexp: ubuntu/ubuntu-(.*).tgz
+
+jobs:
+- name: Download-And-Package-Ubuntu-Image
+  plan:
+  - get: ubuntu-image-to-package
+    params:
+      rootfs: true
+  - task: prepare-image-to-export
+    config:
+      platform: linux
+      inputs:
+        - name: ubuntu-image-to-package
+      outputs:
+        - name: ubuntu
+      image_resource:
+        type: docker-image
+        source:
+          repository: ubuntu
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          echo "Exporting ubuntu image"
+          mkdir export-directory && cd export-directory
+          cp ../ubuntu-image-to-package/metadata.json .
+          mkdir rootfs
+          tar -xvf ../ubuntu-image-to-package/rootfs.tar -C ./rootfs/ --exclude="dev/*"
+          cd rootfs
+          cd ../..
+          echo "Packaging ubuntu image"
+          tmp_version="17.04"
+          tar -czf "ubuntu/ubuntu-${tmp_version}.tgz" -C export-directory .
+          ls -la ubuntu
+  - put: my-ubuntu-image-s3
+    params:
+      file: "ubuntu/ubuntu-*.tgz"

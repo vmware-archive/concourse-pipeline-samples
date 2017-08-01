@@ -1,0 +1,23 @@
+---
+jobs:
+- name: hello-ubuntu-s3
+  plan:
+  - task: run-with-image-from-s3
+    config:
+      platform: linux
+      image_resource:
+        type: s3
+        source:
+          access_key_id: ((s3-access-key-id))
+          bucket: ((s3-bucket))
+          endpoint: ((s3-endpoint))
+          secret_access_key: ((s3-secret-access-key))
+          regexp: ubuntu/ubuntu-(.*).tgz
+          # region_name:
+        params:
+          unpack: true
+      run:
+        path: sh
+        args:
+        - -c
+        - echo "I can run with the image from S3"
