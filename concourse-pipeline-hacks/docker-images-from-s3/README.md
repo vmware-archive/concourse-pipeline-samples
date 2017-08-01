@@ -81,15 +81,15 @@ This approach is not marked as *recommended* since the `image` property may be d
 
 Concourse requires task and resource images to contain the following elements:
 
-1. a `rootfs` directory containing all the files expected from the output of a 'docker export' of the desired container
+1. the `rootfs` folder containing all the files of the desired container
 
 1. a `metadata.json` file describing the container's `env` variables and running `user`.
 
-The `rootfs` directory and files can be created from a [`docker export`](https://docs.docker.com/engine/reference/commandline/export/) command, however the `metadata.json` file is specific to Concourse's [`Docker images`](https://github.com/concourse/docker-image-resource) resources.   
+The recommended way to export a `rootfs` directory and `metadata.json` file for a Docker image is to do it from a Concourse pipeline that has access to Docker Hub, and then tar + save the exported files into the S3 repository.
 
-Because of that, it is easier to first export a `rootfs` directory and `metadata.json` file for a Docker image directly from a Concourse pipeline that has access to Docker Hub, and then save/tar the exported files into the S3 repository.
+See sample [`Package-Docker-Images`](package-docker-images.yml), which produces and packages the `rootfs` files for an ubuntu image and saves it into an S3 bucket.
 
-See sample [`Package-Docker-Images`](package-docker-images.yml), which produces and packages the `rootfs` files for an ubuntu image and saves it into an S3 bucket.  
+Another example of such download-and-package pipeline is also available from [this repository](https://github.com/pivotal-cf/pcf-pipelines/blob/master/download-offline-resources/pipeline.yml).
 
 
 ### See also
