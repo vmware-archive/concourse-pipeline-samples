@@ -4,7 +4,7 @@
 
 Pipeline tasks can be executed with images stored in repositories other than a Docker registry as previously described in [this article](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks/docker-images-from-repo). However, the drawback of that article's proposed solution is the fact that the `rootfs` of the image needs to be available and stored uncompressed.
 
-Enter **S3 resource's `untar` feature**: starting in Concourse 3.3.3, the S3 resource provides the ability to automatically *untar* a file after its download from a bucket. This is perfect to be used as the source of Docker images in offline/disconnected pipelines given that the `rootfs` directory of an image can now be packaged and maintained as a tar file.  
+Enter **S3 resource's `unpack` feature**: starting in Concourse 3.3.3, the S3 resource provides the ability to automatically *untar* a file after its download from a bucket. This is perfect to be used as the source of Docker images in offline/disconnected pipelines given that the `rootfs` directory of an image can now be packaged and maintained as a tar file.  
 
 ### Examples
 
