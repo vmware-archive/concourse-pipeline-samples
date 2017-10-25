@@ -10,8 +10,9 @@ resources:
 - name: trigger-daily-between-1am-and-2am
   type: time
   source:
-    start: 1:00 AM -0500
-    stop: 2:00 AM -0500
+    start: 1:00 AM
+    stop: 2:00 AM
+    location: America/Phoenix
 ```
 or, a trigger for a time interval:
 ```
