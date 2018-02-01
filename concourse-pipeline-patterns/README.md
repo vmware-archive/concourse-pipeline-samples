@@ -11,6 +11,8 @@ This article provides examples of common patterns for platform operations and ap
 
 1. [Credentials Management with Vault](vault-integration)
 
+1. [Authenticate Concourse team members with PCF UAA](uaa-authentication)
+
 <!-- #### In the backlog TBD:
 
 1. Data exchange across tasks and jobs (TBD)
