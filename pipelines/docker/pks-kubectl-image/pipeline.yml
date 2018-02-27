@@ -15,20 +15,20 @@ resources:
     product_version: ((pks_product_version))
     sort_by: semver
 
-# - name: my-docker-image
-#   type: docker-image
-#   source:
-#     repository: pivotalservices/pks-kubectl
-#     username: ((dockerhub-username))
-#     password: ((dockerhub-password))
-#
-# - name: my-docker-image-rc
-#   type: docker-image
-#   source:
-#     repository: pivotalservices/pks-kubectl
-#     tag: release-candidate
-#     username: ((dockerhub-username))
-#     password: ((dockerhub-password))
+- name: my-docker-image
+  type: docker-image
+  source:
+    repository: pivotalservices/pks-kubectl
+    username: ((dockerhub-username))
+    password: ((dockerhub-password))
+
+- name: my-docker-image-rc
+  type: docker-image
+  source:
+    repository: pivotalservices/pks-kubectl
+    tag: release-candidate
+    username: ((dockerhub-username))
+    password: ((dockerhub-password))
 
 - name: base-image
   type: docker-image
@@ -77,47 +77,74 @@ jobs:
           pks_version=pks-release/metadata.json | jq -rc '.Release.Version'
           chmod +x workspace/*
           cp concourse-pipeline-samples/pipelines/docker/pks-kubectl-image/Dockerfile workspace
-#   - put: my-docker-image-rc
-#     params:
-#       load_base: base-image
-#       build: workspace
-#
-# - name: test-docker-image
-#   serial_groups: [docker-image-jobs]
-#   plan:
-#   - get: my-docker-image-rc
-#     trigger: true
-#     passed: [build-docker-image]
-#     params:
-#       skip_download: true
-#   - task: test-for-required-binaries
-#     config:
-#       platform: linux
-#       image_resource:
-#         type: docker-image
-#         source:
-#           repository: czero/rootfs
-#           tag: release-candidate
-#       run:
-#         path: sh
-#         args:
-#         - -c
-#         - |
-#           set -xe
-#           which pks
-#           pks --version
-#           which kubectl
-#           kubectl version --short --client
-#
-# - name: promote-image
-#   serial_groups: [build-docker-image]
-#   plan:
-#   - get: my-docker-image-rc
-#     passed: [test-docker-image]
-#     trigger: true
-#     params:
-#       save: true
-#   - put: pcf-pipelines-image
-#     params:
-#       load: my-docker-image-rc
-#       tag_as_latest: true
+  - put: my-docker-image-rc
+    params:
+      load_base: base-image
+      build: workspace
+
+- name: test-docker-image
+  serial_groups: [docker-image-jobs]
+  plan:
+  - get: my-docker-image-rc
+    trigger: true
+    passed: [build-docker-image]
+    params:
+      skip_download: true
+  - task: test-for-required-binaries
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: pivotalservices/pks-kubectl
+          tag: release-candidate
+      run:
+        path: sh
+        args:
+        - -c
+        - |
+          set -xe
+          which pks
+          pks --version
+          which kubectl
+          kubectl version --short --client
+
+- name: promote-image
+  serial_groups: [build-docker-image]
+  plan:
+  - aggregate:
+    - get: my-docker-image-rc
+      passed: [test-docker-image]
+      trigger: true
+      params:
+        save: true
+    - get: pks-release
+      trigger: true
+      params:
+        globs: []
+  - task: prepare-image-tag
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: czero/rootfs}
+      inputs:
+      - name: pks-release
+      outputs:
+      - name: tagfile
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          pks_version=$(cat pks-release/metadata.json | jq -rc '.Release.Version')
+          echo "${pks_version}" > tagfile/tagfile.txt
+          cat tagfile/tagfile.txt
+  - put: my-docker-image
+    params:
+      load: my-docker-image-rc
+      tag: tagfile/tagfile.txt
+  - put: my-docker-image
+    params:
+      load: my-docker-image-rc
+      tag_as_latest: true
