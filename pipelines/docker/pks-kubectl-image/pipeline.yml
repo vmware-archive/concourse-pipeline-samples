@@ -1,0 +1,123 @@
+# Sample pipeline that creates a Docker image
+# This image in particular contains the PCF PKS CLIs: pks and kubectl
+resources:
+- name: concourse-pipeline-samples
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+- name: pks-release
+  type: pivnet
+  source:
+    api_token: ((pivnet_token))
+    product_slug: ((pks_product_slug))
+    product_version: ((pks_product_version))
+    sort_by: semver
+
+# - name: my-docker-image
+#   type: docker-image
+#   source:
+#     repository: pivotalservices/pks-kubectl
+#     username: ((dockerhub-username))
+#     password: ((dockerhub-password))
+#
+# - name: my-docker-image-rc
+#   type: docker-image
+#   source:
+#     repository: pivotalservices/pks-kubectl
+#     tag: release-candidate
+#     username: ((dockerhub-username))
+#     password: ((dockerhub-password))
+
+- name: base-image
+  type: docker-image
+  source:
+    repository: ubuntu
+    tag: latest
+
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+jobs:
+- name: build-docker-image
+  serial_groups: [docker-image-jobs]
+  plan:
+  - aggregate:
+    - get: concourse-pipeline-samples
+    - get: pks-release
+      trigger: true
+      params:
+        globs: ["*linux*"]
+    - get: base-image
+      trigger: true
+      params: {save: true}
+  - task: prepare-workspace
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: czero/rootfs}
+      inputs:
+      - name: concourse-pipeline-samples
+      - name: pks-release
+      outputs:
+      - name: workspace
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          mv pks-release/pks-linux* workspace/pks
+          mv pks-release/kubectl-linux* workspace/kubectl
+          pks_version=pks-release/metadata.json | jq -rc '.Release.Version'
+          chmod +x workspace/*
+          cp concourse-pipeline-samples/pipelines/docker/pks-kubectl-image/Dockerfile workspace
+#   - put: my-docker-image-rc
+#     params:
+#       load_base: base-image
+#       build: workspace
+#
+# - name: test-docker-image
+#   serial_groups: [docker-image-jobs]
+#   plan:
+#   - get: my-docker-image-rc
+#     trigger: true
+#     passed: [build-docker-image]
+#     params:
+#       skip_download: true
+#   - task: test-for-required-binaries
+#     config:
+#       platform: linux
+#       image_resource:
+#         type: docker-image
+#         source:
+#           repository: czero/rootfs
+#           tag: release-candidate
+#       run:
+#         path: sh
+#         args:
+#         - -c
+#         - |
+#           set -xe
+#           which pks
+#           pks --version
+#           which kubectl
+#           kubectl version --short --client
+#
+# - name: promote-image
+#   serial_groups: [build-docker-image]
+#   plan:
+#   - get: my-docker-image-rc
+#     passed: [test-docker-image]
+#     trigger: true
+#     params:
+#       save: true
+#   - put: pcf-pipelines-image
+#     params:
+#       load: my-docker-image-rc
+#       tag_as_latest: true
