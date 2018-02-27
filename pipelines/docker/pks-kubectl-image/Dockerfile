@@ -1,6 +1,6 @@
 FROM ubuntu
 
 COPY \
-       pks-linux \
-       kubectl-linux \
+       pks \
+       kubectl \
        /usr/local/bin/
