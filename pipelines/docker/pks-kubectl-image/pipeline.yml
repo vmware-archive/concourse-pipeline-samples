@@ -33,7 +33,7 @@ resources:
 - name: base-image
   type: docker-image
   source:
-    repository: ubuntu
+    repository: czero/rootfs
     tag: latest
 
 resource_types:

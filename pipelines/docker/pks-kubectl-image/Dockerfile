@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM czero/rootfs
 
 COPY \
        pks \
