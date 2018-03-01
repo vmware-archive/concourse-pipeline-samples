@@ -1,0 +1,32 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/pynsxv
+
+inputs:
+- name: pcf-pipelines-utils
+
+run:
+  path: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-profile/task.sh
+
+params:
+  VCENTER_HOST:
+  VCENTER_USR:
+  VCENTER_PWD:
+  VCENTER_DATA_CENTER:
+
+  NSX_EDGE_GEN_NSX_MANAGER_ADDRESS:
+  NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER:
+  NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD:
+  NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE:
+
+  NSX_EDGE_GEN_NAME:
+  NSX_EDGE_GEN_PROFILE_NAME:
+  NSX_EDGE_GEN_EDGE_CLUSTER:
+  NSX_EDGE_GEN_EDGE_DATASTORE:
+  NSX_EDGE_GEN_PROFILE_PROTOCOL:
+  NSX_EDGE_GEN_SSL_PASSTHROUGH:
+  NSX_EDGE_GEN_X_FORWARDED_FOR:
