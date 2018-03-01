@@ -48,12 +48,12 @@ resource_types:
   source:
     repository: pivotalcf/pivnet-resource
     tag: latest-final
-resource_types:
 - name: curl
   type: docker-image
   source:
     repository: pivotalservices/concourse-curl-resource
     tag: latest
+
 jobs:
 - name: build-docker-image
   serial_groups: [docker-image-jobs]
@@ -73,7 +73,7 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: cloudfoundry/cflinuxfs2}
+        source: {repository: pivotalservices/pks-kubectl}
       inputs:
       - name: concourse-pipeline-samples
       - name: pks-release
@@ -143,7 +143,7 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: cloudfoundry/cflinuxfs2}
+        source: {repository: pivotalservices/pks-kubectl}
       inputs:
       - name: pks-release
       outputs:
