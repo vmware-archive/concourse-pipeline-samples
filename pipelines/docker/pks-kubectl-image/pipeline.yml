@@ -33,8 +33,14 @@ resources:
 - name: base-image
   type: docker-image
   source:
-    repository: czero/rootfs
+    repository: cloudfoundry/cflinuxfs2
     tag: latest
+
+- name: jq
+  type: curl
+  source:
+    url: https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+    filename: jq
 
 resource_types:
 - name: pivnet
@@ -42,13 +48,19 @@ resource_types:
   source:
     repository: pivotalcf/pivnet-resource
     tag: latest-final
-
+resource_types:
+- name: curl
+  type: docker-image
+  source:
+    repository: pivotalservices/concourse-curl-resource
+    tag: latest
 jobs:
 - name: build-docker-image
   serial_groups: [docker-image-jobs]
   plan:
   - aggregate:
     - get: concourse-pipeline-samples
+    - get: jq
     - get: pks-release
       trigger: true
       params:
@@ -61,10 +73,11 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: czero/rootfs}
+        source: {repository: cloudfoundry/cflinuxfs2}
       inputs:
       - name: concourse-pipeline-samples
       - name: pks-release
+      - name: jq
       outputs:
       - name: workspace
       run:
@@ -74,6 +87,7 @@ jobs:
         - |
           mv pks-release/pks-linux* workspace/pks
           mv pks-release/kubectl-linux* workspace/kubectl
+          cp jq/jq workspace
           pks_version=pks-release/metadata.json | jq -rc '.Release.Version'
           chmod +x workspace/*
           cp concourse-pipeline-samples/pipelines/docker/pks-kubectl-image/Dockerfile workspace
@@ -108,6 +122,8 @@ jobs:
           pks --version
           which kubectl
           kubectl version --short --client
+          which jq
+          jq --version
 
 - name: promote-image
   serial_groups: [build-docker-image]
@@ -127,7 +143,7 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: czero/rootfs}
+        source: {repository: cloudfoundry/cflinuxfs2}
       inputs:
       - name: pks-release
       outputs:
