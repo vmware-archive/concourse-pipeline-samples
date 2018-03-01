@@ -1,0 +1,32 @@
+groups: []
+resources:
+- name: pcf-pipelines-utils
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+jobs:
+- name: create-pks-cluster
+  plan:
+  - get: pcf-pipelines-utils
+  - task: create-pks-cluster
+    file: pcf-pipelines-utils/tasks/pcf/create-pks-cluster/task.yml
+    params:
+      PCF_PKS_API: ((pcf_pks_api))
+      PKS_CLI_USERNAME: ((pks_cli_username))
+      PKS_CLI_PASSWORD: ((pks_cli_password))
+      PKS_SERVICE_PLAN_NAME: ((pks_plan_name))
+      PKS_CLUSTER_NAME: ((pks_cluster_name))
+      PKS_CLUSTER_MASTER_HOSTNAME: ((pks_cluster_master_node_hostname))
+      PKS_CLUSTER_NUMBER_OF_WORKERS: ((pks_cluster_number_of_workers))
+
+- name: delete-pks-cluster
+  plan:
+  - get: pcf-pipelines-utils
+  - task: delete-pks-cluster
+    file: pcf-pipelines-utils/tasks/pcf/delete-pks-cluster/task.yml
+    params:
+      PCF_PKS_API: ((pcf_pks_api))
+      PKS_CLI_USERNAME: ((pks_cli_username))
+      PKS_CLI_PASSWORD: ((pks_cli_password))
+      PKS_CLUSTER_NAME: ((pks_cluster_name))

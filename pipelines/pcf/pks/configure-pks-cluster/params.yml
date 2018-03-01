@@ -1,0 +1,7 @@
+pcf_pks_api: ((pcf_pks_api))
+pks_cli_username: ((pks_cli_username))
+pks_cli_password: ((pks_cli_password))
+pks_plan_name: ((pks_plan_name))
+pks_cluster_name: ((pks_cluster_name))
+pks_cluster_master_node_hostname: ((pks_cluster_master_node_hostname))
+pks_cluster_number_of_workers: ((pks_cluster_number_of_workers))

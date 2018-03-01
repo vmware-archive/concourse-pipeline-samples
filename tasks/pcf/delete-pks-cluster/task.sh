@@ -12,7 +12,7 @@ in_progress_state="in progress"
 cluster_state="$in_progress_state"
 
 while [[ "$cluster_state" == "$in_progress_state" ]]; do
-  cluster_state=$(pks cluster "$PKS_CLUSTER_NAME" --json | jq -rc '.last_action_state')
+  cluster_state=$(pks cluster "$PKS_CLUSTER_NAME" --json 2>/dev/null | jq -rc '.last_action_state')
   echo "status: [$cluster_state]..."
   sleep 5
 done

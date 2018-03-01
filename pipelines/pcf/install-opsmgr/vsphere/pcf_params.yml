@@ -1,0 +1,143 @@
+# PCF Ops Manager minor version to track
+opsman_major_minor_version: ^2\.0\..*$
+
+# FQDN to access Ops Manager without protocol (will use https), ex: opsmgr.example.com
+opsman_domain_or_ip_address: ((opsman_domain_or_ip_address))
+# Leave opsman_client_id/opsman_client_secret blank; opsman_admin_username/opsman_admin_password needs to be specified
+opsman_admin_password: ((opsman_admin_password))       # Password for Ops Manager admin account
+opsman_admin_username: ((opsman_admin_username))       # Username for Ops Manager admin account
+opsman_client_id:           # Client ID for Ops Manager admin account
+opsman_client_secret:       # Client Secret for Ops Manager admin account
+# SSH password for Ops Manager (ssh user is ubuntu)
+opsman_ssh_password: ((opsman_ssh_password))
+# Decryption password for Ops Manager exported settings
+om_decryption_pwd: ((om_decryption_pwd))
+# DNS servers
+om_dns_servers: ((om_dns_servers))
+# Gateway for Ops Manager network
+om_gateway: ((om_gateway))
+# IP to assign to Ops Manager VM (for proxy env and for wipe-env job)
+om_ip: ((om_ip))
+# Netmask for Ops Manager network
+om_netmask: ((om_netmask))
+# Comma-separated list of NTP Servers
+om_ntp_servers: ((om_ntp_servers))
+# vCenter Cluster or Resource Pool to use to deploy Ops Manager.
+# Possible formats:
+#   cluster:       /<Data Center Name>/host/<Cluster Name>
+#   resource pool: /<Data Center Name>/host/<Cluster Name>/Resources/<Resource Pool Name>
+om_resource_pool: ((om_resource_pool))
+# Optional - vCenter folder to put Ops Manager in
+om_vm_folder: ((om_vm_folder))
+# Optional - vCenter host to deploy Ops Manager in
+om_vm_host: ((om_vm_host))
+# Name to use for Ops Manager VM
+om_vm_name: ((om_vm_name))
+# vCenter network name to use to deploy Ops Manager in
+om_vm_network: ((om_vm_network))
+# Whether to power on Ops Manager VM after creation
+om_vm_power_state: true
+company_proxy_domain: ((company_proxy_domain))
+# Disk type for Ops Manager VM (thick|thin)
+opsman_disk_type: ((opsman_disk_type))
+
+# Comma-separated list of NTP servers to use for VMs deployed by BOSH
+ntp_servers: ((ntp_servers))
+
+# Optional DNS name for Ops Director. Should be reachable from all networks.
+ops_dir_hostname:
+
+# vCenter configuration
+vcenter_host: ((vcenter_host))
+vcenter_datastore: ((vcenter_datastore))        # vCenter datastore name to deploy Ops Manager in
+vcenter_usr: ((vcenter_usr))
+vcenter_pwd: ((vcenter_pwd))
+vcenter_datacenter: ((vcenter_datacenter))
+vcenter_insecure: ((vcenter_insecure))  # true or false
+# Disk type for BOSH provisioned VM. (thick|thin)
+vm_disk_type: ((vm_disk_type))
+vcenter_ca_cert: ((vcenter_ca_cert))
+ephemeral_storage_names: ((ephemeral_storage_names)) # Ephemeral Storage names in vCenter for use by PCF. e.g. a-xio, b-xio, c-xio
+persistent_storage_names: ((persistent_storage_names)) # Persistent Storage names in vCenter for use by PCF, e.g. a-xio, b-xio, c-xio
+
+# Optional PEM-encoded certificates to add to BOSH director
+trusted_certificates: ((trusted_certificates))
+
+# AZ configuration for Ops Director
+az_1_name: AZ01
+az_1_cluster_name: ((az_1_cluster_name))
+az_1_rp_name: ((az_1_rp_name))
+az_2_name: AZ02
+az_2_cluster_name: ((az_2_cluster_name))
+az_2_rp_name: ((az_2_rp_name))
+az_3_name: AZ03
+az_3_cluster_name: ((az_3_cluster_name))
+az_3_rp_name: ((az_3_rp_name))
+
+# vSphere datastore folder (such as pcf_disk) where attached disk images will be created
+bosh_disk_path: ((bosh_disk_path))  # e.g. "pcf_disk"
+# vSphere datacenter folder (such as pcf_templates) where templates will be placed
+bosh_template_folder: ((bosh_template_folder)) #e.g. "pcf_templates"
+# vSphere datacenter folder (such as pcf_vms) where VMs will be placed
+bosh_vm_folder: ((bosh_vm_folder)) # e.g. "pcf_vms"
+
+# For credhub integration, replace dummy values in the following structure
+# and set the number of credhub instances in resource config to 2
+credhub_encryption_keys: |
+  - name: cred-hub-slot1-key1
+    key:
+      secret: ((credhub_encryption_key_1))
+    primary: true
+  - name: cred-hub-slot1-key2
+    key:
+      secret: ((credhub_encryption_key_2))
+
+# Infrastructure Configuration
+infra_network_name: "INFRASTRUCTURE"
+infra_vsphere_network: ((infra_vsphere_network))
+infra_nw_cidr: ((infra_nw_cidr))
+infra_excluded_range: ((infra_excluded_range))
+infra_nw_dns: ((infra_nw_dns))
+infra_nw_gateway: ((infra_nw_gateway))
+infra_nw_azs: AZ01,AZ02,AZ03
+
+# Services network
+services_network_name: "SERVICES"
+is_service_network: false
+services_vsphere_network: ((services_vsphere_network))
+services_nw_cidr: ((services_nw_cidr))
+services_excluded_range: ((services_excluded_range))
+services_nw_dns: ((services_nw_dns))
+services_nw_gateway: ((services_nw_gateway))
+services_nw_azs: AZ01,AZ02,AZ03
+
+# Deployment
+deployment_network_name: "DEPLOYMENT"
+deployment_vsphere_network: ((deployment_vsphere_network))
+deployment_nw_cidr: ((deployment_nw_cidr))
+deployment_excluded_range: ((deployment_excluded_range))
+deployment_nw_dns: ((deployment_nw_dns))
+deployment_nw_gateway: ((deployment_nw_gateway))
+deployment_nw_azs: AZ01,AZ02,AZ03
+
+# Dynamic Services Network
+dynamic_services_network_name: "DYNAMIC-SERVICES"
+dynamic_services_vsphere_network: ((dynamic_services_vsphere_network))
+dynamic_services_nw_cidr: ((dynamic_services_nw_cidr))
+dynamic_services_excluded_range: ((dynamic_services_excluded_range))
+dynamic_services_nw_dns: ((dynamic_services_nw_dns))
+dynamic_services_nw_gateway: ((dynamic_services_nw_gateway))
+dynamic_services_nw_azs: AZ01,AZ02,AZ03
+
+# Whether to enable BOSH VM resurrector
+enable_vm_resurrector: true
+
+icmp_checks_enabled: false
+max_threads: 8
+
+#nsx configuration
+nsx_address:                      # address of nsx
+nsx_ca_certificate:               # cert for nsx
+nsx_networking_enabled: false     # (true|false) to use nsx networking feature
+nsx_password:                     # password for nsx access
+nsx_username:                     # username for nsx access
