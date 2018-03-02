@@ -11,4 +11,13 @@ This sample pipeline implements jobs to create and delete a PKS cluster on a PCF
 
    `fly -t <target> sp -p create-pks-cluster -c pipeline.yml -l params.yml`
 
-3) Un-pause and run pipeline `create-pks-cluster`
+3) Un-pause and run pipeline `create-pks-cluster` by manually triggering job `create-pks-cluster`
+
+
+## For vSphere with NSX-V environments
+
+A job to configure NSV-V Load Balancer with rules for the PKS cluster master node is provided under group tab "vSphere NSX-V LB setup".  
+
+For that job to work correctly, appropriately fill out all vSphere- and NSXV-related parameters in the parameters file (or in `pks_create_cluster_params.sh` script for Concourse servers integrated with credential management systems).
+
+After the PKS cluster gets created successfully, run job `configure-lb-pks-cluster-master-node` to configure the NSX-V load balancer.

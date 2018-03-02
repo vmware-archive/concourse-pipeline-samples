@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # set the path for the secrets below to be created in vault or credhub
-concourse_secrets_path="/concourse/team-name/pks-api-config-nsxv"
+export concourse_root_secrets_path="/concourse"
+export concourse_team_name="team-name"
+export concourse_pipeline_name="pks-api-config-nsxv"
 
 # VAULT or CREDHUB - targeted secrets management system
-targeted_system="VAULT"
-action="CREATE"   ## CREATE or DELETE
-
+export targeted_system="VAULT"
 # This script assumes that:
 # 1) the credhub or vault CLI is installed
 # 2) you setup your vault or credhub target and login commands prior to invoking it
@@ -18,18 +18,18 @@ action="CREATE"   ## CREATE or DELETE
 #    e.g. for CREDHUB
 #    credhub login -s credhub-server-uri -u username -p password --skip-tls-validation
 
-## UPDATE the secret entries below with the corresponding values for your PCF PKS environment
+##
+## TEAM level secrets (shared by all pipelines in that team)
+##
+export team_secrets=(
+)
 
-secrets=(
-  # domain for certificate generation when applicable, pks.mydomain.com
-  "pcf_pks_domain"::"pks.domain.com"
+##
+## PIPELINE LEVEL secrets (specific to the pipeline)
+##
+export pipeline_secrets=(
+
   "pcf_pks_api"::"api.pks.domain.com"
-  # username for PKS CLI username creation
-  "pks_cli_username"::"pksadmin"
-  # password for PKS CLI username creation
-  "pks_cli_password"::"mypassword"
-  # required email for PKS CLI username creation
-  "pks_cli_useremail"::"pksadmin@example.com"
   "pks_api_cert_cn"::"*.domain.com"
 
   # ops manager domain or ip address
@@ -61,18 +61,33 @@ secrets=(
 
 )
 
-for i in "${secrets[@]}"
-do
-  KEY="${i%%::*}"
-  VALUE="${i##*::}"
-  echo "Processing secret for [$KEY]"
-  if [[ $targeted_system == "VAULT" ]]; then
-    if [[ $action == "DELETE" ]]; then
-      vault delete "${concourse_secrets_path}/${KEY}"
-    else
-      vault write "${concourse_secrets_path}/${KEY}" value="${VALUE}"
+main () {
+
+  # team level secrets
+  concourse_team_level_secrets_path="${concourse_root_secrets_path}/${concourse_team_name}"
+  writeCredentials "${concourse_team_level_secrets_path}" "${team_secrets[*]}"
+
+  # pipeline level secrets
+  concourse_pipeline_level_secrets_path="${concourse_team_level_secrets_path}/${concourse_pipeline_name}"
+  writeCredentials "${concourse_pipeline_level_secrets_path}" "${pipeline_secrets[*]}"
+
+}
+
+writeCredentials () {
+  secretsPath=${1}
+  secretsObject=(${2})
+
+  for i in "${secretsObject[@]}"
+  do
+    KEY="${i%%::*}"
+    VALUE="${i##*::}"
+    echo "Creating secret for [$KEY]"
+    if [[ $targeted_system == "VAULT" ]]; then
+      vault write "${secretsPath}/${KEY}" value="${VALUE}"
+    else   # CREDHUB
+      credhub set -n "${secretsPath}/${KEY}" -v "${VALUE}"
     fi
-  else   # CREDHUB
-    credhub set -n "${concourse_secrets_path}/${KEY}" -v "${VALUE}"
-  fi
-done
+  done
+}
+
+main
