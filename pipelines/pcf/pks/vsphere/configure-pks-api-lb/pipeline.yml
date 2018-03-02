@@ -1,0 +1,176 @@
+groups: []
+resources:
+- name: pcf-pipelines-utils
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+jobs:
+- name: configure-lb-pks-application-profile
+  plan:
+  - get: pcf-pipelines-utils
+  - task: configure-nsxv-lb-app-profile
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-profile/task.yml
+    params:
+      VCENTER_HOST: ((vcenter_host))
+      VCENTER_USR: ((vcenter_usr))
+      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_DATA_CENTER: ((vcenter_datacenter))
+      NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD: ((nsxv_manager_admin_password))
+      NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE: ((nsxv_gen_mgr_transport_zone))
+      NSX_EDGE_GEN_EDGE_CLUSTER: ((nsxv_gen_edge_cluster))
+      NSX_EDGE_GEN_EDGE_DATASTORE: ((vcenter_datastore))
+      NSX_EDGE_GEN_NAME: ((nsxv_gen_edge_name))
+      NSX_EDGE_GEN_VIP_IP: ((nsxv_gen_vip_ip))
+      NSX_EDGE_GEN_PROFILE_NAME: PKS-HTTPS
+      NSX_EDGE_GEN_PROFILE_PROTOCOL: HTTPS
+      NSX_EDGE_GEN_SSL_PASSTHROUGH: false
+      NSX_EDGE_GEN_X_FORWARDED_FOR: true
+      NSX_EDGE_GEN_PROFILE_CERT_CN: ((pks_api_cert_cn))
+
+- name: configure-lb-pks-uaa
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [configure-lb-pks-application-profile]
+  - task: prepare-pks-uaa-endpoint-config
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: czero/rootfs
+      inputs:
+        - name: pcf-pipelines-utils
+      outputs:
+        - name: nsxv-pool-data
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          pool_config_file=./nsxv-pool-data/pool_config.yml
+          echo "application-name: ${APPLICATION_NAME}" >> $pool_config_file
+          echo "application-domain: ${APPLICATION_DOMAIN}" >> $pool_config_file
+          echo "application-port-number: ${APPLICATION_PORT_NUMBER}" >> $pool_config_file
+
+          echo "Retrieving PKS tile properties from Ops Manager [https://$OPSMAN_DOMAIN_OR_IP_ADDRESS]..."
+          # get PKS VM IP from OpsMgr
+          PRODUCTS=$(om-linux --target "https://$OPSMAN_DOMAIN_OR_IP_ADDRESS" --client-id "${OPSMAN_CLIENT_ID}" --client-secret "${OPSMAN_CLIENT_SECRET}" --username "$OPSMAN_USERNAME" --password "$OPSMAN_PASSWORD" --skip-ssl-validation curl -p /api/v0/staged/products)
+          PKS_GUID=$(echo "$PRODUCTS" | jq -r '.[] | .guid' | grep pivotal-container-service)
+          PKS_IPS=$(om-linux --target "https://$OPSMAN_DOMAIN_OR_IP_ADDRESS" --client-id "${OPSMAN_CLIENT_ID}" --client-secret "${OPSMAN_CLIENT_SECRET}" --username "$OPSMAN_USERNAME" --password "$OPSMAN_PASSWORD" --skip-ssl-validation curl -p /api/v0/deployed/products/$PKS_GUID/status | jq -rc '.status[].ips[]')
+          echo "PKS IPS: $PKS_IPS"
+
+          echo "pool-ips: ${PKS_IPS}" >> $pool_config_file
+          echo "pool-name-prefix: ${POOL_NAME_PREFIX}" >> $pool_config_file
+          cat $pool_config_file
+
+    params:
+      APPLICATION_NAME: uaa
+      APPLICATION_DOMAIN: ((pcf_pks_api))
+      APPLICATION_PORT_NUMBER: 8443
+      POOL_NAME_PREFIX: pks
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: ((opsman_domain_or_ip_address))
+      OPSMAN_USERNAME: ((opsman_admin_username))
+      OPSMAN_PASSWORD: ((opsman_admin_password))
+      OPSMAN_CLIENT_ID: ((opsman_client_id))
+      OPSMAN_CLIENT_SECRET: ((opsman_client_secret))
+
+  - task: configure-nsxv-lb-rules-vip
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-rules-vip/task.yml
+    params:
+      VCENTER_HOST: ((vcenter_host))
+      VCENTER_USR: ((vcenter_usr))
+      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_DATA_CENTER: ((vcenter_datacenter))
+      NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD: ((nsxv_manager_admin_password))
+      NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE: ((nsxv_gen_mgr_transport_zone))
+      NSX_EDGE_GEN_EDGE_CLUSTER: ((nsxv_gen_edge_cluster))
+      NSX_EDGE_GEN_EDGE_DATASTORE: ((vcenter_datastore))
+      NSX_EDGE_GEN_NAME: ((nsxv_gen_edge_name))
+      NSX_EDGE_GEN_VIP_IP: ((nsxv_gen_vip_ip))
+      NSX_EDGE_GEN_VIP_NAME: PKS-UAA
+      NSX_EDGE_GEN_VIP_PORT: 8443
+      NSX_EDGE_GEN_PROFILE_NAME: PKS-HTTPS
+      NSX_EDGE_GEN_PROFILE_PROTOCOL: HTTPS
+      NSX_EDGE_GEN_ADD_RULE_TO_VIP: true
+- name: configure-lb-pks-api
+  plan:
+  - get: pcf-pipelines-utils
+    passed: [configure-lb-pks-uaa]
+    trigger: true
+
+  - task: prepare-pks-api-endpoint-config
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: czero/rootfs
+      inputs:
+        - name: pcf-pipelines-utils
+      outputs:
+        - name: nsxv-pool-data
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          pool_config_file=./nsxv-pool-data/pool_config.yml
+          echo "application-name: ${APPLICATION_NAME}" >> $pool_config_file
+          echo "application-domain: ${APPLICATION_DOMAIN}" >> $pool_config_file
+          echo "application-port-number: ${APPLICATION_PORT_NUMBER}" >> $pool_config_file
+
+          echo "Retrieving PKS tile properties from Ops Manager [https://$OPSMAN_DOMAIN_OR_IP_ADDRESS]..."
+          # get PKS VM IP from OpsMgr
+          PRODUCTS=$(om-linux --target "https://$OPSMAN_DOMAIN_OR_IP_ADDRESS" --client-id "${OPSMAN_CLIENT_ID}" --client-secret "${OPSMAN_CLIENT_SECRET}" --username "$OPSMAN_USERNAME" --password "$OPSMAN_PASSWORD" --skip-ssl-validation curl -p /api/v0/staged/products)
+          PKS_GUID=$(echo "$PRODUCTS" | jq -r '.[] | .guid' | grep pivotal-container-service)
+          PKS_IPS=$(om-linux --target "https://$OPSMAN_DOMAIN_OR_IP_ADDRESS" --client-id "${OPSMAN_CLIENT_ID}" --client-secret "${OPSMAN_CLIENT_SECRET}" --username "$OPSMAN_USERNAME" --password "$OPSMAN_PASSWORD" --skip-ssl-validation curl -p /api/v0/deployed/products/$PKS_GUID/status | jq -rc '.status[].ips[]')
+          echo "PKS IPS: $PKS_IPS"
+
+          echo "pool-ips: ${PKS_IPS}" >> $pool_config_file
+          echo "pool-name-prefix: ${POOL_NAME_PREFIX}" >> $pool_config_file
+          cat $pool_config_file
+
+    params:
+      APPLICATION_NAME: api
+      APPLICATION_DOMAIN: ((pcf_pks_api))
+      APPLICATION_PORT_NUMBER: 9021
+      POOL_NAME_PREFIX: pks
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: ((opsman_domain_or_ip_address))
+      OPSMAN_USERNAME: ((opsman_admin_username))
+      OPSMAN_PASSWORD: ((opsman_admin_password))
+      OPSMAN_CLIENT_ID: ((opsman_client_id))
+      OPSMAN_CLIENT_SECRET: ((opsman_client_secret))
+
+  - task: configure-nsxv-lb-rules-vip
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-rules-vip/task.yml
+    params:
+      VCENTER_HOST: ((vcenter_host))
+      VCENTER_USR: ((vcenter_usr))
+      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_DATA_CENTER: ((vcenter_datacenter))
+      NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD: ((nsxv_manager_admin_password))
+      NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE: ((nsxv_gen_mgr_transport_zone))
+      NSX_EDGE_GEN_EDGE_CLUSTER: ((nsxv_gen_edge_cluster))
+      NSX_EDGE_GEN_EDGE_DATASTORE: ((vcenter_datastore))
+      NSX_EDGE_GEN_NAME: ((nsxv_gen_edge_name))
+      NSX_EDGE_GEN_VIP_IP: ((nsxv_gen_vip_ip))
+      NSX_EDGE_GEN_VIP_NAME: PKS-API
+      NSX_EDGE_GEN_VIP_PORT: 9021
+      NSX_EDGE_GEN_PROFILE_NAME: PKS-HTTPS
+      NSX_EDGE_GEN_PROFILE_PROTOCOL: HTTPS
+      NSX_EDGE_GEN_ADD_RULE_TO_VIP: false
