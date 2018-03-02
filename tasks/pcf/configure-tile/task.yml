@@ -1,0 +1,24 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: czero/rootfs
+
+inputs:
+- name: pcf-pipelines-utils
+
+run:
+  path: pcf-pipelines-utils/tasks/pcf/configure-tile/task.sh
+
+params:
+  OPSMAN_DOMAIN_OR_IP_ADDRESS:
+  OPSMAN_USERNAME:
+  OPSMAN_PASSWORD:
+  OPSMAN_CLIENT_ID:
+  OPSMAN_CLIENT_SECRET:
+  TILE_PROPERTIES:
+  TILE_NETWORK:
+  TILE_RESOURCES:
+  TILE_PRODUCT_NAME:

@@ -10,7 +10,7 @@ inputs:
 - name: pcf-pipelines-utils
 
 run:
-  path: pcf-pipelines-utils/tasks/pcf/delete-pks-cluster/task.sh
+  path: pcf-pipelines-utils/tasks/pcf/pks/delete-pks-cluster/task.sh
 
 params:
   PCF_PKS_API:

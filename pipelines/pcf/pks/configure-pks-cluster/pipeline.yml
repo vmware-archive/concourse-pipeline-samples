@@ -18,7 +18,7 @@ jobs:
   plan:
   - get: pcf-pipelines-utils
   - task: create-pks-cluster
-    file: pcf-pipelines-utils/tasks/pcf/create-pks-cluster/task.yml
+    file: pcf-pipelines-utils/tasks/pcf/pks/create-pks-cluster/task.yml
     params:
       PCF_PKS_API: ((pcf_pks_api))
       PKS_CLI_USERNAME: ((pks_cli_username))
@@ -32,7 +32,7 @@ jobs:
   plan:
   - get: pcf-pipelines-utils
   - task: delete-pks-cluster
-    file: pcf-pipelines-utils/tasks/pcf/delete-pks-cluster/task.yml
+    file: pcf-pipelines-utils/tasks/pcf/pks/delete-pks-cluster/task.yml
     params:
       PCF_PKS_API: ((pcf_pks_api))
       PKS_CLI_USERNAME: ((pks_cli_username))

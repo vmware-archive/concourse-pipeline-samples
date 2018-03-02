@@ -1,0 +1,24 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: czero/rootfs
+
+inputs:
+- name: pcf-pipelines-utils
+
+run:
+  path: pcf-pipelines-utils/tasks/pcf/pks/configure-pks-cli-user/task.sh
+
+params:
+  OPSMAN_DOMAIN_OR_IP_ADDRESS:
+  OPSMAN_USERNAME:
+  OPSMAN_PASSWORD:
+  OPSMAN_CLIENT_ID:
+  OPSMAN_CLIENT_SECRET:
+  PKS_DOMAIN:
+  PKS_CLI_USERNAME:
+  PKS_CLI_USEREMAIL:
+  PKS_CLI_PASSWORD:

@@ -1,0 +1,220 @@
+groups: []
+resources:
+- name: pcf-pipelines-tarball
+  type: pivnet
+  source:
+    api_token: {{pivnet_token}}
+    product_slug: pcf-automation
+    product_version: v0.23.0
+- name: pcf-pipelines-utils
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+- name: product-release
+  type: pivnet
+  source:
+    api_token: {{pivnet_token}}
+    product_slug: pivotal-container-service
+    product_version: {{product_version}}
+    sort_by: semver
+
+
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+jobs:
+- name: upload-product
+  plan:
+  - aggregate:
+    - do:
+      - get: pcf-pipelines-tarball
+      - task: unpack-tarball
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: czero/rootfs
+          run:
+            path: bash
+            args:
+            - -c
+            - tar -xvf pcf-pipelines-tarball/*.tgz
+          inputs:
+          - name: pcf-pipelines-tarball
+            path: ""
+          outputs:
+          - name: pcf-pipelines
+            path: ""
+    - get: pivnet-product
+      resource: product-release
+      params:
+        globs:
+        - "*.pivotal"
+  - task: upload-tile
+    file: pcf-pipelines/tasks/upload-product-and-stemcell/task.yml
+    params:
+      IAAS: vsphere
+      NO_PROXY: {{company_proxy_domain}}
+      OM_IP: {{om_ip}}
+      OPS_MGR_PWD: {{opsman_admin_password}}
+      OPS_MGR_USR: {{opsman_admin_username}}
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      PIVNET_API_TOKEN: {{pivnet_token}}
+- name: stage-product
+  plan:
+  - aggregate:
+    - do:
+      - get: pcf-pipelines-tarball
+      - task: unpack-tarball
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: czero/rootfs
+          run:
+            path: bash
+            args:
+            - -c
+            - tar -xvf pcf-pipelines-tarball/*.tgz
+          inputs:
+          - name: pcf-pipelines-tarball
+            path: ""
+          outputs:
+          - name: pcf-pipelines
+            path: ""
+    - get: pivnet-product
+      passed:
+      - upload-product
+      trigger: true
+      resource: product-release
+      params:
+        globs: ["*.pivotal"]
+
+  - task: stage
+    file: pcf-pipelines/tasks/stage-product/task.yml
+    params:
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+
+- name: configure-product
+  plan:
+  - aggregate:
+    - do:
+      - get: pcf-pipelines-tarball
+      - task: unpack-tarball
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: czero/rootfs
+          run:
+            path: bash
+            args:
+            - -c
+            - tar -xvf pcf-pipelines-tarball/*.tgz
+          inputs:
+          - name: pcf-pipelines-tarball
+            path: ""
+          outputs:
+          - name: pcf-pipelines
+            path: ""
+    - get: pivnet-product
+      passed:
+      - stage-product
+      resource: product-release
+      trigger: true
+      params:
+        globs: []
+    - get: pcf-pipelines-utils
+
+  - task: configure-tile
+    file: pcf-pipelines-utils/tasks/pcf/configure-tile/task.yml
+    params:
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      TILE_PROPERTIES: {{properties}}
+      TILE_NETWORK: {{networks}}
+      TILE_RESOURCES: {{resources}}
+      TILE_PRODUCT_NAME: {{product_name}}
+
+  - task: disable-errands
+    file: pcf-pipelines/tasks/disable-errands/task.yml
+    params:
+      ERRANDS_TO_DISABLE: {{errands_to_disable}}
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      PRODUCT_NAME: {{product_name}}
+
+- name: deploy-product
+  plan:
+  - aggregate:
+    - do:
+      - get: pcf-pipelines-tarball
+      - task: unpack-tarball
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: czero/rootfs
+          run:
+            path: bash
+            args:
+            - -c
+            - tar -xvf pcf-pipelines-tarball/*.tgz
+          inputs:
+          - name: pcf-pipelines-tarball
+            path: ""
+          outputs:
+          - name: pcf-pipelines
+            path: ""
+    - get: pivnet-product
+      passed:
+      - configure-product
+      resource: product-release
+      trigger: true
+      params:
+        globs: []
+  - task: apply-changes
+    file: pcf-pipelines/tasks/apply-changes/task.yml
+    params:
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+
+- name: create-pks-cli-user
+  plan:
+  - aggregate:
+    - get: pcf-pipelines-utils
+  - task: configure-pks-cli-user
+    file: pcf-pipelines-utils/tasks/pcf/pks/configure-pks-cli-user/task.yml
+    params:
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      PKS_DOMAIN: {{pcf_pks_domain}}
+      PKS_CLI_USERNAME: {{pks_cli_username}}
+      PKS_CLI_USEREMAIL: {{pks_cli_useremail}}
+      PKS_CLI_PASSWORD: {{pks_cli_password}}

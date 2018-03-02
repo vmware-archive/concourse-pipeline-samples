@@ -1,0 +1,5 @@
+######## Generic global parameters
+######## typically apply to all foundations and all tiles
+
+# Pivotal Network token for tile release download and pcf-pipelines download
+pivnet_token: ((pivnet_token))
