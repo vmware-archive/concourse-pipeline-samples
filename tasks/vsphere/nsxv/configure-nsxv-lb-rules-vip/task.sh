@@ -97,7 +97,7 @@ pynsxvg () {
 getYamlPropertyValue() {
   propertyName="${1}"
   yamlFile="${2}"
-  grep "$propertyName" "$yamlFile" | grep "^[^#;]" | cut -d ":" -f 2 | tr -d " "
+  grep "$propertyName" "$yamlFile" | grep "^[^#;]" | cut -d ":" -f 2 | sed -e 's/^[ \t]*//' | sed -e 's/$[ \t]*//'
 }
 
 main
