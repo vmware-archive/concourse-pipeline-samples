@@ -1,4 +1,12 @@
-groups: []
+groups:
+- name: Manage PKS Cluster
+  jobs:
+  - create-pks-cluster
+  - delete-pks-cluster
+- name: vSphere NSX-V LB setup
+  jobs:
+  - configure-lb-pks-cluster-master-node
+
 resources:
 - name: pcf-pipelines-utils
   type: git
@@ -30,3 +38,62 @@ jobs:
       PKS_CLI_USERNAME: ((pks_cli_username))
       PKS_CLI_PASSWORD: ((pks_cli_password))
       PKS_CLUSTER_NAME: ((pks_cluster_name))
+
+- name: configure-lb-pks-cluster-master-node
+  plan:
+  - get: pcf-pipelines-utils
+  - task: prepare-pks-cluster-master-config
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: pivotalservices/pks-kubectl
+      inputs:
+        - name: pcf-pipelines-utils
+      outputs:
+        - name: nsxv-pool-data
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          pool_config_file=./nsxv-pool-data/pool_config.yml
+          echo "application-name: ${APPLICATION_NAME}" >> $pool_config_file
+          echo "application-domain: ${APPLICATION_DOMAIN}" >> $pool_config_file
+          echo "application-port-number: ${APPLICATION_PORT_NUMBER}" >> $pool_config_file
+
+          echo "Login to PKS API [$PCF_PKS_API]"
+          pks login -a "$PCF_PKS_API" -u "$PKS_CLI_USERNAME" -p "$PKS_CLI_PASSWORD" --skip-ssl-verification # TBD --ca-cert CERT-PATH
+          MASTER_NODE_IP=$(pks cluster "$PKS_CLUSTER_NAME" --json | jq -rc '.kubernetes_master_ips[]')
+          echo "MASTER_NODE_IP: $MASTER_NODE_IP"
+
+          echo "pool-ips: ${MASTER_NODE_IP}" >> $pool_config_file
+          echo "pool-name-prefix: ${POOL_NAME_PREFIX}" >> $pool_config_file
+          cat $pool_config_file
+    params:
+      APPLICATION_NAME: ((pks_cluster_name))
+      APPLICATION_DOMAIN: ((pks_cluster_master_node_hostname))
+      APPLICATION_PORT_NUMBER: 8443
+      POOL_NAME_PREFIX: pks
+      PCF_PKS_API: ((pcf_pks_api))
+      PKS_CLI_USERNAME: ((pks_cli_username))
+      PKS_CLI_PASSWORD: ((pks_cli_password))
+      PKS_SERVICE_PLAN_NAME: ((pks_plan_name))
+      PKS_CLUSTER_NAME: ((pks_cluster_name))
+
+  - task: configure-nsxv-lb-rules-vip
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-rules/task.yml
+    params:
+      VCENTER_HOST: ((vcenter_host))
+      VCENTER_USR: ((vcenter_usr))
+      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_DATA_CENTER: ((vcenter_datacenter))
+      NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD: ((nsxv_manager_admin_password))
+      NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE: ((nsxv_gen_mgr_transport_zone))
+      NSX_EDGE_GEN_EDGE_CLUSTER: ((nsxv_gen_edge_cluster))
+      NSX_EDGE_GEN_EDGE_DATASTORE: ((vcenter_datastore))
+      NSX_EDGE_GEN_NAME: ((nsxv_gen_edge_name))
+      NSX_EDGE_GEN_VIP_NAME: PKS-UAA

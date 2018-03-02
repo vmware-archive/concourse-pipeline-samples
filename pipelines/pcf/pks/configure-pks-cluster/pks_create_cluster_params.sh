@@ -38,6 +38,23 @@ export pipeline_secrets=(
   "pks_cluster_name"::"cluster1"
   "pks_cluster_master_node_hostname"::"cluster1.pks.domain.com"
   "pks_cluster_number_of_workers"::"3"
+
+  ## optional - for vSphere NSX-V load balancer config only
+  # vcenter hostname, do not include protocol information
+  "vcenter_host"::"vcenter.domain.com"
+  # vcenter credentials and properties
+  "vcenter_usr"::"myvcenteruser@vsphere.local"
+  "vcenter_pwd"::"myvcenterpassword"
+  "vcenter_datacenter"::"Datacenter"
+  "vcenter_datastore"::"mydatastore"
+
+  "nsxv_manager_address"::"mynsxv.domain.com"
+  "nsxv_manager_admin_username"::"admin"
+  "nsxv_manager_admin_password"::"password"
+  "nsxv_gen_edge_name"::"nsxv_gen_edge_name"
+  "nsxv_gen_edge_cluster"::"Cluster-A"
+  "nsxv_gen_mgr_transport_zone"::"nsxv_gen_mgr_transport_zone"
+
 )
 
 main () {

@@ -1,6 +1,6 @@
 # Create a PKS cluster
 
-This sample pipeline creates a PKS cluster on a PCF+PKS environment using the `pks` CLI.
+This sample pipeline implements jobs to create and delete a PKS cluster on a PCF+PKS environment using the `pks` CLI.
 
 ## How to use this pipeline
 
