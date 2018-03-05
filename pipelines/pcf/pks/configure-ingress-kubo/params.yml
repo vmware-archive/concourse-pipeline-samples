@@ -1,0 +1,25 @@
+# PKS API url: e.g. api.pks.domain.com
+pcf_pks_api: ((pcf_pks_api))
+# PKS service domain: e.g. pks.domain.com
+pcf_pks_domain: ((pcf_pks_domain))
+# PKS CLI admin credentials
+pks_cli_username: ((pks_cli_username))
+pks_cli_password: ((pks_cli_password))
+# PKS cluster name
+pks_cluster_name: ((pks_cluster_name))
+# URL of master node of PKS cluster
+pks_cluster_master_node_hostname: ((pks_cluster_master_node_hostname))
+
+## optional - for vSphere NXS-V load balancer config only
+vcenter_host: ((vcenter_host))
+vcenter_usr: ((vcenter_usr))
+vcenter_pwd: ((vcenter_pwd))
+vcenter_datacenter: ((vcenter_datacenter))
+vcenter_datastore: ((vcenter_datastore))
+nsxv_manager_address: ((nsxv_manager_address))
+nsxv_manager_admin_username: ((nsxv_manager_admin_username))
+nsxv_manager_admin_password: ((nsxv_manager_admin_password))
+nsxv_gen_mgr_transport_zone: ((nsxv_gen_mgr_transport_zone))
+nsxv_gen_edge_name: ((nsxv_gen_edge_name))
+nsxv_gen_edge_cluster: ((nsxv_gen_edge_cluster))
+nsxv_gen_vip_ip: ((nsxv_gen_vip_ip))
