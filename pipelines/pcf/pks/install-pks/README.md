@@ -75,6 +75,7 @@ For that step, the pipeline also provides a job to automate it: `create-pks-cli-
 
 Once the PKS CLI client ID created, proceed with [creating K8s clusters with PKS](https://docs.pivotal.io/runtimes/pks/1-0/create-cluster.html) and [deploying K8s workloads with `kubectl`](https://docs.pivotal.io/runtimes/pks/1-0/deploy-workloads.html).
 
+A sample Concourse pipeline to [Create a PKS Cluster](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pipelines/pcf/pks/configure-pks-cluster) is also available.
 
 ---
 
