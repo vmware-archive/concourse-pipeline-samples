@@ -31,7 +31,7 @@ jobs:
         - name: concourse-pipeline-samples
       run:
         path: cat
-      args:
+        args:
         - "/etc/lsb-release"
 
 - name: issue-ls-command
@@ -55,5 +55,5 @@ jobs:
         - name: concourse-pipeline-samples
       run:
         path: ls
-      args:
+        args:
         - "-la"
