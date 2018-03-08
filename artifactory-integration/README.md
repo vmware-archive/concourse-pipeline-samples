@@ -83,8 +83,8 @@ This pipeline definition file can also be downloaded from [this repository](http
 
 ##### Pre-requisites
 
-1. An instance of [Concourse installed](http://concourse.ci/installing.html) up-and-running.  
-1. The [Concourse Fly command line interface](http://concourse.ci/fly-cli.html) installed on your local machine.  
+1. An instance of [Concourse installed](http://concourse-ci.org/installing.html) up-and-running.  
+1. The [Concourse Fly command line interface](http://concourse-ci.org/fly-cli.html) installed on your local machine.  
 1. A JFrog Artifactory server up-and-running.  
    For local tests, you can [run Artifactory as a Docker image](https://www.jfrog.com/confluence/display/RTF/Running+with+Docker).  
 

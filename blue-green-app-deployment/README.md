@@ -41,11 +41,11 @@ For you to inspect which instance is being used by the main route, simply point 
 The requirements for this pipeline's setup are as follows:
 
 1. An instance of Concourse installed either as a local vagrant machine or as a remote server.  
-   Please refer to the documentation on [how to install Concourse](http://concourse.ci/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).
+   Please refer to the documentation on [how to install Concourse](http://concourse-ci.org/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).
 
 1. The Concourse Fly command line interface is installed on the local VM.  
    The Fly cli can be downloaded directly from the link provided on the Concourse web interface.  
-   Please refer to the [Fly cli documentation](http://concourse.ci/fly-cli.html) for details.
+   Please refer to the [Fly cli documentation](http://concourse-ci.org/fly-cli.html) for details.
 
 
 ## Pipeline setup and execution

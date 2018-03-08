@@ -9,12 +9,12 @@ That allows for the reuse of common task definitions, for example, `package rele
 
 ### Key-value pairs with `params`
 
-Key-value pairs can be passed to a task through a [`params`](http://concourse.ci/running-tasks.html#params) section in the task definition. Each `key` entry will become an **environment variable** during the execution of the task.
+Key-value pairs can be passed to a task through a [`params`](http://concourse-ci.org/running-tasks.html#params) section in the task definition. Each `key` entry will become an **environment variable** during the execution of the task.
 
 
 ### Input and Output Mappings
 
-The `inputs` and `outputs` of a task can be parameterized with [input-mappings](http://concourse.ci/task-step.html#input_mapping) and [output-mappings](http://concourse.ci/task-step.html#output_mapping) respectively.  
+The `inputs` and `outputs` of a task can be parameterized with [input-mappings](http://concourse-ci.org/task-step.html#input_mapping) and [output-mappings](http://concourse-ci.org/task-step.html#output_mapping) respectively.  
 That means that an entire input or output folder that is expected by the task (e.g. a github release or S3) can be "substituted" with another folder from a pipeline resource for each run of the task.
 
 

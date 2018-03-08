@@ -1,7 +1,7 @@
 # A simple gated CI pipeline
 
 In Concourse, a job requires to be manually triggered by default, as long as none of
-its resources specify the "[trigger: true](http://concourse.ci/get-step.html#trigger)" parameter.
+its resources specify the "[trigger: true](http://concourse-ci.org/get-step.html#trigger)" parameter.
 
 Therefore, in order to create a "gated" step in a pipeline, a simple job that requires a manual trigger needs to be inserted into it.
 

@@ -67,12 +67,12 @@ In the "CleanUp" tab of the pipeline, a single job is defined to perform a night
 The requirements for this pipeline's setup are as follows:
 
 1. An instance of Concourse installed either as a local vagrant machine or as a remote server.  
-   Please refer to the documentation on [how to install Concourse](http://concourse.ci/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).  
+   Please refer to the documentation on [how to install Concourse](http://concourse-ci.org/installing.html) or to article [Deploying Concourse on Bosh-lite](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite).  
    Note that the size of backup files produced by CFOps for some PCF components may be of 10+ Gigabytes each, so plan to have large disk sizes in place for the Concourse Worker VMs in order to avoid build failures due to not enough available disk space.
 
 1. The Concourse Fly command line interface is installed on the local VM.  
    The Fly cli can be downloaded directly from the link provided on the Concourse web interface.  
-   Please refer to the [Fly cli documentation](http://concourse.ci/fly-cli.html) for details.
+   Please refer to the [Fly cli documentation](http://concourse-ci.org/fly-cli.html) for details.
 
 1. A deployed instance of PCF that is managed by an Ops Manager
 

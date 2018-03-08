@@ -26,8 +26,8 @@ Here is an example of a `rootfs` git repository with the required container file
 ![Rootfs-curl-repo](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/rootfs-curl-repo.jpg)
 
 
-To use that `rootfs` repository in a pipeline, use the  [`image`](https://concourse.ci/task-step.html#task-image) parameter instead of `image_resource` when defining a task.  
-For defining [resource types](https://concourse.ci/configuring-resource-types.html) using `rootfs` repositories, use `type: git` instead of `type: docker-image` in the `resource_types` entries of the pipeline.
+To use that `rootfs` repository in a pipeline, use the  [`image`](https://concourse-ci.org/task-step.html#task-image) parameter instead of `image_resource` when defining a task.  
+For defining [resource types](https://concourse-ci.org/configuring-resource-types.html) using `rootfs` repositories, use `type: git` instead of `type: docker-image` in the `resource_types` entries of the pipeline.
 
 ### Sample pipeline
 
@@ -105,6 +105,6 @@ The techniques described here should only be used for temporary Concourse demons
 
 - [Running tasks with Docker images from an S3 bucket]( https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks/docker-images-from-s3)
 
-- [Concourse documentation on running tasks with a rootfs image]( https://concourse.ci/running-tasks.html#task-config-image)
+- [Concourse documentation on running tasks with a rootfs image]( https://concourse-ci.org/running-tasks.html#task-config-image)
 
 #### [Back to Concourse Pipeline Hacks](..)

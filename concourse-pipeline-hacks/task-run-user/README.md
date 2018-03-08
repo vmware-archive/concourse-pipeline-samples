@@ -8,7 +8,7 @@ Of course, this will not work for you if one of your task's image/container requ
 
 ### The solution
 
-To accommodate that requirement, Concourse provides a [`user` parameter](http://concourse.ci/running-tasks.html#task-run-user) for you to explicitly set the user to run a task container with.
+To accommodate that requirement, Concourse provides a [`user` parameter](http://concourse-ci.org/running-tasks.html#task-run-user) for you to explicitly set the user to run a task container with.
 
 
 #### Sample pipeline

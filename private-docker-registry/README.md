@@ -2,7 +2,7 @@
 
 # Concourse pipelines with a local Docker Registry
 
-A typical question that surfaces from customers planning to adopt and deploy Concourse on their production environments is _“How do I run Concourse tasks on a protected or internetless environment where no access to Docker Hub is available?”_. The typical short answer from experts or from the [Concourse documentation](http://concourse.ci/running-tasks.html) is _“deploy your own private Docker registry and point your Concourse pipeline tasks to that registry’s images”_.
+A typical question that surfaces from customers planning to adopt and deploy Concourse on their production environments is _“How do I run Concourse tasks on a protected or internetless environment where no access to Docker Hub is available?”_. The typical short answer from experts or from the [Concourse documentation](http://concourse-ci.org/running-tasks.html) is _“deploy your own private Docker registry and point your Concourse pipeline tasks to that registry’s images”_.
 
 However, before getting to that final milestone and deploying Concourse and a Docker registry to production, one may want to experiment with a local setup of such scenario. And that is what this article is about.
 
@@ -11,7 +11,7 @@ This article does not provide any recommendation on how to setup a private Docke
 
 1. **Configure your Local Concourse instance**
 
-   Either follow the [Concourse installation instructions](http://concourse.ci/vagrant.html) to deploy it  with Vagrant or follow [this article](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite) to deploy it with Bosh-lite.
+   Either follow the [Concourse installation instructions](http://concourse-ci.org/vagrant.html) to deploy it  with Vagrant or follow [this article](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite) to deploy it with Bosh-lite.
 
    **Important**: the minimum required version of Concourse for this experiment is **v1.2.0**. Any previous version of that CI tool will fail to download images from the private Docker registry returning a “manifest unknown” API error.
 
@@ -66,7 +66,7 @@ This article does not provide any recommendation on how to setup a private Docke
 
 ## References
    - [Docker Registry overview](https://docs.docker.com/registry/overview/)
-   - [Concourse tasks overview](http://concourse.ci/running-tasks.html)
+   - [Concourse tasks overview](http://concourse-ci.org/running-tasks.html)
 
 ---
 

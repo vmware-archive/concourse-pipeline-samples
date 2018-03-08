@@ -7,7 +7,7 @@
 
 # Authenticating Concourse team members with PCF UAA
 
-Concourse can be [integrated with a Cloud Foundry UAA server](http://concourse.ci/teams.html#uaa-cf-auth) to authenticate and authorize members of a specific team based on CF Organization/Space membership.
+Concourse can be [integrated with a Cloud Foundry UAA server](http://concourse-ci.org/teams.html#uaa-cf-auth) to authenticate and authorize members of a specific team based on CF Organization/Space membership.
 
 The authorization of the users for a Concourse team is validated against the user membership of a specific `space` in Cloud Foundry.
 
@@ -55,7 +55,7 @@ uaac client add concourse \
 
 #### 2. Configure a Concourse team that delegates authentication to UAA
 
-From a machine that can connect to Concourse via [FLY cli](http://concourse.ci/fly-cli.html), set the Concourse team with UAA authentication:
+From a machine that can connect to Concourse via [FLY cli](http://concourse-ci.org/fly-cli.html), set the Concourse team with UAA authentication:
 
 ```
 fly -t <your-target> set-team -n <team-name> \

@@ -2,7 +2,7 @@
 
 # How to integrate Concourse pipelines with Vault
 
-Concourse 3.3.1+ supports [credential management integration with HashiCorp's Vault](http://concourse.ci/creds.html) and eliminates the need to feed credentials to pipelines via plain-text parameter files.  
+Concourse 3.3.1+ supports [credential management integration with HashiCorp's Vault](http://concourse-ci.org/creds.html) and eliminates the need to feed credentials to pipelines via plain-text parameter files.  
 
 This integration requires configuration updates to both Vault and Concourse servers as described further below.
 
@@ -19,7 +19,7 @@ jobs:
       SYS_USERNAME: ((vault-system-username))
 ```
 
-When Concourse runs that pipeline/job, it will search for the corresponding secret in Vault, using a [pre-determined search order](http://concourse.ci/creds.html#vault), and execute the task appropriately with the retrieved values.
+When Concourse runs that pipeline/job, it will search for the corresponding secret in Vault, using a [pre-determined search order](http://concourse-ci.org/creds.html#vault), and execute the task appropriately with the retrieved values.
 
 
 ## Configuring the Vault server
@@ -63,7 +63,7 @@ On an [unsealed](https://www.vaultproject.io/docs/concepts/seal.html) Vault serv
 
 Copy the token value from the step further above and set it in the Concourse server.
 
-* For binary-based Concourse deployments, see [the Concourse documentation](http://concourse.ci/creds.html) for setup instructions.
+* For binary-based Concourse deployments, see [the Concourse documentation](http://concourse-ci.org/creds.html) for setup instructions.
 
 * For Bosh-based Concourse deployments, update the `atc` job properties in the deployment manifest as described below and then redeploy Concourse:
 
@@ -88,7 +88,7 @@ For a complete list of Vault integration parameters for the `atc` job, please co
 
 Then, once you run the pipelines, you should see secret keys being replaced with the corresponding values retrieved from the Vault server by Concourse.
 
-For more information on Concourse and Vault integration, please refer to Concourse's [Credentials Management documentation page](http://concourse.ci/creds.html).
+For more information on Concourse and Vault integration, please refer to Concourse's [Credentials Management documentation page](http://concourse-ci.org/creds.html).
 
 
 ### Hint: how to keep pipeline YML files untouched and still integrate with Vault
