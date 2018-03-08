@@ -3,7 +3,7 @@
 
 # Concourse deployment with a Bosh 1.x manifest
 
-Concourse's [installation documentation](http://concourse.ci/clusters-with-bosh.html) provides only samples on how to install Concourse using a Bosh 2.0-style deployment manifests, i.e. manifests that rely on the Bosh 2.0 Cloud Config concept. In some instances though, customers may want to install Concourse on a new or existing Bosh Director where a Bosh 1.0 compliant deployment is in effect or desired for some reason.
+Concourse's [installation documentation](http://concourse-ci.org/clusters-with-bosh.html) provides only samples on how to install Concourse using a Bosh 2.0-style deployment manifests, i.e. manifests that rely on the Bosh 2.0 Cloud Config concept. In some instances though, customers may want to install Concourse on a new or existing Bosh Director where a Bosh 1.0 compliant deployment is in effect or desired for some reason.
 
 Having that said, this article provides sample steps on how to deploy Concourse 1.x on a Bosh Director not yet setup to use Cloud Config features. It also assumes that you have an instance of [Bosh Director](http://bosh.io/docs/init.html) already configured.
 
@@ -46,7 +46,7 @@ Having that said, this article provides sample steps on how to deploy Concourse 
 
        ``external_url: http://XX.XX.XX.XX:8080```
 
-1. Deploy and run your pipelines as described in the [Concourse Documentation page](http://concourse.ci/fly-cli.html).
+1. Deploy and run your pipelines as described in the [Concourse Documentation page](http://concourse-ci.org/fly-cli.html).
 
 
 ---

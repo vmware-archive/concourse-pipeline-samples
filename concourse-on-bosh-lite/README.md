@@ -2,7 +2,7 @@
 
 # Deploying Concourse on Bosh-lite
 
-The quickest way to install and run a local copy of Concourse is by using the provided Vagrant image as mentioned in [Concourse’s documentation page](http://concourse.ci/vagrant.html). However, in certain cases, one may have the need to experiment with the Bosh-deployed version of Concourse in a local machine prior to moving it onto a shared/production environment later. For those cases, a solution is to install Concourse on top of a local Bosh-lite deployment. The section further below describes the steps to get that done.
+The quickest way to install and run a local copy of Concourse is by using the provided Vagrant image as mentioned in [Concourse’s documentation page](http://concourse-ci.org/vagrant.html). However, in certain cases, one may have the need to experiment with the Bosh-deployed version of Concourse in a local machine prior to moving it onto a shared/production environment later. For those cases, a solution is to install Concourse on top of a local Bosh-lite deployment. The section further below describes the steps to get that done.
 
 For more information about Bosh-lite and Concourse, please refer to the **Reference** section further below.
 
@@ -67,12 +67,12 @@ For more information about Bosh-lite and Concourse, please refer to the **Refere
 
        [http://10.244.8.2:8080/](http://10.244.8.2:8080/)
 
-11. Deploy and run your pipelines as described in the [Concourse Documentation page](http://concourse.ci/fly-cli.html).
+11. Deploy and run your pipelines as described in the [Concourse Documentation page](http://concourse-ci.org/fly-cli.html).
 
 
 ## References
 - Bosh-lite https://github.com/cloudfoundry/bosh-lite
-- Concourse http://concourse.ci/introduction.html
+- Concourse http://concourse-ci.org/introduction.html
 
 ## Credits
 Article based on deployment steps originally provided by Caleb Washburn

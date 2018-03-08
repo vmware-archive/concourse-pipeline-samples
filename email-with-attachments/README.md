@@ -49,8 +49,8 @@ If you want to see the full sample pipeline provided in action, here is how you 
 
 ##### Pre-requisites to setup this example on your Concourse server
 
-1. An instance of [Concourse installed](http://concourse.ci/installing.html) up-and-running.  
-1. The [Concourse Fly command line interface](http://concourse.ci/fly-cli.html) installed on your local machine.
+1. An instance of [Concourse installed](http://concourse-ci.org/installing.html) up-and-running.  
+1. The [Concourse Fly command line interface](http://concourse-ci.org/fly-cli.html) installed on your local machine.
 
 ##### Configuration steps
 1. Clone the sample git repository on your local machine  

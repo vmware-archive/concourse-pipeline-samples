@@ -105,8 +105,8 @@ jobs:
 
 ##### Pre-requisites
 
-1. An instance of [Concourse installed](http://concourse.ci/installing.html) up-and-running.  
-1. The [Concourse Fly command line interface](http://concourse.ci/fly-cli.html) installed on your local machine.  
+1. An instance of [Concourse installed](http://concourse-ci.org/installing.html) up-and-running.  
+1. The [Concourse Fly command line interface](http://concourse-ci.org/fly-cli.html) installed on your local machine.  
 1. A Google Cloud Storage bucket setup  
    To create one:  
    - go to your [GCP account dashboard](https://console.cloud.google.com/home/dashboard);  
