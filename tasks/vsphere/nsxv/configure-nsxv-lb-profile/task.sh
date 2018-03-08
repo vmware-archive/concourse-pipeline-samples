@@ -26,6 +26,7 @@ EOF
     --protocol $NSX_EDGE_GEN_PROFILE_PROTOCOL \
     -x $NSX_EDGE_GEN_X_FORWARDED_FOR \
     --ssl_passthrough $NSX_EDGE_GEN_SSL_PASSTHROUGH \
+    --pool_side_ssl $NSX_EDGE_GEN_POOL_SIDE_SSL \
     -cert "$NSX_EDGE_GEN_PROFILE_CERT_CN"
 
 }
