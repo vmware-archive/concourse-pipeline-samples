@@ -78,7 +78,7 @@ jobs:
 - name: configure-vsphere-nxsv-lb-ingress-kubo
   plan:
   - get: pcf-pipelines-utils
-  - task: install-ingress-nginx
+  - task: collect-ingress-app-data-for-nsxv-lb-setup
     config:
       platform: linux
       image_resource:
