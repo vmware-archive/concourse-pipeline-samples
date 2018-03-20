@@ -1,0 +1,22 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/pynsxt
+
+inputs:
+- name: pcf-pipelines-utils
+
+run:
+  path: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-switch/task.sh
+
+params:
+  NSX_MANAGER_ADDRESS:
+  NSX_MANAGER_USERNAME:
+  NSX_MANAGER_PASSWORD:
+  SWITCH_NAME:
+  SWITCH_TRANSPORT_ZONE:
+  SWITCH_VLAN:
+  PCF_FOUNDATION_NAME:

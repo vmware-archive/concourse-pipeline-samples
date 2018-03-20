@@ -1,0 +1,23 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/pynsxt
+
+inputs:
+- name: pcf-pipelines-utils
+
+run:
+  path: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.sh
+
+params:
+  NSX_MANAGER_ADDRESS:
+  NSX_MANAGER_USERNAME:
+  NSX_MANAGER_PASSWORD:
+  IP_POOL_NAME:
+  IP_POOL_CIDR:
+  IP_POOL_START_IP:
+  IP_POOL_END_IP:
+  PCF_FOUNDATION_NAME:
