@@ -1,0 +1,278 @@
+groups: []
+resources:
+- name: pcf-pipelines-utils
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+jobs:
+- name: create-logical-switches
+  plan:
+  - get: pcf-pipelines-utils
+  - task: create-vlan-logical-switch
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-switch/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_SWITCH_NAME: vlan-uplink
+      LOGICAL_SWITCH_TRANSPORT_ZONE: ((vlan_transport_zone))
+      LOGICAL_SWITCH_VLAN: 0
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-infrastructure-logical-switch
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-switch/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_SWITCH_NAME: infrastructure-ls
+      LOGICAL_SWITCH_TRANSPORT_ZONE: ((overlay_transport_zone))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-deployment-logical-switch
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-switch/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_SWITCH_NAME: deployment-ls
+      LOGICAL_SWITCH_TRANSPORT_ZONE: ((overlay_transport_zone))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-services-logical-switch
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-switch/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_SWITCH_NAME: services-ls
+      LOGICAL_SWITCH_TRANSPORT_ZONE: ((overlay_transport_zone))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-dynamic-services-logical-switch
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-switch/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_SWITCH_NAME: dynamic-services-ls
+      LOGICAL_SWITCH_TRANSPORT_ZONE: ((overlay_transport_zone))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+- name: create-logical-routers
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [create-logical-switches]
+  - task: create-tier-0-logical-router
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: t0-router
+      LOGICAL_ROUTER_TYPE: TIER0
+      EDGE_CLUSTER_NAME: ((edge_cluster_name))
+      T0_ROUTER_NAME:
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-infrastructure-tier-1-logical-router
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: infrastructure-t1-router
+      LOGICAL_ROUTER_TYPE: TIER1
+      EDGE_CLUSTER_NAME: ((edge_cluster_name))
+      T0_ROUTER_NAME: t0-router
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-deployment-tier-1-logical-router
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: deployment-t1-router
+      LOGICAL_ROUTER_TYPE: TIER1
+      EDGE_CLUSTER_NAME: ((edge_cluster_name))
+      T0_ROUTER_NAME: t0-router
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-services-tier-1-logical-router
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: services-t1-router
+      LOGICAL_ROUTER_TYPE: TIER1
+      EDGE_CLUSTER_NAME: ((edge_cluster_name))
+      T0_ROUTER_NAME: t0-router
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-dynamic-services-tier-1-logical-router
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: dynamic-services-t1-router
+      LOGICAL_ROUTER_TYPE: TIER1
+      EDGE_CLUSTER_NAME: ((edge_cluster_name))
+      T0_ROUTER_NAME: t0-router
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+- name: create-logical-router-ports
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [create-logical-routers]
+  - task: create-tier-0-logical-router-uplink-port
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router-port/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_PORT_NAME: uplink-to-physical
+      LOGICAL_ROUTER_PORT_TYPE: uplink
+      LOGICAL_SWITCH_NAME: vlan-uplink
+      LOGICAL_ROUTER_NAME: t0-router
+      LOGICAL_ROUTER_PORT_IP: ((t0_router_ip))
+      LOGICAL_ROUTER_PORT_IP_MASK: ((t0_router_ip_mask))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-infrastructure-tier-1-logical-router-downlink-port
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router-port/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_PORT_NAME: infrastructure-gw
+      LOGICAL_ROUTER_PORT_TYPE: downlink
+      LOGICAL_SWITCH_NAME: infrastructure-ls
+      LOGICAL_ROUTER_NAME: infrastructure-t1-router
+      LOGICAL_ROUTER_PORT_IP: 192.168.1.1
+      LOGICAL_ROUTER_PORT_IP_MASK: 24
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-deployment-tier-1-logical-router-downlink-port
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router-port/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_PORT_NAME: deployment-gw
+      LOGICAL_ROUTER_PORT_TYPE: downlink
+      LOGICAL_SWITCH_NAME: deployment-ls
+      LOGICAL_ROUTER_NAME: deployment-t1-router
+      LOGICAL_ROUTER_PORT_IP: 192.168.2.1
+      LOGICAL_ROUTER_PORT_IP_MASK: 24
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-services-tier-1-logical-router-downlink-port
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router-port/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_PORT_NAME: services-gw
+      LOGICAL_ROUTER_PORT_TYPE: downlink
+      LOGICAL_SWITCH_NAME: services-ls
+      LOGICAL_ROUTER_NAME: services-t1-router
+      LOGICAL_ROUTER_PORT_IP: 192.168.3.1
+      LOGICAL_ROUTER_PORT_IP_MASK: 24
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-dynamic-services-tier-1-logical-router-downlink-port
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router-port/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_PORT_NAME: dynamic-services-gw
+      LOGICAL_ROUTER_PORT_TYPE: downlink
+      LOGICAL_SWITCH_NAME: dynamic-services-ls
+      LOGICAL_ROUTER_NAME: dynamic-services-t1-router
+      LOGICAL_ROUTER_PORT_IP: 192.168.4.1
+      LOGICAL_ROUTER_PORT_IP_MASK: 24
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+- name: create-static-route-for-tier-0-logical-router
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [create-logical-router-ports]
+  - task: create-static-route-for-tier-0-logical-router
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-static-route/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: t0-router
+      STATIC_ROUTE_NETWORK: 0.0.0.0/0
+      NEXT_HOP: ((t0_next_hop_ip))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+- name: create-nat-rules
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [create-static-route-for-tier-0-logical-router]
+  - task: create-infrastructure-snat-rule
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-nat-rule/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: t0-router
+      NAT_TYPE: SNAT
+      ORIGINAL_IP: 192.168.1.0/24
+      TRANSLATED_IP: ((infrastructure_network_snat_ip))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+  - task: create-ops-mgr-dnat-rule
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-nat-rule/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      LOGICAL_ROUTER_NAME: t0-router
+      NAT_TYPE: DNAT
+      ORIGINAL_IP: ((ops_mgr_dnat_ip))
+      TRANSLATED_IP: 192.168.1.10
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+- name: create-ip-block
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [create-nat-rules]
+  - task: create-ip-block
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-ip-block/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      IP_BLOCK_NAME: ((pcf_foundation_name))-ip-block
+      IP_BLOCK_CIDR: 192.168.32.0/19
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
+
+- name: create-external-ip-pool
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [create-ip-block]
+  - task: create-external-ip-pool
+    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-ip-pool/task.yml
+    params:
+      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
+      NSX_MANAGER_USERNAME: ((nsx_manager_username))
+      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
+      IP_POOL_NAME: external-nat-ip-pool
+      IP_POOL_CIDR: ((external_nat_ip_pool_cidr))
+      IP_POOL_START_IP: ((external_nat_ip_pool_start_ip))
+      IP_POOL_END_IP: ((external_nat_ip_pool_end_ip))
+      PCF_FOUNDATION_NAME: ((pcf_foundation_name))

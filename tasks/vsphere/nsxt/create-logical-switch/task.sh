@@ -18,6 +18,6 @@ pynsxt_local() {
 }
 
 pynsxt_local switch create \
-  -n $SWITCH_NAME \
-  -t $SWITCH_TRANSPORT_ZONE \
-  -vlan $SWITCH_VLAN
+  -n $LOGICAL_SWITCH_NAME \
+  -t $LOGICAL_SWITCH_TRANSPORT_ZONE \
+  -vlan $LOGICAL_SWITCH_VLAN

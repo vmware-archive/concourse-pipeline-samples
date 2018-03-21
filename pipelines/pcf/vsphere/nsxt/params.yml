@@ -1,0 +1,28 @@
+# NSX Manager Params
+nsx_manager_address: ((nsx_manager_address))
+nsx_manager_username: ((nsx_manager_username))
+nsx_manager_password: ((nsx_manager_password))
+
+#Unique Name for this PCF install
+pcf_foundation_name: ((pcf_foundation_name))
+
+# Names of NSX Components.  Used to connect switches and routers to already established NSX Components
+vlan_transport_zone: ((vlan_transport_zone))
+overlay_transport_zone: ((overlay_transport_zone))
+edge_cluster_name: ((edge_cluster_name))
+
+# T0 router IP and mask
+t0_router_ip: ((t0_router_ip))
+t0_router_ip_mask: ((t0_router_ip_mask))
+
+# Static route where T0 router should send all traffic back to IaaS
+t0_next_hop_ip: ((t0_next_hop_ip))
+
+#Params for DNAT and SNAT rules created on the T) router
+ops_mgr_dnat_ip: ((ops_mgr_dnat_ip))
+infrastructure_network_snat_ip: ((infrastructure_network_snat_ip))
+
+#Params to define a pool of IPs that will be used for dynamically created Organizations
+external_nat_ip_pool_cidr: ((external_nat_ip_pool_cidr))
+external_nat_ip_pool_start_ip: ((external_nat_ip_pool_start_ip))
+external_nat_ip_pool_end_ip: ((external_nat_ip_pool_end_ip))
