@@ -11,7 +11,7 @@ pcf_foundation = $PCF_FOUNDATION_NAME
 
 EOF
 
-# /usr/bin/python setup.py install --user
+pushd /opt/pynsxt
 
 pynsxt_local() {
   python /opt/pynsxt/cli.py "$@"
