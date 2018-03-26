@@ -58,7 +58,7 @@ jobs:
   - task: upload-tile
     file: pcf-pipelines/tasks/upload-product-and-stemcell/task.yml
     params:
-      IAAS: vsphere
+      IAAS: {{iaas_type}}
       NO_PROXY: {{company_proxy_domain}}
       OM_IP: {{om_ip}}
       OPS_MGR_PWD: {{opsman_admin_password}}

@@ -22,6 +22,11 @@ targeted_system="VAULT"
 secrets=(
   # Pivotal Network token to download the tile release
   "pivnet_token"::"pivnet_token_goes_here"
+
+  # The IaaS name for which stemcell to download. This must match the IaaS name
+  # within the stemcell to download, e.g. "vsphere", "aws", "azure", "google" must be lowercase.
+  "iaas_type"::"gcp"
+
   # ops manager domain or ip address
   "opsman_domain_or_ip_address"::"opsmgr.domain.com"
   # Admin credentials for Ops Manager
@@ -40,6 +45,13 @@ secrets=(
   "pks_cli_password"::"mypassword"
   # required email for PKS CLI username creation
   "pks_cli_useremail"::"pksadmin@example.com"
+
+  # network and availability zones assignments for PKS
+  "az_1_name"::"us-central1-a"
+  "az_2_name"::"us-central1-b"
+  "az_3_name"::"us-central1-c"
+  "services_network_name"::"pks-main"
+  "dynamic_services_network_name"::"pks-services"
 
   ## for GCP deployments - ignore or remove entries if not applicable
   "gcp_project_id"::"gcp_project_id"
@@ -77,5 +89,29 @@ do
     vault write "${concourse_secrets_path}/${KEY}" value="${VALUE}"
   else   # CREDHUB
     credhub set -n "${concourse_secrets_path}/${KEY}" -v "${VALUE}"
+  fi
+done
+
+cat << EOF > gcp_service_account.json
+{
+  "type": "service_account",
+  "client_x509_cert_url": "..."
+}
+EOF
+
+certs=(
+  # Optional PEM-encoded certificates to add to BOSH director
+  "gcp_service_key"::"gcp_service_account.json"
+)
+
+for i in "${certs[@]}"
+do
+  KEY="${i%%::*}"
+  CERT_FILE="${i##*::}"
+  echo "Creating certificate secret for [$KEY]"
+  if [[ $targeted_system == "VAULT" ]]; then
+    cat "$CERT_FILE" | vault write "${concourse_secrets_path}/${KEY}" value=-
+  # else   # CREDHUB
+    # credhub set -n "${concourse_secrets_path}/${KEY}" -v "${VALUE}"
   fi
 done
