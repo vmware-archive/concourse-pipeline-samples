@@ -47,3 +47,14 @@ This approach allows for the `configure-tile` task of this pipeline to be generi
    `fly -t <target> set-pipeline -p install-harbor -c pipeline.yml -l global_params.yml -l pcf_params.yml -l harbor_params.yml`
 
 5) Un-pause and run pipeline `install-harbor`
+
+
+---
+
+## Post-Install Configuration Tasks for the Harbor Tile
+
+After the Harbor tile is successfully deployed to Ops Manager, make sure that the configured Harbor API endpoint is routable, so container images can be pull or pushed to the registry.
+
+For VMWare environments with NSX-V Load Balancer, a sample load balancer setup pipeline is available [here](vsphere/configure-harbor-api-lb).
+
+Once the Harbor API endpoint is routable, then follow the [Harbor tile documentation](https://docs.pivotal.io/partners/vmware-harbor/using.html) on how to use and manage the Harbor container registry.  
