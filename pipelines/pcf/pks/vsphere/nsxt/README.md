@@ -1,5 +1,5 @@
-# Configure NSX-T Components for use with PAS
-This sample pipeline will setup switches, routers, an IP block, and an IP pool to be used by PAS.
+# Configure NSX-T Components for use with PKS
+This sample pipeline will setup switches, routers, an IP block, and an IP pool to be used by PKS.
 
 It requires routable IP addresses from your IaaS provider for the external IP pool, the Tier-0 router IP and the T0 uplink IP.
 
@@ -10,6 +10,6 @@ It requires routable IP addresses from your IaaS provider for the external IP po
 
 2) Create the pipeline in Concourse:   
 
-   `fly -t <target> sp -p pcf-nsxt-config -c pipeline.yml -l params.yml`
+   `fly -t <target> sp -p pks-nsxt-config -c pipeline.yml -l params.yml`
 
-3) Un-pause and run pipeline `pcf-nsxt-config` by manually triggering job `create-logical-switches`
+3) Un-pause and run pipeline `pks-nsxt-config` by manually triggering job `create-logical-switches`

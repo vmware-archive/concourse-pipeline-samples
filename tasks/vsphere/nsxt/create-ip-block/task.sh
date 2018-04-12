@@ -6,9 +6,6 @@ nsx_manager = https://$NSX_MANAGER_ADDRESS/api/v1
 nsx_username = $NSX_MANAGER_USERNAME
 nsx_password = $NSX_MANAGER_PASSWORD
 
-[pcf]
-pcf_foundation = $PCF_FOUNDATION_NAME
-
 EOF
 
 pushd /opt/pynsxt
@@ -19,4 +16,5 @@ pynsxt_local() {
 
 pynsxt_local pool create_ip_block \
   -n $IP_BLOCK_NAME \
-  -c "$IP_BLOCK_CIDR"
+  -c "$IP_BLOCK_CIDR" \
+  -tag "ncp/cluster=$PCF_FOUNDATION_NAME"
