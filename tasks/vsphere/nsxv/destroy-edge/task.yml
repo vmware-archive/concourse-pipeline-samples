@@ -7,7 +7,7 @@ image_resource:
   source: {repository: czero/nsx-gen}
 
 inputs:
-  - name: pcf-pipeline-utils
+  - name: pcf-pipelines-utils
   - name: pynsxv
 
 run:
