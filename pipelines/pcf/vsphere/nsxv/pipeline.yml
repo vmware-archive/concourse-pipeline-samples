@@ -1,0 +1,92 @@
+nsx_edge_params: &nsx-edge-params
+  VCENTER_HOST: {{vcenter_host}}
+  VCENTER_USR: {{vcenter_usr}}
+  VCENTER_PWD: {{vcenter_pwd}}
+  VCENTER_DATA_CENTER: {{vcenter_data_center}}
+  OWNER_NAME: {{owner_name}}
+  ERT_SSL_CERT_CN: {{ssl_cert_cn}}
+  ERT_SSL_CERT: {{ssl_cert}}
+  ERT_SSL_PRIVATE_KEY: {{ssl_private_key}}
+  NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: {{nsx_edge_gen_nsx_manager_address}}
+  NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: {{nsx_edge_gen_nsx_manager_admin_user}}
+  NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD: {{nsx_edge_gen_nsx_manager_admin_passwd}}
+  NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE: {{nsx_edge_gen_nsx_manager_transport_zone}}
+  NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE_CLUSTERS: {{nsx_edge_gen_nsx_manager_transport_zone_clusters}}
+  NSX_EDGE_GEN_NSX_MANAGER_DISTRIBUTED_PORTGROUP: {{nsx_edge_gen_nsx_manager_distributed_portgroup}}
+  NSX_EDGE_GEN_EDGE_DATASTORE: {{nsx_edge_gen_egde_datastore}}
+  NSX_EDGE_GEN_EDGE_CLUSTER: {{nsx_edge_gen_egde_cluster}}
+  NSX_EDGE_GEN_NAME: {{nsx_edge_gen_name}}
+  NSX_EDGE_GEN_ENABLE_DLR: {{nsx_edge_gen_enable_dlr}}
+  NSX_EDGE_GEN_BOSH_NSX_ENABLED: {{nsx_edge_gen_bosh_nsx_enabled}}
+  ESG_GATEWAY_1: {{esg_gateway_1}}
+  ESG_SIZE: {{esg_size}}
+  ESG_OSPF_PASSWORD_1: {{esg_ospf_password_1}}
+  ESG_CLI_USERNAME_1: {{esg_cli_username_1}}
+  ESG_CLI_PASSWORD_1: {{esg_cli_password_1}}
+  ESG_ERT_CERTS_NAME_1: {{ert_certs_name_1}}
+  ESG_ERT_CERTS_CONFIG_SYSTEMDOMAIN_1: {{system_domain}}
+  ESG_ERT_CERTS_CONFIG_APPDOMAIN_1: {{apps_domain}}
+  ESG_ERT_CERTS_CONFIG_OU: {{ert_certs_ou}}
+  ESG_ERT_CERTS_CONFIG_COUNTRY: {{ert_certs_country}}
+  ESG_ISO_CERTS_NAME_1_1: {{iso_certs_name_1}}
+  ESG_ISO_CERTS_SWITCH_1_1: {{isozone_switch_name_1}}
+  ESG_ISO_CERTS_CONFIG_DOMAINS_1_1: {{iso_certs_domains_1}}
+  ESG_ISO_CERTS_CONFIG_OU_1_1: {{iso_certs_ou_1}}
+  ESG_ISO_CERTS_CONFIG_COUNTRY_1_1: {{iso_certs_country_1}}
+  ESG_OPSMGR_UPLINK_IP_1: {{esg_opsmgr_uplink_ip_1}}
+  ESG_GO_ROUTER_UPLINK_IP_1: {{esg_go_router_uplink_ip_1}}
+  ESG_DIEGO_BRAIN_UPLINK_IP_1: {{esg_diego_brain_uplink_ip_1}}
+  ESG_TCP_ROUTER_UPLINK_IP_1: {{esg_tcp_router_uplink_ip_1}}
+  ESG_GO_ROUTER_SSL_TERM_1: {{esg_go_router_ssl_term_1}}
+  ESG_GO_ROUTER_INSTANCES_1: {{router_instances}}
+  ESG_DIEGO_BRAIN_INSTANCES_1: {{diego_brain_instances}}
+  ESG_TCP_ROUTER_INSTANCES_1: {{tcp_router_instances}}
+  ESG_MYSQL_ERT_PROXY_INSTANCES_1: {{mysql_proxy_instances}}
+  ESG_MYSQL_TILE_PROXY_INSTANCES_1: {{tile_mysql_proxy_instances}}
+  ESG_RABBITMQ_TILE_PROXY_INSTANCES_1: {{tile_rabbit_proxy_instances}}
+  ESG_DEFAULT_UPLINK_IP_1: {{esg_default_uplink_ip_1}}
+  ESG_DEFAULT_UPLINK_PG_1: {{esg_default_uplink_pg_1}}
+  ISOZONE_SWITCH_NAME_1: {{isozone_switch_name_1}}
+  ISOZONE_SWITCH_CIDR_1: {{isozone_switch_cidr_1}}
+  ISOZONE_SSL_CERT_1: {{tile_iso_ssl_cert_1}}
+  ISOZONE_SSL_PRIVATE_KEY_1: {{tile_iso_ssl_private_key_1}}
+  ESG_GO_ROUTER_ISOZONE_1_UPLINK_IP_1: {{esg_go_router_isozone_1_uplink_ip_1}}
+  ESG_GO_ROUTER_ISOZONE_1_SWITCH_1: {{isozone_switch_name_1}}
+  ESG_GO_ROUTER_ISOZONE_1_INST_1: {{esg_go_router_isozone_1_inst_1}}
+  ESG_TCP_ROUTER_ISOZONE_1_UPLINK_IP_1: {{esg_tcp_router_isozone_1_uplink_ip_1}}
+  ESG_TCP_ROUTER_ISOZONE_1_SWITCH_1: {{isozone_switch_name_1}}
+  ESG_TCP_ROUTER_ISOZONE_1_INST_1: {{esg_tcp_router_isozone_1_inst_1}}
+  ESG_GO_ROUTER_ISOZONE_1_SSL_TERM_1: {{esg_go_router_isozone_1_ssl_term_1}}
+  NUM_LOGICAL_SWITCHES: {{num_logical_switches}}
+  ESG_DEFAULT_UPLINK_SECONDARY_IPS: {{esg_default_uplink_secondary_ips}}
+  ESG_SNAT_UPLINK_IP_1: {{esg_snat_uplink_ip_1}}
+
+resources:
+- name: pcf-pipelines-utils
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+- name: pynsxv
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/pynsxv.git
+    branch: master
+
+jobs:
+- name: create-edge
+  plan:
+  - aggregate:
+    - get: pcf-pipelines-utils
+    - get: pynsxv
+  - task: create-edge
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/create-edge/task.yml
+    params: *nsx-edge-params
+
+- name: destroy-edge
+  plan:
+  - aggregate:
+    - get: pcf-pipelines-utils
+    - get: pynsxv
+  - task: destroy-edge
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/destroy-edge/task.yml
+    params: *nsx-edge-params

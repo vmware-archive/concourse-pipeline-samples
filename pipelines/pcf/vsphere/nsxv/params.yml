@@ -1,0 +1,61 @@
+vcenter_usr: ((vcenter_usr))
+vcenter_pwd: ((vcenter_pwd))
+vcenter_host: ((vcenter_host))
+vcenter_data_center: ((vcenter_datacenter))
+owner_name: ((nsx_owner_name))
+nsx_edge_gen_nsx_manager_admin_user: ((nsxv_manager_admin_username))
+nsx_edge_gen_nsx_manager_admin_passwd: ((nsxv_manager_admin_password))
+nsx_edge_gen_nsx_manager_address: ((nsxv_manager_address))
+nsx_edge_gen_egde_cluster: ((nsxv_gen_edge_cluster))
+nsx_edge_gen_egde_datastore: ((vcenter_datastore))
+nsx_edge_gen_name: ((nsxv_gen_edge_name))
+nsx_edge_gen_nsx_manager_transport_zone: ((nsxv_gen_mgr_transport_zone))
+num_logical_switches: ((num_logical_switches))
+esg_default_uplink_ip_1: ((esg_default_uplink_ip_1))
+esg_default_uplink_secondary_ips: ((esg_default_uplink_secondary_ips))
+esg_default_uplink_pg_1: ((esg_default_uplink_pg_1))
+esg_go_router_uplink_ip_1: ((esg_go_router_uplink_ip_1))
+esg_snat_uplink_ip_1: ((esg_snat_uplink_ip_1))
+esg_opsmgr_uplink_ip_1: ((esg_opsmgr_uplink_ip_1))
+nsx_edge_gen_nsx_manager_transport_zone_clusters: ((nsx_edge_gen_nsx_manager_transport_zone_clusters))
+ssl_cert_cn: ((ssl_cert_cn))
+ssl_cert: ((ssl_cert))
+ssl_private_key: ((ssl_private_key))
+git_private_key: ((git_private_key))
+#The rest of the params are ignored for now
+router_instances:
+nsx_edge_gen_nsx_manager_distributed_portgroup:
+nsx_edge_gen_enable_dlr:
+nsx_edge_gen_bosh_nsx_enabled:
+mysql_proxy_instances:
+isozone_switch_name_1:
+isozone_switch_name_2:
+isozone_switch_cidr_1:
+iso_certs_ou_1:
+iso_certs_name_1:
+iso_certs_domains_1:
+iso_certs_country_1:
+esg_tcp_router_uplink_ip_1:
+esg_tcp_router_isozone_1_uplink_ip_1:
+esg_tcp_router_isozone_1_inst_1:
+esg_size:
+esg_ospf_password_1:
+esg_go_router_ssl_term_1:
+esg_go_router_isozone_1_uplink_ip_1:
+esg_go_router_isozone_1_ssl_term_1:
+esg_go_router_isozone_1_inst_1:
+esg_gateway_1:
+esg_diego_brain_uplink_ip_1:
+esg_cli_username_1:
+esg_cli_password_1:
+ert_certs_ou:
+ert_certs_name_1:
+ert_certs_country:
+diego_brain_instances:
+apps_domain:
+tile_rabbit_proxy_instances:
+tile_mysql_proxy_instances:
+tile_iso_ssl_private_key_1:
+tile_iso_ssl_cert_1:
+tcp_router_instances:
+system_domain:
