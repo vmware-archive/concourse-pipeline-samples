@@ -16,15 +16,15 @@ pks_cli_useremail: pksadmin@example.com # email address for PKS user to be creat
 ######## AZs and Networks configuration for the tile
 networks: |
   network:
-    name: SERVICES
+    name: ((services_network_name))
   other_availability_zones:
-  - name: AZ01
-  - name: AZ02
-  - name: AZ03
+  - name: ((az_1_name))
+  - name: ((az_2_name))
+  - name: ((az_3_name))
   service_network:
-    name: DYNAMIC-SERVICES
+    name: ((dynamic_services_network_name))
   singleton_availability_zone:
-    name: AZ01
+    name: ((az_1_name))
 
 
 properties: |
@@ -57,7 +57,7 @@ properties: |
   .properties.plan1_selector.active.description:
     value: "Small plan"
   .properties.plan1_selector.active.az_placement:
-    value: AZ01  # Specify the AZ in which the cluster will be created
+    value: ((az_1_name))  # Specify the AZ in which the cluster will be created
   .properties.plan1_selector.active.authorization_mode:
     value: rbac    # rbac or abac - Default Cluster Authorization Mode
   .properties.plan1_selector.active.master_vm_type:
@@ -88,7 +88,7 @@ properties: |
   # .properties.plan2_selector.active.description:
   #   value: "Plan 2 description"
   # .properties.plan2_selector.active.az_placement:
-  #   value: AZ01  # Specify the AZ in which the cluster will be created
+  #   value: ( ( az_1_name ) )  # Specify the AZ in which the cluster will be created
   # .properties.plan2_selector.active.authorization_mode:
   #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
   # .properties.plan2_selector.active.master_vm_type:
@@ -119,7 +119,7 @@ properties: |
   # .properties.plan3_selector.active.description:
   #   value: "Plan 3 description"
   # .properties.plan3_selector.active.az_placement:
-  #   value: AZ01  # Specify the AZ in which the cluster will be created
+  #   value: ( ( az_1_name ) )  # Specify the AZ in which the cluster will be created
   # .properties.plan3_selector.active.authorization_mode:
   #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
   # .properties.plan3_selector.active.master_vm_type:
@@ -142,31 +142,31 @@ properties: |
 
   ######## Kubernetes cloud provider: GCP or vSphere
   .properties.cloud_provider:
-    value: vSphere
+    value: GCP
 
   ### if GCP is to be selected, then uncomment and fill out the GCP parameters below.
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
-  # .properties.cloud_provider.gcp.project_id:
-  #   value: ( ( gcp_project_id ) )
-  # .properties.cloud_provider.gcp.network:
-  #   value: ( ( gcp_vpc_network ) )  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
-  # .properties.cloud_provider.gcp.service_key:
-  #   value: ( ( gcp_service_key ) )
+  .properties.cloud_provider.gcp.project_id:
+    value: ((gcp_project_id))
+  .properties.cloud_provider.gcp.network:
+    value: ((gcp_vpc_network))  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
+  .properties.cloud_provider.gcp.service_key:
+    value: ((gcp_service_key))
 
   ### if VSPHERE is to be selected, then uncomment and fill out the VSPHERE parameters below
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
-  .properties.cloud_provider.vsphere.vcenter_creds:
-    value:
-      identity: ((vcenter_usr)) # vcenter_admin_username
-      password: ((vcenter_pwd)) # vcenter_admin_password
-  .properties.cloud_provider.vsphere.vcenter_ip:
-    value: ((vcenter_host))
-  .properties.cloud_provider.vsphere.vcenter_dc:
-    value: ((vcenter_datacenter))
-  .properties.cloud_provider.vsphere.vcenter_ds:
-    value: ((vcenter_datastore))
-  .properties.cloud_provider.vsphere.vcenter_vms:
-    value: ((vcenter_pcf_folder)) # The name should be the same as the VM Folder in the Ops Manager Director tile, under the vCenter config page.
+  # .properties.cloud_provider.vsphere.vcenter_creds:
+  #   value:
+  #     identity: ( ( vcenter_usr ) ) # vcenter_admin_username
+  #     password: ( ( vcenter_pwd ) ) # vcenter_admin_password
+  # .properties.cloud_provider.vsphere.vcenter_ip:
+  #   value: ( ( vcenter_host ) )
+  # .properties.cloud_provider.vsphere.vcenter_dc:
+  #   value: ( ( vcenter_datacenter ) )
+  # .properties.cloud_provider.vsphere.vcenter_ds:
+  #   value: ( ( vcenter_datastore ) )
+  # .properties.cloud_provider.vsphere.vcenter_vms:
+  #   value: ( ( vcenter_pcf_folder ) ) # The name should be the same as the VM Folder in the Ops Manager Director tile, under the vCenter config page.
 
 
   ######## Network selector - flannel or nsx

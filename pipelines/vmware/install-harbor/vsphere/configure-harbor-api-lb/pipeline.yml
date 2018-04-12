@@ -1,0 +1,99 @@
+groups: []
+resources:
+- name: pcf-pipelines-utils
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+resource_types:
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+jobs:
+- name: configure-lb-api-application-profile
+  plan:
+  - get: pcf-pipelines-utils
+  - task: configure-nsxv-lb-app-profile
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-profile/task.yml
+    params:
+      VCENTER_HOST: ((vcenter_host))
+      VCENTER_USR: ((vcenter_usr))
+      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_DATA_CENTER: ((vcenter_datacenter))
+      NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD: ((nsxv_manager_admin_password))
+      NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE: ((nsxv_gen_mgr_transport_zone))
+      NSX_EDGE_GEN_EDGE_CLUSTER: ((nsxv_gen_edge_cluster))
+      NSX_EDGE_GEN_EDGE_DATASTORE: ((vcenter_datastore))
+      NSX_EDGE_GEN_NAME: ((nsxv_gen_edge_name))
+      NSX_EDGE_GEN_VIP_IP: ((nsxv_gen_vip_ip))
+      NSX_EDGE_GEN_PROFILE_NAME: HARBOR-HTTPS
+      NSX_EDGE_GEN_PROFILE_PROTOCOL: HTTPS
+      NSX_EDGE_GEN_SSL_PASSTHROUGH: false
+      NSX_EDGE_GEN_POOL_SIDE_SSL: true
+      NSX_EDGE_GEN_X_FORWARDED_FOR: true
+      NSX_EDGE_GEN_PROFILE_CERT_CN: ((api_cert_cn))
+
+- name: configure-lb-api
+  plan:
+  - get: pcf-pipelines-utils
+    trigger: true
+    passed: [configure-lb-api-application-profile]
+  - task: prepare-api-endpoint-config
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: czero/rootfs
+      inputs:
+        - name: pcf-pipelines-utils
+      outputs:
+        - name: nsxv-pool-data
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          pool_config_file=./nsxv-pool-data/pool_config.yml
+          echo "application-name: ${APPLICATION_NAME}" >> $pool_config_file
+          echo "application-domain: ${APPLICATION_DOMAIN}" >> $pool_config_file
+          echo "application-port-number: ${APPLICATION_PORT_NUMBER}" >> $pool_config_file
+
+          API_IPS="${API_IPS}"
+
+          echo "pool-ips: ${API_IPS}" >> $pool_config_file
+          echo "pool-name-prefix: ${POOL_NAME_PREFIX}" >> $pool_config_file
+          cat $pool_config_file
+
+    params:
+      APPLICATION_NAME: harbor
+      APPLICATION_DOMAIN: ((api_domain))
+      APPLICATION_PORT_NUMBER: 443
+      POOL_NAME_PREFIX: harbor
+      API_IPS: ((api_ips))
+
+  - task: configure-nsxv-lb-rules-vip
+    file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-rules-vip/task.yml
+    params:
+      VCENTER_HOST: ((vcenter_host))
+      VCENTER_USR: ((vcenter_usr))
+      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_DATA_CENTER: ((vcenter_datacenter))
+      NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
+      NSX_EDGE_GEN_NSX_MANAGER_ADMIN_PASSWD: ((nsxv_manager_admin_password))
+      NSX_EDGE_GEN_NSX_MANAGER_TRANSPORT_ZONE: ((nsxv_gen_mgr_transport_zone))
+      NSX_EDGE_GEN_EDGE_CLUSTER: ((nsxv_gen_edge_cluster))
+      NSX_EDGE_GEN_EDGE_DATASTORE: ((vcenter_datastore))
+      NSX_EDGE_GEN_NAME: ((nsxv_gen_edge_name))
+      NSX_EDGE_GEN_VIP_IP: ((nsxv_gen_vip_ip))
+      NSX_EDGE_GEN_VIP_NAME: HARBOR-VIP
+      NSX_EDGE_GEN_VIP_PORT: 443
+      NSX_EDGE_GEN_PROFILE_NAME: HARBOR-HTTPS
+      NSX_EDGE_GEN_PROFILE_PROTOCOL: HTTPS
+      NSX_EDGE_GEN_ADD_RULE_TO_VIP: true

@@ -5,7 +5,7 @@ resources:
   source:
     api_token: {{pivnet_token}}
     product_slug: pcf-automation
-    product_version: v0.23.0
+    product_version: v0.23.1
 - name: pcf-pipelines-utils
   type: git
   source:
@@ -14,10 +14,9 @@ resources:
   type: pivnet
   source:
     api_token: {{pivnet_token}}
-    product_slug: pivotal-container-service
+    product_slug: {{product_slug}}
     product_version: {{product_version}}
     sort_by: semver
-
 
 resource_types:
 - name: pivnet
@@ -53,8 +52,7 @@ jobs:
     - get: pivnet-product
       resource: product-release
       params:
-        globs:
-        - "*.pivotal"
+        globs: ["((product_globs))"]
   - task: upload-tile
     file: pcf-pipelines/tasks/upload-product-and-stemcell/task.yml
     params:
@@ -67,6 +65,7 @@ jobs:
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
       PIVNET_API_TOKEN: {{pivnet_token}}
+
 - name: stage-product
   plan:
   - aggregate:
@@ -96,7 +95,7 @@ jobs:
       trigger: true
       resource: product-release
       params:
-        globs: ["*.pivotal"]
+        globs: ["((product_globs))"]
 
   - task: stage
     file: pcf-pipelines/tasks/stage-product/task.yml
@@ -106,59 +105,6 @@ jobs:
       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
-
-- name: update-director-config
-  plan:
-  - get: pivnet-product
-    passed:
-    - stage-product
-    resource: product-release
-    trigger: true
-    params:
-      globs: []
-  - get: pcf-pipelines-utils
-  - task: enable-director-post-deploy-tasks
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: czero/rootfs
-      inputs:
-        - name: pcf-pipelines-utils
-      run:
-        path: bash
-        args:
-        - -ec
-        - |
-          echo "For PKS 1.0.0:"
-          echo "CFCR release has a post deploy errand that deploys kube-dns, heapster, the dashboard and influxdb addons."
-          echo "You need to have the Bosh Director's post deploy errands turned on, otherwise none of that gets installed when you create a cluster."
-          echo "This issue may be addressed as an errand for the PKS tile."
-          echo "Thus, in the meantime, this task enables the Post Deploy tasks for the Director tile."
-          director_config=$(cat <<-EOF
-          {
-            "post_deploy_enabled": true
-          }
-          EOF
-          )
-          echo "Configuring Director..."
-          om-linux \
-            --target https://$OPSMAN_DOMAIN_OR_IP_ADDRESS \
-            --skip-ssl-validation \
-            --client-id "${OPSMAN_CLIENT_ID}" \
-            --client-secret "${OPSMAN_CLIENT_SECRET}" \
-            --username "$OPSMAN_USERNAME" \
-            --password "$OPSMAN_PASSWORD" \
-            configure-bosh \
-            --director-configuration "$director_config"
-    params:
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
-      OPSMAN_USERNAME: {{opsman_admin_username}}
-      OPSMAN_PASSWORD: {{opsman_admin_password}}
-      OPSMAN_CLIENT_ID: {{opsman_client_id}}
-      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-
 
 - name: configure-product
   plan:
@@ -185,7 +131,7 @@ jobs:
             path: ""
     - get: pivnet-product
       passed:
-      - update-director-config
+      - stage-product
       resource: product-release
       trigger: true
       params:
@@ -254,20 +200,3 @@ jobs:
       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
-
-- name: create-pks-cli-user
-  plan:
-  - aggregate:
-    - get: pcf-pipelines-utils
-  - task: configure-pks-cli-user
-    file: pcf-pipelines-utils/tasks/pcf/pks/configure-pks-cli-user/task.yml
-    params:
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
-      OPSMAN_USERNAME: {{opsman_admin_username}}
-      OPSMAN_PASSWORD: {{opsman_admin_password}}
-      OPSMAN_CLIENT_ID: {{opsman_client_id}}
-      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      PKS_DOMAIN: {{pcf_pks_domain}}
-      PKS_CLI_USERNAME: {{pks_cli_username}}
-      PKS_CLI_USEREMAIL: {{pks_cli_useremail}}
-      PKS_CLI_PASSWORD: {{pks_cli_password}}
