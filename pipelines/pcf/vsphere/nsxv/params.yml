@@ -21,7 +21,6 @@ nsx_edge_gen_nsx_manager_transport_zone_clusters: ((nsx_edge_gen_nsx_manager_tra
 ssl_cert_cn: ((ssl_cert_cn))
 ssl_cert: ((ssl_cert))
 ssl_private_key: ((ssl_private_key))
-git_private_key: ((git_private_key))
 #The rest of the params are ignored for now
 router_instances:
 nsx_edge_gen_nsx_manager_distributed_portgroup:

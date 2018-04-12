@@ -75,17 +75,10 @@ cat << EOF > ssl_private_key.pem
 -----END -----
 EOF
 
-cat << EOF > git_private_key.pem
------BEGIN -----
-...
------END -----
-EOF
-
 certs=(
   # Optional PEM-encoded certificates to add to BOSH director
   "ssl_cert"::"ssl_cert.crt"
   "ssl_private_key"::"ssl_private_key.pem"
-  "git_private_key"::"git_private_key.pem"
 )
 
 for i in "${certs[@]}"
