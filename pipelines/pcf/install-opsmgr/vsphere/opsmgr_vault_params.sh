@@ -23,7 +23,7 @@ secrets=(
   # Pivotal Network token to download the tile release
   "pivnet_token"::"pivnet_token_goes_here"
   # ops manager domain or ip address
-  "opsman_domain_or_ip_address"::"opsmgr.domain.com"
+  "opsman_domain"::"opsmgr.domain.com"
   # Admin credentials for Ops Manager
   # Either opsman_client_id/opsman_client_secret or opsman_admin_username/opsman_admin_password needs to be specified.
   # If you are using opsman_admin_username/opsman_admin_password, edit opsman_client_id/opsman_client_secret to be an empty value.
@@ -41,7 +41,7 @@ secrets=(
   # Gateway for Ops Manager network
   "opsman_gateway"::""
   # IP to assign to Ops Manager VM (for proxy env and for wipe-env job)
-  "opsman_ip"::""
+  "opsman_ip_address"::""
   # Netmask for Ops Manager network
   "opsman_netmask"::""
   # Comma-separated list of NTP Servers
