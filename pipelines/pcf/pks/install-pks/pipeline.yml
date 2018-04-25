@@ -60,12 +60,12 @@ jobs:
     params:
       IAAS: {{iaas_type}}
       NO_PROXY: {{company_proxy_domain}}
-      OM_IP: {{om_ip}}
+      OM_IP: {{opsman_ip_address}}
       OPS_MGR_PWD: {{opsman_admin_password}}
       OPS_MGR_USR: {{opsman_admin_username}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       PIVNET_API_TOKEN: {{pivnet_token}}
 - name: stage-product
   plan:
@@ -103,7 +103,7 @@ jobs:
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
 
@@ -153,7 +153,7 @@ jobs:
             configure-bosh \
             --director-configuration "$director_config"
     params:
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
@@ -195,7 +195,7 @@ jobs:
   - task: configure-tile
     file: pcf-pipelines-utils/tasks/pcf/configure-tile/task.yml
     params:
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
@@ -211,7 +211,7 @@ jobs:
       ERRANDS_TO_DISABLE: {{errands_to_disable}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
       PRODUCT_NAME: {{product_name}}
@@ -251,7 +251,7 @@ jobs:
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
 
@@ -262,7 +262,7 @@ jobs:
   - task: configure-pks-cli-user
     file: pcf-pipelines-utils/tasks/pcf/pks/configure-pks-cli-user/task.yml
     params:
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
