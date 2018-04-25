@@ -1,8 +1,8 @@
 # PCF Ops Manager minor version to track
-opsman_major_minor_version: ^2\.0\..*$
+version_number: ^2\.0\..*$
 
 # FQDN to access Ops Manager without protocol (will use https), ex: opsmgr.example.com
-opsman_domain_or_ip_address: ((opsman_domain_or_ip_address))
+opsman_domain: ((opsman_domain))
 # Leave opsman_client_id/opsman_client_secret blank; opsman_admin_username/opsman_admin_password needs to be specified
 opsman_admin_password: ((opsman_admin_password))       # Password for Ops Manager admin account
 opsman_admin_username: ((opsman_admin_username))       # Username for Ops Manager admin account
@@ -11,32 +11,32 @@ opsman_client_secret:       # Client Secret for Ops Manager admin account
 # SSH password for Ops Manager (ssh user is ubuntu)
 opsman_ssh_password: ((opsman_ssh_password))
 # Decryption password for Ops Manager exported settings
-om_decryption_pwd: ((om_decryption_pwd))
+opsman_decryption_pwd: ((opsman_decryption_pwd))
 # DNS servers
-om_dns_servers: ((om_dns_servers))
+opsman_dns_servers: ((opsman_dns_servers))
 # Gateway for Ops Manager network
-om_gateway: ((om_gateway))
+opsman_gateway: ((opsman_gateway))
 # IP to assign to Ops Manager VM (for proxy env and for wipe-env job)
-om_ip: ((om_ip))
+opsman_ip_address: ((opsman_ip_address))
 # Netmask for Ops Manager network
-om_netmask: ((om_netmask))
+opsman_netmask: ((opsman_netmask))
 # Comma-separated list of NTP Servers
-om_ntp_servers: ((om_ntp_servers))
+opsman_ntp_servers: ((opsman_ntp_servers))
 # vCenter Cluster or Resource Pool to use to deploy Ops Manager.
 # Possible formats:
 #   cluster:       /<Data Center Name>/host/<Cluster Name>
 #   resource pool: /<Data Center Name>/host/<Cluster Name>/Resources/<Resource Pool Name>
-om_resource_pool: ((om_resource_pool))
+opsman_resource_pool: ((opsman_resource_pool))
 # Optional - vCenter folder to put Ops Manager in
-om_vm_folder: ((om_vm_folder))
+opsman_vm_folder: ((opsman_vm_folder))
 # Optional - vCenter host to deploy Ops Manager in
-om_vm_host: ((om_vm_host))
+opsman_vm_host: ((opsman_vm_host))
 # Name to use for Ops Manager VM
-om_vm_name: ((om_vm_name))
+opsman_vm_name: ((opsman_vm_name))
 # vCenter network name to use to deploy Ops Manager in
-om_vm_network: ((om_vm_network))
+opsman_vm_network: ((opsman_vm_network))
 # Whether to power on Ops Manager VM after creation
-om_vm_power_state: true
+opsman_vm_power_state: true
 company_proxy_domain: ((company_proxy_domain))
 # Disk type for Ops Manager VM (thick|thin)
 opsman_disk_type: ((opsman_disk_type))
@@ -50,8 +50,8 @@ ops_dir_hostname:
 # vCenter configuration
 vcenter_host: ((vcenter_host))
 vcenter_datastore: ((vcenter_datastore))        # vCenter datastore name to deploy Ops Manager in
-vcenter_usr: ((vcenter_usr))
-vcenter_pwd: ((vcenter_pwd))
+vcenter_username: ((vcenter_username))
+vcenter_password: ((vcenter_password))
 vcenter_datacenter: ((vcenter_datacenter))
 vcenter_insecure: ((vcenter_insecure))  # true or false
 # Disk type for BOSH provisioned VM. (thick|thin)

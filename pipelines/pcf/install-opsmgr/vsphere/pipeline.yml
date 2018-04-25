@@ -11,7 +11,7 @@ resources:
   source:
     api_token: {{pivnet_token}}
     product_slug: ops-manager
-    product_version: {{opsman_major_minor_version}}
+    product_version: {{version_number}}
     sort_by: semver
 
 resource_types:
@@ -55,26 +55,26 @@ jobs:
       GOVC_CA_CERT: {{vcenter_ca_cert}}
       GOVC_DATACENTER: {{vcenter_datacenter}}
       GOVC_DATASTORE: {{vcenter_datastore}}
-      GOVC_HOST: {{om_vm_host}}
+      GOVC_HOST: {{opsman_vm_host}}
       GOVC_INSECURE: {{vcenter_insecure}}
-      GOVC_NETWORK: {{om_vm_network}}
-      GOVC_PASSWORD: {{vcenter_pwd}}
-      GOVC_RESOURCE_POOL: {{om_resource_pool}}
+      GOVC_NETWORK: {{opsman_vm_network}}
+      GOVC_PASSWORD: {{vcenter_password}}
+      GOVC_RESOURCE_POOL: {{opsman_resource_pool}}
       GOVC_URL: {{vcenter_host}}
-      GOVC_USERNAME: {{vcenter_usr}}
-      OM_DNS_SERVERS: {{om_dns_servers}}
-      OM_GATEWAY: {{om_gateway}}
-      OM_IP: {{om_ip}}
-      OM_NETMASK: {{om_netmask}}
-      OM_NTP_SERVERS: {{om_ntp_servers}}
-      OM_RESOURCE_POOL: {{om_resource_pool}}
-      OM_VM_FOLDER: {{om_vm_folder}}
-      OM_VM_NAME: {{om_vm_name}}
-      OM_VM_NETWORK: {{om_vm_network}}
-      OM_VM_POWER_STATE: {{om_vm_power_state}}
+      GOVC_USERNAME: {{vcenter_username}}
+      OM_DNS_SERVERS: {{opsman_dns_servers}}
+      OM_GATEWAY: {{opsman_gateway}}
+      OM_IP: {{opsman_ip_address}}
+      OM_NETMASK: {{opsman_netmask}}
+      OM_NTP_SERVERS: {{opsman_ntp_servers}}
+      OM_RESOURCE_POOL: {{opsman_resource_pool}}
+      OM_VM_FOLDER: {{opsman_vm_folder}}
+      OM_VM_NAME: {{opsman_vm_name}}
+      OM_VM_NETWORK: {{opsman_vm_network}}
+      OM_VM_POWER_STATE: {{opsman_vm_power_state}}
       OPS_MGR_SSH_PWD: {{opsman_ssh_password}}
       OPSMAN_DISK_TYPE: {{opsman_disk_type}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
 - name: configure-director
   plan:
   - aggregate:
@@ -107,10 +107,10 @@ jobs:
   - task: config-opsman-auth
     file: pcf-pipelines/tasks/config-opsman/task.yml
     params:
-      OM_DECRYPTION_PWD: {{om_decryption_pwd}}
+      OM_DECRYPTION_PWD: {{opsman_decryption_pwd}}
       OPS_MGR_PWD: {{opsman_admin_password}}
       OPS_MGR_USR: {{opsman_admin_username}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
   - task: configure-director
     file: pcf-pipelines/install-pcf/vsphere/tasks/config-opsdir/task.yml
     params:
@@ -163,7 +163,7 @@ jobs:
       OPS_MGR_USR: {{opsman_admin_username}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       PERSISTENT_STORAGE_NAMES: {{persistent_storage_names}}
       SERVICES_EXCLUDED_RANGE: {{services_excluded_range}}
       SERVICES_NETWORK_NAME: {{services_network_name}}
@@ -176,8 +176,8 @@ jobs:
       VCENTER_DATA_CENTER: {{vcenter_datacenter}}
       VCENTER_DISK_TYPE: {{vm_disk_type}}
       VCENTER_HOST: {{vcenter_host}}
-      VCENTER_PWD: {{vcenter_pwd}}
-      VCENTER_USR: {{vcenter_usr}}
+      VCENTER_PWD: {{vcenter_password}}
+      VCENTER_USR: {{vcenter_username}}
 - name: deploy-director
   plan:
   - aggregate:
@@ -212,7 +212,7 @@ jobs:
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_USERNAME: {{opsman_admin_username}}
 
@@ -245,16 +245,16 @@ jobs:
       GOVC_CA_CERT: {{vcenter_ca_cert}}
       GOVC_DATACENTER: {{vcenter_datacenter}}
       GOVC_DATASTORE: {{vcenter_datastore}}
-      GOVC_HOST: {{om_vm_host}}
+      GOVC_HOST: {{opsman_vm_host}}
       GOVC_INSECURE: {{vcenter_insecure}}
-      GOVC_NETWORK: {{om_vm_network}}
-      GOVC_PASSWORD: {{vcenter_pwd}}
-      GOVC_RESOURCE_POOL: {{om_resource_pool}}
+      GOVC_NETWORK: {{opsman_vm_network}}
+      GOVC_PASSWORD: {{vcenter_password}}
+      GOVC_RESOURCE_POOL: {{opsman_resource_pool}}
       GOVC_URL: {{vcenter_host}}
-      GOVC_USERNAME: {{vcenter_usr}}
+      GOVC_USERNAME: {{vcenter_username}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
-      OPSMAN_IP: {{om_ip}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
+      OPSMAN_IP: {{opsman_ip_address}}
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_USERNAME: {{opsman_admin_username}}

@@ -35,30 +35,30 @@ secrets=(
   # SSH password for Ops Manager (ssh user is ubuntu)
   "opsman_ssh_password"::""
   # Decryption password for Ops Manager exported settings
-  "om_decryption_pwd"::""
+  "opsman_decryption_pwd"::""
   # DNS servers
-  "om_dns_servers"::""
+  "opsman_dns_servers"::""
   # Gateway for Ops Manager network
-  "om_gateway"::""
+  "opsman_gateway"::""
   # IP to assign to Ops Manager VM (for proxy env and for wipe-env job)
-  "om_ip"::""
+  "opsman_ip"::""
   # Netmask for Ops Manager network
-  "om_netmask"::""
+  "opsman_netmask"::""
   # Comma-separated list of NTP Servers
-  "om_ntp_servers"::""
+  "opsman_ntp_servers"::""
   # vCenter Cluster or Resource Pool to use to deploy Ops Manager.
   # Possible formats:
   #   cluster:       /<Data Center Name>/host/<Cluster Name>
   #   resource pool: /<Data Center Name>/host/<Cluster Name>/Resources/<Resource Pool Name>
-  "om_resource_pool"::""
+  "opsman_resource_pool"::""
   # Optional - vCenter folder to put Ops Manager in
-  "om_vm_folder"::""
+  "opsman_vm_folder"::""
   # Optional - vCenter host to deploy Ops Manager in
-  "om_vm_host"::""
+  "opsman_vm_host"::""
   # Name to use for Ops Manager VM
-  "om_vm_name"::""
+  "opsman_vm_name"::""
   # vCenter network name to use to deploy Ops Manager in
-  "om_vm_network"::""
+  "opsman_vm_network"::""
   # no_proxy config
   "company_proxy_domain"::""
   # Disk type for Ops Manager VM (thick|thin)
@@ -157,7 +157,7 @@ do
   fi
 done
 
-cat << EOF > om_ca.crt
+cat << EOF > opsman_ca.crt
 -----BEGIN CERTIFICATE-----
 ...
 -----END CERTIFICATE-----
@@ -171,7 +171,7 @@ EOF
 
 certs=(
   # Optional PEM-encoded certificates to add to BOSH director
-  "trusted_certificates"::"om_ca.crt"
+  "trusted_certificates"::"opsman_ca.crt"
   "vcenter_ca_cert"::"vcenter_ca.crt"
 )
 
