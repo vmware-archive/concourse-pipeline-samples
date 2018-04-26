@@ -58,7 +58,7 @@ jobs:
     params:
       IAAS: {{iaas_type}}
       NO_PROXY: {{company_proxy_domain}}
-      OM_IP: {{opsman_ip}}
+      OM_IP: {{opsman_ip_address}}
       OPS_MGR_PWD: {{opsman_admin_password}}
       OPS_MGR_USR: {{opsman_admin_username}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
