@@ -108,7 +108,7 @@ properties: |
   ### - filesystem     (Local File System)
   ### - s3             (AWS S3)
   .properties.registry_storage:
-    value: ((registry_storage))
+    value: filesystem
 
   ### if "s3" is chosen for Container Registry Storage, then uncomment and fill out the s3 parameters below
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
