@@ -33,7 +33,7 @@ export pipeline_secrets=(
   "pks_api_cert_cn"::"*.domain.com"
 
   # ops manager domain or ip address
-  "opsman_domain_or_ip_address"::"opsmgr.domain.com"
+  "opsman_domain"::"opsmgr.domain.com"
   # Admin credentials for Ops Manager
   # Either opsman_client_id/opsman_client_secret or opsman_admin_username/opsman_admin_password needs to be specified.
   # If you are using opsman_admin_username/opsman_admin_password, edit opsman_client_id/opsman_client_secret to be an empty value.
@@ -46,8 +46,8 @@ export pipeline_secrets=(
   # vcenter hostname, do not include protocol information
   "vcenter_host"::"vcenter.domain.com"
   # vcenter credentials and properties
-  "vcenter_usr"::"myvcenteruser@vsphere.local"
-  "vcenter_pwd"::"myvcenterpassword"
+  "vcenter_username"::"myvcenteruser@vsphere.local"
+  "vcenter_password"::"myvcenterpassword"
   "vcenter_datacenter"::"Datacenter"
   "vcenter_datastore"::"mydatastore"
 
