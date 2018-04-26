@@ -67,8 +67,6 @@ export pipeline_secrets=(
   "ldap_auth_scope"::"2"
   "ldap_auth_timeout"::"5"
 
-  "registry_storage"::"filesystem"
-
   "s3_registry_storage_access_key"::"s3_registry_storage_access_key"
   "s3_registry_storage_secret_key"::"s3_registry_storage_secret_key"
   "s3_registry_storage_region"::"us-west-1"
