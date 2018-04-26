@@ -20,8 +20,8 @@ jobs:
     file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-profile/task.yml
     params:
       VCENTER_HOST: ((vcenter_host))
-      VCENTER_USR: ((vcenter_usr))
-      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_USR: ((vcenter_username))
+      VCENTER_PWD: ((vcenter_password))
       VCENTER_DATA_CENTER: ((vcenter_datacenter))
       NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
       NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
@@ -80,7 +80,7 @@ jobs:
       APPLICATION_DOMAIN: ((pcf_pks_api))
       APPLICATION_PORT_NUMBER: 8443
       POOL_NAME_PREFIX: pks
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: ((opsman_domain_or_ip_address))
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: ((opsman_domain))
       OPSMAN_USERNAME: ((opsman_admin_username))
       OPSMAN_PASSWORD: ((opsman_admin_password))
       OPSMAN_CLIENT_ID: ((opsman_client_id))
@@ -90,8 +90,8 @@ jobs:
     file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-rules-vip/task.yml
     params:
       VCENTER_HOST: ((vcenter_host))
-      VCENTER_USR: ((vcenter_usr))
-      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_USR: ((vcenter_username))
+      VCENTER_PWD: ((vcenter_password))
       VCENTER_DATA_CENTER: ((vcenter_datacenter))
       NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
       NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))
@@ -149,7 +149,7 @@ jobs:
       APPLICATION_DOMAIN: ((pcf_pks_api))
       APPLICATION_PORT_NUMBER: 9021
       POOL_NAME_PREFIX: pks
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: ((opsman_domain_or_ip_address))
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: ((opsman_domain))
       OPSMAN_USERNAME: ((opsman_admin_username))
       OPSMAN_PASSWORD: ((opsman_admin_password))
       OPSMAN_CLIENT_ID: ((opsman_client_id))
@@ -159,8 +159,8 @@ jobs:
     file: pcf-pipelines-utils/tasks/vsphere/nsxv/configure-nsxv-lb-rules-vip/task.yml
     params:
       VCENTER_HOST: ((vcenter_host))
-      VCENTER_USR: ((vcenter_usr))
-      VCENTER_PWD: ((vcenter_pwd))
+      VCENTER_USR: ((vcenter_username))
+      VCENTER_PWD: ((vcenter_password))
       VCENTER_DATA_CENTER: ((vcenter_datacenter))
       NSX_EDGE_GEN_NSX_MANAGER_ADDRESS: ((nsxv_manager_address))
       NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER: ((nsxv_manager_admin_username))

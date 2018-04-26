@@ -19,6 +19,7 @@ az_2_name: ((az_2_name))
 az_3_name: ((az_3_name))
 services_network_name: ((services_network_name))
 dynamic_services_network_name: ((dynamic_services_network_name))
+bosh_vm_folder: ((bosh_vm_folder))  # The name should be the same as the VM Folder in the Ops Manager Director tile, under the vCenter config page.
 
 # pcf-pipelines legacy parameters - only used for when no_proxy option is used
 company_proxy_domain:
