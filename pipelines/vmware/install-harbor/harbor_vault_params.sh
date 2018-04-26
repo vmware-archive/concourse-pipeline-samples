@@ -30,7 +30,7 @@ export team_secrets=(
   "iaas_type"::"vsphere"
 
   # ops manager domain or ip address
-  "opsman_domain_or_ip_address"::"opsmgr.domain.com"
+  "opsman_domain"::"opsmgr.domain.com"
   # Admin credentials for Ops Manager
   # Either opsman_client_id/opsman_client_secret or opsman_admin_username/opsman_admin_password needs to be specified.
   # If you are using opsman_admin_username/opsman_admin_password, edit opsman_client_id/opsman_client_secret to be an empty value.
