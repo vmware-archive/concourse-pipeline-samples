@@ -5,7 +5,7 @@
         1. A private key for a public key in (tsa -> authorized_keys)
         1. A public key for (tsa -> host_key -> public_key)
         1. TSA host (your web address for concourse. external_url)
-  1. vSphere details
+    1. vSphere details
         1. vcenter_ip # eg vsphere.company.com
         1. vcenter_user # administrator@domain
         1. vcenter_password # password
@@ -24,7 +24,7 @@
     1. Worker Details
         1. external_worker_tags
     1. Release Versions
-      1. Get latest from bosh.io
+        1. Get latest from bosh.io
 1. Run bosh create-env with the variables gathered (see example command below)
 
 Save creds.yml and state.json to a secure place.
