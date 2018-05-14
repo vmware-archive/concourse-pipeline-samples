@@ -1,4 +1,4 @@
-<img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Customer[0]" height="70" align="right"/><img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/c0-logo-01.png" alt="Concourse" height="70" align="right"/>
+<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/c0-logo-01.png" alt="Concourse" height="70" align="right"/>
 
 # Concourse Samples and Recipes
 
@@ -28,8 +28,7 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Concourse pipeline integration with local Docker Registry](concourse-pipeline-hacks/private-docker-registry)  
   - [Deploying a Private Docker Registry with Bosh](concourse-pipeline-hacks/private-docker-registry/docker-registry-release)  
 
-<img src="http://www.cbronline.com/wp-content/uploads/2017/07/Pivotal-Cloud-Foundry.png" alt="Pipeline Samples" width="60" align="right" style="margin: 20px 20px 20px 0;"/>
-<img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Concourse concourse_pipeline_level_secrets_path" width="50" align="right" style="margin: 20px 5px 20px 0;"/>
+<img src="http://www.cbronline.com/wp-content/uploads/2017/07/Pivotal-Cloud-Foundry.png" alt="Pipeline Samples" width="50" align="right" style="margin: 20px;"/>
 
 ### **[Sample PCF Pipelines](.)**  
   - [PKS tile](pipelines/pcf/pks/install-pks)  
@@ -37,8 +36,7 @@ Sample code and recipes on Concourse CI pipelines and deployments.
 
 
 
-<img src="https://cdn1.iconfinder.com/data/icons/universal-signs-symbols/128/recycle-green-512.png" alt="Concourse concourse_pipeline_level_secrets_path" width="50" align="right" style="margin: 20px 20px 20px 0;"/>
-<img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Concourse Pipelines" width="50" align="right" style="margin: 20px 5px 20px 0"/>
+<img src="https://cdn1.iconfinder.com/data/icons/universal-signs-symbols/128/recycle-green-512.png" alt="Concourse concourse_pipeline_level_secrets_path" width="45" align="right" style="margin: 20px;"/>
 
 ### **[Reusable Pipelines Tasks](.)**  
   - [Configure PCF Tile](tasks/pcf/configure-tile)  
