@@ -1,0 +1,61 @@
+---
+resources:
+- name: pipeline-scripts
+  type: git
+  source:
+    branch: master
+    uri: {{git-project-url}}
+
+jobs:
+- name: send-email-with-attachment
+  serial: true
+  public: true
+  plan:
+  - do:
+    - get: pipeline-scripts
+      trigger: false
+
+    - task: prep-email-text
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: pivotalservices/concourse-send-email
+            tag: "latest"
+        outputs:
+          - name: email-text
+        run:
+          path: sh
+          args:
+          - -exc
+          - |
+            echo "Hello Concourse user" >  ./email-text/email-subject.txt
+            echo "This email is from my Concourse pipeline. You will find my file attached. Thanks!" >  ./email-text/email-body.txt
+
+    - task: send-email-with-attachment
+      file: pipeline-scripts/email-with-attachments/ci/tasks/send-email.yml
+      params:
+        SMTP_HOST: {{smtp-host}}
+        SMTP_PORT: {{smtp-port}}
+        SMTP_USERNAME: {{smtp-username}}
+        SMTP_PASSWORD: {{smtp-password}}
+        EMAIL_FROM: {{email-from}}
+        EMAIL_TO: {{email-to}}
+        EMAIL_SUBJECT_FILE: ./email-text/email-subject.txt
+        EMAIL_BODY_FILE: ./email-text/email-body.txt
+        EMAIL_ATTACHMENTS: '[{ "filename": "my-attachment.txt","path": "./pipeline-scripts/email-with-attachments/my-attachment.txt", "contentType":"text/plain"}]'
+
+    on_failure:
+      task: email-notification-failure
+      file: pipeline-scripts/email-with-attachments/ci/tasks/send-email.yml
+      params:
+        SMTP_HOST: {{smtp-host}}
+        SMTP_PORT: {{smtp-port}}
+        SMTP_USERNAME: {{smtp-username}}
+        SMTP_PASSWORD: {{smtp-password}}
+        EMAIL_FROM: {{email-from}}
+        EMAIL_TO: {{email-to}}
+        EMAIL_SUBJECT_TEXT: Pipeline failure
+        EMAIL_BODY_TEXT: This is the report of a pipeline failure. See attachment for more info.
+        EMAIL_ATTACHMENTS: '[{ "filename": "my-attachment.txt","path": "./pipeline-scripts/email-with-attachments/my-attachment.txt", "contentType":"text/plain"}]'

@@ -1,0 +1,32 @@
+{
+  "name": "bfd-app",
+  "version": "0.1.0",
+  "description": "Node.js app for Blue-Green deployment sample pipeline",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pivotalservices/concourse-pipeline-samples.git"
+  },
+  "keywords": [
+    "concourse",
+    "blue-green"
+  ],
+  "author": "Luciano Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pivotalservices/concourse-pipeline-samples/issues"
+  },
+  "homepage": "https://github.com/pivotalservices/concourse-pipeline-samples#readme",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "chai": "^3.5.0",
+    "express": "^4.13.4",
+    "http": "0.0.0",
+    "method-override": "^2.3.6",
+    "morgan": "^1.7.0",
+    "path": "^0.12.7"
+  }
+}

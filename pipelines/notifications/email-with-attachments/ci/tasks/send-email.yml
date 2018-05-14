@@ -1,0 +1,20 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/concourse-send-email
+    tag: "latest"
+
+inputs:
+  - name: pipeline-scripts
+  - name: email-text
+
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    mv /app/node_modules .
+    node pipeline-scripts/email-with-attachments/ci/scripts/send-email.js

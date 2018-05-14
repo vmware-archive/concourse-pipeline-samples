@@ -1,0 +1,17 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/awscli-ubuntu
+    tag: "latest"
+
+inputs:
+  - name: pcf-backup-scripts
+
+outputs:
+  - name: backupdir
+
+run:
+  path: pcf-backup-scripts/pcf-cfops-backup/scripts/cfops_s3backup.sh

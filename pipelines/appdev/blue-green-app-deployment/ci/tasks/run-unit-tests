@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -xe
+
+cd concourse-pipeline-samples/blue-green-app-deployment/bgd-app
+npm install
+mocha tests --recursive

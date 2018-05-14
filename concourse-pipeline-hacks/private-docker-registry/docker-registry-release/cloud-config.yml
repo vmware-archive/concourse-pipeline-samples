@@ -1,0 +1,88 @@
+azs:
+- name: z1
+  cloud_properties:
+    datacenters:
+    - clusters:
+      - EHC_DE08_PCF_Pod_1:  # REPLACE_THIS_WITH_YOUR_CLUSTER_ID
+          resource_pool: <REPLACE_THIS_WITH_YOUR_RP_ID>
+      name: <REPLACE_THIS_WITH_CLUSTER_NAME>
+- name: z2
+  cloud_properties:
+    datacenters:
+    - clusters:
+      - EHC_DE08_PCF_Pod_1: # REPLACE_THIS_WITH_YOUR_CLUSTER_ID
+          resource_pool: <REPLACE_THIS_WITH_YOUR_RP_ID>
+      name: <REPLACE_THIS_WITH_CLUSTER_NAME>
+- name: z3
+  cloud_properties:
+    datacenters:
+    - clusters:
+      - EHC_DE08_PCF_Pod_1:  # REPLACE_THIS_WITH_YOUR_CLUSTER_ID
+          resource_pool: <REPLACE_THIS_WITH_YOUR_RP_ID>
+      name: <REPLACE_THIS_WITH_CLUSTER_NAME>
+vm_types:
+- name: small
+  cloud_properties:
+    cpu: 1
+    disk: 3000
+    ram: 2048
+- name: medium
+  cloud_properties:
+    cpu: 2
+    disk: 10240
+    ram: 4096
+- name: large.memory
+  cloud_properties:
+    cpu: 4
+    disk: 10240
+    ram: 65536
+- name: large.cpu
+  cloud_properties:
+    cpu: 4
+    disk: 40960
+    ram: 4096
+disk_types:
+- name: small
+  disk_size: 10000
+  cloud_properties: {}
+- name: medium
+  disk_size: 30000
+  cloud_properties: {}
+- name: large
+  disk_size: 50000
+  cloud_properties: {}
+- name: xlarge
+  disk_size: 100000
+  cloud_properties: {}
+networks:
+- name: dockerregistry
+  subnets:
+  - az: z1
+    cloud_properties:
+      name: vxw-dvs-66-virtualwire-12-sid-5011-LS_PCF_01_Infra
+    dns:
+    - <REPLACE_WITH_YOUR_DNS_ENTRIES>
+    # e.g.
+    # - 10.216.2.10
+    # - 10.192.2.11
+    gateway: 192.168.10.1  # <REPLACE_WITH_YOUR_GATEWAY_ADDRESS>
+    range: 192.168.10.0/26 # <REPLACE_WITH_YOUR_NETWORK_RANGE>
+    reserved:
+    - <REPLACE_WITH_YOUR_LIST_OF_RESERVED_IP_RANGES>
+    # e.g.
+    # - 192.168.10.1-192.168.10.30
+    # - 192.168.10.50-192.168.10.63
+    static:
+    - <REPLACE_WITH_YOUR_LIST_OF_RESERVED_IP_ADDRESSES>
+    # e.g.
+    # - 192.168.10.31
+    # - 192.168.10.32
+    # - 192.168.10.33
+    # - 192.168.10.34
+  type: manual
+compilation:
+  workers: 4
+  network: dockerregistry
+  reuse_compilation_vms: true
+  vm_type: medium
+  az: z1

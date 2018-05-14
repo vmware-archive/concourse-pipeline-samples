@@ -1,0 +1,59 @@
+groups:
+- name: main
+  jobs:
+  - check-os-version
+  - issue-ls-command
+
+resources:
+- name: concourse-pipeline-samples
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+jobs:
+- name: check-os-version
+  serial: true
+  public: true
+  plan:
+  - get: concourse-pipeline-samples
+    trigger: true
+  - task: check-image-os-version
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: <your-ip-address-goes-here>:5000/ubuntu
+          tag: "latest"
+          insecure_registries: [ "<your-ip-address-goes-here>:5000" ]
+      inputs:
+        - name: concourse-pipeline-samples
+      run:
+        path: cat
+        args:
+        - "/etc/lsb-release"
+
+- name: issue-ls-command
+  serial: true
+  public: true
+  plan:
+  - get: concourse-pipeline-samples
+    trigger: true
+    passed:
+    - check-os-version
+  - task: issue-ls-command
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: <your-ip-address-goes-here>:5000/ubuntu
+          tag: "latest"
+          insecure_registries: [ "<your-ip-address-goes-here>:5000" ]
+      inputs:
+        - name: concourse-pipeline-samples
+      run:
+        path: ls
+        args:
+        - "-la"

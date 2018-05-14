@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: 192.168.99.100:5000/ubuntu
+    tag: "latest"
+    insecure_registries: [ "192.168.99.100:5000" ]
+
+inputs:
+  - name: concourse-pipeline-samples
+
+run:
+  path: concourse-pipeline-samples/private-docker-registry/tasks/os-version.sh

@@ -1,0 +1,2 @@
+This is a sample text file to be attached to an email.
+Cheers!

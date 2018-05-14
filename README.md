@@ -1,72 +1,42 @@
-# Concourse How-To's and Samples
+<img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Customer[0]" height="70" align="right"/><img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/c0-logo-01.png" alt="Concourse" height="70" align="right"/>
 
-This repository provides sample code and recipes on Concourse CI pipelines and deployments.
+# Concourse Samples and Recipes
 
-<table border=0>
-<tr sytle="background-color:#ffffff !important;">
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-patterns">Concourse Pipeline Patterns<br>
-<img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/pipeline-patterns-02.png" alt="Concourse Pipeline Patterns" width="130"/></a></li></ul>
-</td>
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-pipeline-hacks">Concourse Pipeline Hacks<br>
-<img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="130"/></a></li></ul>
-</td>
-</tr>
+Sample code and recipes on Concourse CI pipelines and deployments.
 
-<tr sytle="background-color:#ffffff !important;">
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/artifactory-integration">Artifactory integration with Concourse pipelines<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-artifactory.png" alt="Artifactory integration with Concourse pipelines" width="130"/></a></li></ul>
-</td>
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/azure-blobstore-integration">Azure blobstore integration with Concourse pipelines<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-azureblob.png" alt="Azure blobstore integration with Concourse pipelines" width="130"/></a></li></ul>
-</td>
-</tr>
+## Table of Contents
 
-<tr sytle="background-color:#ffffff !important;">
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/blue-green-app-deployment">Blue-Green application deployment pipeline<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg" alt="Blue-Green application deployment pipeline" width="150"/></a></li></ul>
-</td>
-<td>
-<ul><li><a href="https://github.com/lsilvapvt/sample-app-pipeline">Application pipeline using multiple CF spaces<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/multi-spaces-pipeline.jpg" alt="Application pipeline using multiple CF spaces" width="150"/></a></li></ul>
-</td>
-</tr>
+<img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/pipeline-patterns-02.png" alt="Concourse Pipeline Patterns" width="100" align="right" style="margin: 20px;"/>
 
-<tr sytle="background-color:#ffffff !important;">
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/google-cloud-storage-integration">Google Cloud Storage integration with Concourse pipelines<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-gcs.png" alt="Google Cloud Storage integration with Concourse pipelines" width="130"/></a></li></ul>
-</td>
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/pcf-cfops-backup">PCF Backup CI pipeline using CFOps<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/cfops-pipeline.jpg" alt="PCF Backup CI pipeline using CFOps" width="200"/></a></li></ul>
-</td>
-</tr>
+### **[Concourse Pipeline Patterns](concourse-pipeline-patterns)**  
+  - [Gated Pipelines](concourse-pipeline-patterns/gated-pipelines)  
+  - [Time triggered pipelines](concourse-pipeline-patterns/time-triggered-pipelines)  
+  - [Parameterized pipeline tasks](concourse-pipeline-patterns/parameterized-pipeline-tasks)  
+  - [Credentials Management with CredHub](https://github.com/pivotal-cf/pcf-pipelines/blob/master/docs/credhub-integration.md)  
+  - [Credentials Management with Vault](concourse-pipeline-patterns/vault-integration)  
+  - [Authenticate Concourse team members with PCF UAA](concourse-pipeline-patterns/uaa-authentication)  
 
-<tr sytle="background-color:#ffffff !important;">
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry/docker-registry-release">Deploying a Private Docker Registry with Bosh<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/docker-and-bosh.jpg" alt="Deploying a Private Docker Registry with Bosh" width="200"/></a></li></ul>
-</td>
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/private-docker-registry">Concourse pipeline integration with local Docker Registry<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-private-registry.jpg" alt="Concourse pipeline integration with local Docker Registry" width="190"/></a></li></ul>
-</td>
-</tr>
 
-<tr sytle="background-color:#ffffff !important;">
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-lite">Deploying Concourse on Bosh-lite<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-bosh-lite.jpg" alt="Deploying Concourse on Bosh-lite" width="200"/></a></li></ul>
-</td>
-<td>
-<ul><li><a href="https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/concourse-on-bosh-1.0">Deploying Concourse on a Bosh 1.0 Director<br>
-<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-bosh-1.0.jpg" alt="Deploying Concourse on a Bosh 1.0 Director" width="200"/></a></li></ul>
-</td>
-</tr>
+  <img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
 
-</table>
+### **[Concourse Pro Tips](concourse-pipeline-patterns)**   
+  - [Running tasks with images on S3 for disconnected environments](concourse-pipeline-hacks/docker-images-from-s3)  
+  - [Make Concourse retrieve an older version of a resource](concourse-pipeline-hacks/check-resource)  
+  - [Run a task container with a user other than `root`](concourse-pipeline-hacks/task-run-user)  
+  - [Configure Concourse with an HTTP/HTTPS proxy](concourse-pipeline-hacks/http-proxy-config)  
+  - [Running tasks and resources without a Docker registry](concourse-pipeline-hacks/docker-images-from-repo)  
+  - [Concourse pipeline integration with local Docker Registry](concourse-pipeline-hacks/private-docker-registry)  
+  - [Deploying a Private Docker Registry with Bosh](concourse-pipeline-hacks/private-docker-registry/docker-registry-release)  
+
+<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-artifactory.png" alt="Artifactory integration with Concourse pipelines" width="100" align="right" style="margin: 20px"/>
+
+### **[Integration with File Repositories](.)**   
+  - [JFrog Artifactory](pipelines/jfrog/artifactory-integration)
+  - [Azure blobstore](pipelines/azure/azure-blobstore-integration)  
+  - [Google Cloud Storage](pipelines/google/google-cloud-storage-integration)  
+
+<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/bg-pipeline-icon.jpg" alt="Blue-Green application deployment pipeline" width="105"  align="right" style="margin: 20px"/>
+
+### **[Application Development Pipelines](.)**   
+  - [Blue-Green application deployment](pipelines/appdev/blue-green-app-deployment)  
+  - [Application pipeline using multiple CF spaces](https://github.com/lsilvapvt/sample-app-pipeline)  

@@ -1,9 +1,0 @@
----
-applications:
-- name: nats-to-syslog
-  memory: 256M
-  host: nats-to-syslog
-  buildpack: binary_buildpack
-  command: './nats_to_syslog_linux_amd64 -nats-uri nats://NATS_USERID:NATS_PASSWORD@NTAS_IP_ADDRESS:NATS_PORT_NUMBER -nats-subject "NATS_SUBJECT" -syslog-endpoint SYSLOG_SERVER_ADDRESS'
-  health-check-type: none
-  no-route: true
