@@ -28,6 +28,28 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Concourse pipeline integration with local Docker Registry](concourse-pipeline-hacks/private-docker-registry)  
   - [Deploying a Private Docker Registry with Bosh](concourse-pipeline-hacks/private-docker-registry/docker-registry-release)  
 
+<img src="http://www.cbronline.com/wp-content/uploads/2017/07/Pivotal-Cloud-Foundry.png" alt="Pipeline Samples" width="60" align="right" style="margin: 20px 20px 20px 0;"/>
+<img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Concourse concourse_pipeline_level_secrets_path" width="50" align="right" style="margin: 20px 5px 20px 0;"/>
+
+### **[Sample PCF Pipelines](.)**  
+  - [PKS tile](pipelines/pcf/pks/install-pks)  
+  - [VMWare Harbor tile](pipelines/vmware/install-harbor)  
+
+
+
+<img src="https://cdn1.iconfinder.com/data/icons/universal-signs-symbols/128/recycle-green-512.png" alt="Concourse concourse_pipeline_level_secrets_path" width="50" align="right" style="margin: 20px 20px 20px 0;"/>
+<img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Concourse Pipelines" width="50" align="right" style="margin: 20px 5px 20px 0"/>
+
+### **[Reusable Pipelines Tasks](.)**  
+  - [Configure PCF Tile](tasks/pcf/configure-tile)  
+  - [Configure PKS CLI User](tasks/pcf/pks/configure-pks-cli-user)  
+  - [Create PKS Cluster](tasks/pcf/pks/create-pks-cluster)  
+  - [Delete PKS Cluster](tasks/pcf/pks/delete-pks-cluster)  
+  - [Configure VMWare NSX-V artifacts](tasks/vsphere/nsxv)  
+  - [Configure VMWare NSX-T artifacts](tasks/vsphere/nsxt)  
+
+
+
 <img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-artifactory.png" alt="Artifactory integration with Concourse pipelines" width="100" align="right" style="margin: 20px"/>
 
 ### **[Integration with File Repositories](.)**   

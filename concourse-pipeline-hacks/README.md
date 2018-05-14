@@ -1,7 +1,7 @@
 ![Pipeline Hacks](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png)
 
 
-# Concourse Pipeline Pro Tipss
+# Concourse Pipeline Pro Tips
 
 Hints and samples on how to get not-so-well-documented or never-thought-before features to work in Concourse pipelines.
 
