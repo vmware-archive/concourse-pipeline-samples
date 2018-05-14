@@ -19,7 +19,7 @@ Sample code and recipes on Concourse CI pipelines and deployments.
 
   <img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
 
-### **[Concourse Pro Tips](concourse-pipeline-patterns)**   
+### **[Concourse Pro Tips](concourse-pipeline-hacks)**   
   - [Running tasks with images on S3 for disconnected environments](concourse-pipeline-hacks/docker-images-from-s3)  
   - [Make Concourse retrieve an older version of a resource](concourse-pipeline-hacks/check-resource)  
   - [Run a task container with a user other than `root`](concourse-pipeline-hacks/task-run-user)  
