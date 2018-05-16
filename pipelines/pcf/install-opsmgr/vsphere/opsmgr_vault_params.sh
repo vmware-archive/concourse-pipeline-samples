@@ -73,8 +73,8 @@ secrets=(
 
   ## for vSPHERE deployments - ignore or remove entries if not applicable
   # vcenter credentials and properties
-  "vcenter_usr"::"myvcenteruser@vsphere.local"
-  "vcenter_pwd"::"myvcenterpassword"
+  "vcenter_username"::"myvcenteruser@vsphere.local"
+  "vcenter_password"::"myvcenterpassword"
   # vcenter hostname, do not include protocol information
   "vcenter_host"::"vcenter.domain.com"
   "vcenter_datacenter"::"Datacenter"
