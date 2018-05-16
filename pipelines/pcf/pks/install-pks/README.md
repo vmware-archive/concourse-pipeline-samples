@@ -108,3 +108,64 @@ A sample Concourse pipeline to [Create a PKS Cluster](https://github.com/pivotal
 │                                           │   │                                           │                               
  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─     ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─                                
 ```
+
+---
+
+## Appendix B - Parameters Changes for PKS v1.1.0 Tile 
+
+- **Change:** PKS API Hostname. Replaced parameter `.properties.uaa_url` with `.properties.pks_api_hostname`.  
+
+- **New feature**: Differentiated AZ placement and persistent disk type for Master and Worker nodes  
+  Parameter changes:
+  - For each active Plan, parameter `.properties.planX_selector.active.az_placement` was removed and two new parameters were added, one for Master nodes, one for Workers: `.properties.planX_selector.active.master_az_placement` and `.properties.planX_selector.active.worker_az_placement`.  
+  - For each active plan, parameter `properties.planX_selector.active.persistent_disk_type` was replaced by `.properties.planX_selector.active.worker_persistent_disk_type`
+
+- **New feature**: Support for AWS as a Kubernetes Cloud provider  
+  New parameters added:  
+  `.properties.cloud_provider.aws.aws_access_key_id_master`  
+  `.properties.cloud_provider.aws.aws_secret_access_key_master`  
+  `.properties.cloud_provider.aws.aws_access_key_id_worker`  
+  `.properties.cloud_provider.aws.aws_secret_access_key_worker`  
+
+- **New feature**: New NSX settings and corresponding pipeline parameters added to v1.1.  
+  - Automated Network Provisioning: `.properties.network_selector.nsx.network_automation`  
+  - NAT mode: `.properties.network_selector.nsx.nat_mode`
+  - Nodes IP Block ID: `.properties.network_selector.nsx.nodes-ip-block-id`
+  - Bosh Client Id: `.properties.network_selector.nsx.bosh-client-id`
+  - Bosh Client secret: `.properties.network_selector.nsx.bosh-client-secret`
+  - HTTP/HTTPS Proxy: `.properties.proxy_selector`, `.properties.proxy_selector.enabled.http_proxy_url`, `.properties.proxy_selector.enabled.http_proxy_credentials`,  `.properties.proxy_selector.enabled.no_proxy`  
+  - Allow outbound internet access from Kubernetes cluster vms: `.properties.vm_extensions`  
+
+- **New feature**: Configure your UAA user account store with either internal or external authentication mechanisms (LDAP) - parameter `.properties.uaa`  
+  New parameters for LDAP support:  
+  `.properties.uaa.ldap.url`  
+  `.properties.uaa.ldap.credentials`  
+  `.properties.uaa.ldap.search_base`  
+  `.properties.uaa.ldap.search_filter`  
+  `.properties.uaa.ldap.group_search_base`  
+  `.properties.uaa.ldap.group_search_filter`  
+  `.properties.uaa.ldap.server_ssl_cert`  
+  `.properties.uaa.ldap.server_ssl_cert_alias`  
+  `.properties.uaa.ldap.mail_attribute_name`  
+  `.properties.uaa.ldap.email_domains`  
+  `.properties.uaa.ldap.first_name_attribute`  
+  `.properties.uaa.ldap.last_name_attribute`  
+  `.properties.uaa.ldap.ldap_referrals`  
+
+- **New feature**: Monitoring - Wavefront Integration  
+  New parameters added:  
+  `.properties.wavefront`  
+  `.properties.wavefront.enabled.wavefront_api_url`  
+  `.properties.wavefront.enabled.wavefront_token`  
+  `.properties.wavefront.enabled.wavefront_alert_targets`  
+
+- **New feature**: VMware vRealize Log Insight Integration  
+  New parameters added:  
+  `.properties.pks-vrli`  
+  `.properties.pks-vrli.enabled.host`  
+  `.properties.pks-vrli.enabled.use_ssl`  
+  `.properties.pks-vrli.enabled.skip_cert_verify`  
+  `.properties.pks-vrli.enabled.ca_cert`  
+  `.properties.pks-vrli.enabled.rate_limit_msec`  
+
+---
