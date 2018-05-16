@@ -25,7 +25,7 @@
         1. external_worker_tags
     1. Release Versions
         1. Get latest from bosh.io
-1. Run bosh create-env with the variables gathered (see example command below)
+1. From an opsmgr or other jumpbox on the remote network , run bosh create-env with the variables gathered (see example command below)
 
 Save creds.yml and state.json to a secure place.
 
@@ -35,6 +35,7 @@ bosh create-env \
    remote-worker-vsphere.yml \
    --state=state.json \
    --vars-store=creds.yml \
+   -v hashed_password='use mkpasswd -s -m sha-512' \
    -v internal_cidr='192.168.10.0/26' \
    -v internal_gw=192.168.10.1 \
    -v internal_ip=192.168.10.60 \
@@ -57,8 +58,8 @@ bosh create-env \
    -v external_worker_private_key=xx \
    -v postgres_version=28 \
    -v postgres_sha1=c1fcec62cb9d2e95e3b191e3c91d238e2b9d23fa \
-   -v concourse_version=3.13.0 \
-   -v concourse_sha1=aaa4e4d42adb2293abc79422351ca71ed548f95c \
-   -v garden_runc_version=0.342.0 \
-   -v garden_runc_sha1=dbfd8e7e3560286b6d8c02ba9065a50289e8e0f3
+   -v concourse_version=3.10.0 \
+   -v concourse_sha1=fb3bedc9f9bf2304449b90c86f6d624a6819d363 \
+   -v garden_runc_version=1.13.1 \
+   -v garden_runc_sha1=54cbb89cae1be0708aa056185671665d7f4b2a4f
 ```
