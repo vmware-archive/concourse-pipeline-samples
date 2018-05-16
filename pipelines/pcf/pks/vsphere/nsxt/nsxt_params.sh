@@ -58,6 +58,14 @@ export pipeline_secrets=(
 "external_nat_ip_pool_start_ip"::"1.2.3.100"
 "external_nat_ip_pool_end_ip"::"1.2.3.119"
 
+"vlan_uplink_switch_name"::"vlan-uplink"
+"infrastructure_switch_name"::"infrastructure-ls"
+"services_switch_name"::"services-ls"
+
+"t0_router_name"::"t0-router"
+"infrastructure_router_name"::"infrastructure-t1"
+"services_router_name"::"services-t1"
+
 )
 
 main () {
