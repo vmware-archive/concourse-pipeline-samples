@@ -14,7 +14,7 @@ pynsxt_local() {
   python /opt/pynsxt/cli.py "$@"
 }
 
-if [ -n $LOGICAL_SWITCH_VLAN ]
+if [ -z "$LOGICAL_SWITCH_VLAN" ]
 then
   pynsxt_local switch create \
     -n $LOGICAL_SWITCH_NAME \
