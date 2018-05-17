@@ -2,7 +2,7 @@
 
 # Install PKS pipeline
 
-This pipeline installs the PKS tile on top of an existing PCF Ops Manager deployment.
+This pipeline installs the PKS tile (v1.0.3+) on top of an existing PCF Ops Manager deployment.
 
 <img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/install-pks-tile.png" alt="Concourse" width="100%"/>
 
