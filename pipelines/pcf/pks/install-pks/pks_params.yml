@@ -152,6 +152,11 @@ properties: |
     value: ((gcp_vpc_network))  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
   .properties.cloud_provider.gcp.service_key:
     value: ((gcp_service_key))
+  ## For PKS 1.0.3+ uncomment and use below two keys instead of .properties.cloud_provider.gcp.service_key
+    #.properties.cloud_provider.gcp.master_service_account_key:
+    #value: ((gcp_service_key))
+    #.properties.cloud_provider.gcp.worker_service_account_key:
+    #value: ((gcp_service_key))
 
   ### if VSPHERE is to be selected, then uncomment and fill out the VSPHERE parameters below
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
