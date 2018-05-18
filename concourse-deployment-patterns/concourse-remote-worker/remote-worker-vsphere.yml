@@ -1,0 +1,108 @@
+name: concourse-ext-worker
+cloud_provider:
+  mbus: https://mbus:((mbus_password))@((internal_ip)):6868
+  properties:
+    agent:
+      mbus: https://mbus:((mbus_password))@0.0.0.0:6868
+    blobstore:
+      path: /var/vcap/micro_bosh/data/cache
+      provider: local
+    ntp: ((ntp_servers))
+    vcenter:
+      address: ((vcenter_ip))
+      user: ((vcenter_user))
+      password: ((vcenter_password))
+      datacenters:
+      - name: ((vcenter_dc))
+        vm_folder: ((vcenter_vms))
+        template_folder: ((vcenter_templates))
+        datastore_pattern: ((vcenter_ds))
+        persistent_datastore_pattern: ((vcenter_ds))
+        disk_path: ((vcenter_disks))
+        clusters:
+        - ((vcenter_cluster)):
+            resource_pool: ((vcenter_rp))
+  template:
+    name: vsphere_cpi
+    release: bosh-vsphere-cpi
+instance_groups:
+- instances: 1
+  jobs:
+  - name: groundcrew
+    properties:
+      tags: ((external_worker_tags))
+      garden:
+        forward_address: 127.0.0.1:7777
+      baggageclaim:
+        forward_address: 127.0.0.1:7788
+      tsa:
+        host: ((tsa_host))
+        host_public_key: ((tsa_host_public_key))
+        worker_key:
+          private_key: ((external_worker_private_key))
+    release: concourse
+  - name: baggageclaim
+    properties: {}
+    release: concourse
+  - name: garden
+    properties:
+      garden:
+        listen_address: 0.0.0.0:7777
+        listen_network: tcp
+    release: garden-runc
+  networks:
+  - default:
+    - dns
+    - gateway
+    name: default
+    static_ips:
+    - ((internal_ip))
+    cloud_properties:
+      name: ((network_name))
+  resource_pool: vms
+  name: concourse
+
+networks:
+- name: default
+  subnets:
+  - dns: ((internal_dns))
+    gateway: ((internal_gw))
+    range: ((internal_cidr))
+    static_ips: ((internal_ip))
+    cloud_properties:
+      name: ((network_name))
+  type: manual
+
+releases:
+- name: concourse
+  version: ((concourse_version))
+  sha1: ((concourse_sha1))
+  url: https://bosh.io/d/github.com/concourse/concourse?v=((concourse_version))
+- name: garden-runc
+  version: ((garden_runc_version))
+  sha1: ((garden_runc_sha1))
+  url: https://bosh.io/d/github.com/cloudfoundry/garden-runc-release?v=((garden_runc_version))
+- name: postgres
+  version: ((postgres_version))
+  sha1: ((postgres_sha1))
+  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=((postgres_version))
+- name: bosh-vsphere-cpi
+  version: 45.1.0
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-vsphere-cpi-release?v=45.1.0
+  sha1: 49164212bcd6a35515db6664bcb26bef2fcc6b6c
+resource_pools:
+- cloud_properties:
+    cpu: 2
+    disk: 40_000
+    ram: 4_096
+  env:
+    bosh:
+      password: ((hashed_password))
+  name: vms
+  network: default
+  stemcell:
+    sha1: 0447a405c280a3445ce6a3db69a61cbddc7b3708
+    url: https://bosh.io/d/stemcells/bosh-vsphere-esxi-ubuntu-trusty-go_agent?v=3468.11
+variables:
+- name: mbus_password
+  type: password
