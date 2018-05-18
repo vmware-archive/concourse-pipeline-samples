@@ -1,4 +1,7 @@
+![Concourse Deployment Patterns](https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/remote_workers_icon.png)
+
 # How to create a remote concourse worker
+
 1. Obtain the following information:
     1. Download the remote-worker-vsphere.yml in this folder
     1. From Concourse Deployment

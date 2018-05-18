@@ -17,7 +17,7 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Authenticate Concourse team members with PCF UAA](concourse-pipeline-patterns/uaa-authentication)  
 
 
-  <img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
+<img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
 
 ### **[Concourse Pro Tips](concourse-pipeline-hacks)**   
   - [Running tasks with images on S3 for disconnected environments](concourse-pipeline-hacks/docker-images-from-s3)  
@@ -27,6 +27,12 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Running tasks and resources without a Docker registry](concourse-pipeline-hacks/docker-images-from-repo)  
   - [Concourse pipeline integration with local Docker Registry](concourse-pipeline-hacks/private-docker-registry)  
   - [Deploying a Private Docker Registry with Bosh](concourse-pipeline-hacks/private-docker-registry/docker-registry-release)  
+
+<img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/remote_workers_icon.png" alt="Concourse Deployment Patterns" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
+
+### **[Concourse Deployment Patterns](concourse-deployment-patterns)**   
+  - [How to create a remote concourse worker](concourse-deployment-patterns/concourse-remote-worker)  
+
 
 <img src="http://www.cbronline.com/wp-content/uploads/2017/07/Pivotal-Cloud-Foundry.png" alt="Pipeline Samples" width="50" align="right" style="margin: 20px;"/>
 
