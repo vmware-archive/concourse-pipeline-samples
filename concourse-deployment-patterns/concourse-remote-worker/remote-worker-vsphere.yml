@@ -1,4 +1,4 @@
-name: concourse-temp-worker
+name: concourse-ext-worker
 cloud_provider:
   mbus: https://mbus:((mbus_password))@((internal_ip)):6868
   properties:

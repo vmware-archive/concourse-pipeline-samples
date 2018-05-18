@@ -54,11 +54,11 @@ bosh create-env \
    -v ntp_servers='[10.193.134.2]' \
    -v tsa_host=xx \
    -v tsa_host_public_key=xx \
-   -v external_worker_tags=c0lrp01 \
+   -v external_worker_tags='[c0lrp01]' \
    -v external_worker_private_key=xx \
    -v postgres_version=28 \
    -v postgres_sha1=c1fcec62cb9d2e95e3b191e3c91d238e2b9d23fa \
-   -v concourse_version=3.10.0 \
+   -v concourse_version=3.13.0 \
    -v concourse_sha1=fb3bedc9f9bf2304449b90c86f6d624a6819d363 \
    -v garden_runc_version=1.13.1 \
    -v garden_runc_sha1=54cbb89cae1be0708aa056185671665d7f4b2a4f
