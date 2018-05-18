@@ -275,12 +275,14 @@ jobs:
       PCF_PKS_API: api.((pcf_pks_domain))
       PKS_CLI_USERNAME: {{pks_cli_username}}
       PKS_CLI_PASSWORD: {{pks_cli_password}}
+      DEBUG: true
 
 - name: delete-product
   plan:
   - get: pcf-pipelines-utils
     passed:
     - delete-clusters
+    trigger: true
   - task: delete-product
     file: pcf-pipelines-utils/tasks/pcf/delete-tile/task.yml
     params:
