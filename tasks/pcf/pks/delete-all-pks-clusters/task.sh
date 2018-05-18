@@ -18,12 +18,7 @@ while read clustername; do
   while [[ "$cluster_state" == "$in_progress_state" ]]; do
     echo "status: [$cluster_state]..."
     sleep 5
-    cluster_exists=$(pks clusters --json | jq -rc '.[].name' | grep $clustername)
-    if [[ "$cluster_exists" != "" ]]; then
-      cluster_state=$(pks cluster "$clustername" --json 2>/dev/null | jq -rc '.last_action_state')
-    else
-      cluster_state=""
-    fi
+    cluster_state=$(pks clusters --json | jq --arg clustername "$clustername" -rc '.[] | select(.name==$clustername) | .last_action_state')
   done
 
   cluster_exists=$(pks clusters --json | jq -rc '.[].name' | grep $clustername)
