@@ -1,4 +1,18 @@
-groups: []
+groups:
+- name: Install-PKS
+  jobs:
+  - upload-product
+  - stage-product
+  - update-director-config
+  - configure-product
+  - deploy-product
+  - create-pks-cli-user
+- name: Delete-PKS
+  jobs:
+  - delete-clusters
+  - delete-product
+
+
 resources:
 - name: pcf-pipelines-tarball
   type: pivnet
@@ -17,7 +31,6 @@ resources:
     product_slug: pivotal-container-service
     product_version: {{product_version}}
     sort_by: semver
-
 
 resource_types:
 - name: pivnet
@@ -219,26 +232,7 @@ jobs:
 - name: deploy-product
   plan:
   - aggregate:
-    - do:
-      - get: pcf-pipelines-tarball
-      - task: unpack-tarball
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: czero/rootfs
-          run:
-            path: bash
-            args:
-            - -c
-            - tar -xvf pcf-pipelines-tarball/*.tgz
-          inputs:
-          - name: pcf-pipelines-tarball
-            path: ""
-          outputs:
-          - name: pcf-pipelines
-            path: ""
+    - get: pcf-pipelines-utils
     - get: pivnet-product
       passed:
       - configure-product
@@ -247,7 +241,7 @@ jobs:
       params:
         globs: []
   - task: apply-changes
-    file: pcf-pipelines/tasks/apply-changes/task.yml
+    file: pcf-pipelines-utils/tasks/pcf/apply-changes/task.yml
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
@@ -271,3 +265,36 @@ jobs:
       PKS_CLI_USERNAME: {{pks_cli_username}}
       PKS_CLI_USEREMAIL: {{pks_cli_useremail}}
       PKS_CLI_PASSWORD: {{pks_cli_password}}
+
+- name: delete-clusters
+  plan:
+  - get: pcf-pipelines-utils
+  - task: delete-all-pks-clusters
+    file: pcf-pipelines-utils/tasks/pcf/pks/delete-all-pks-clusters/task.yml
+    params:
+      PCF_PKS_API: api.((pcf_pks_domain))
+      PKS_CLI_USERNAME: {{pks_cli_username}}
+      PKS_CLI_PASSWORD: {{pks_cli_password}}
+
+- name: delete-product
+  plan:
+  - get: pcf-pipelines-utils
+    passed:
+    - delete-clusters
+  - task: delete-product
+    file: pcf-pipelines-utils/tasks/pcf/delete-tile/task.yml
+    params:
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      TILE_PRODUCT_NAME: {{product_name}}
+  - task: apply-changes
+    file: pcf-pipelines-utils/tasks/pcf/apply-changes/task.yml
+    params:
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
