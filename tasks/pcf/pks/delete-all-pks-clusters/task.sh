@@ -16,12 +16,14 @@ while read clustername; do
   cluster_state="$in_progress_state"
 
   while [[ "$cluster_state" == "$in_progress_state" ]]; do
+    set +e
     cluster_state=$(pks cluster "$clustername" --json 2>/dev/null | jq -rc '.last_action_state')
     echo "status: [$cluster_state]..."
+    set -e
     sleep 5
   done
 
-  cluster_exists=$(pks clusters --json | jq -rc '.[].name')
+  cluster_exists=$(pks clusters --json | jq -rc '.[].name' | grep $clustername)
 
   if [[ "$cluster_exists" == "" ]]; then
     echo "Successfully deleted cluster [$clustername]"
