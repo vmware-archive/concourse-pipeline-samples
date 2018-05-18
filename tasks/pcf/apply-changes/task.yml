@@ -1,0 +1,19 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source: {repository: czero/rootfs}
+
+inputs:
+  - name: pcf-pipelines-utils
+
+params:
+  OPSMAN_CLIENT_ID:
+  OPSMAN_CLIENT_SECRET:
+  OPSMAN_USERNAME:
+  OPSMAN_PASSWORD:
+  OPSMAN_DOMAIN_OR_IP_ADDRESS:
+
+run:
+  path: pcf-pipelines/tasks/apply-changes/task.sh
