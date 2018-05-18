@@ -275,7 +275,7 @@ jobs:
       PCF_PKS_API: api.((pcf_pks_domain))
       PKS_CLI_USERNAME: {{pks_cli_username}}
       PKS_CLI_PASSWORD: {{pks_cli_password}}
-      DEBUG: true
+      DEBUG: false
 
 - name: delete-product
   plan:
