@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -e
 echo "Login to PKS API [$PCF_PKS_API]"
 pks login -a "$PCF_PKS_API" -u "$PKS_CLI_USERNAME" -p "$PKS_CLI_PASSWORD" --skip-ssl-verification # TBD --ca-cert CERT-PATH
 
@@ -16,11 +16,14 @@ while read clustername; do
   cluster_state="$in_progress_state"
 
   while [[ "$cluster_state" == "$in_progress_state" ]]; do
-    set +e
-    cluster_state=$(pks cluster "$clustername" --json 2>/dev/null | jq -rc '.last_action_state')
     echo "status: [$cluster_state]..."
-    set -e
     sleep 5
+    cluster_exists=$(pks clusters --json | jq -rc '.[].name' | grep $clustername)
+    if [[ "$cluster_exists" != "" ]]; then
+      cluster_state=$(pks cluster "$clustername" --json 2>/dev/null | jq -rc '.last_action_state')
+    else
+      cluster_state=""
+    fi
   done
 
   cluster_exists=$(pks clusters --json | jq -rc '.[].name' | grep $clustername)
