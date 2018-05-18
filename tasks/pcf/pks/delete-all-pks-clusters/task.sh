@@ -27,18 +27,16 @@ while read clustername; do
     cluster_state=$(pks clusters --json | jq --arg clustername "$clustername" -rc '.[] | select(.name==$clustername) | .last_action_state')
   done
   echo "status on exit: [$cluster_state]..."
-  cluster_exists=$(pks clusters --json | jq -rc '.[].name' | grep $clustername)
 
-  echo "Cluster existance check: [$cluster_exists]..."
-
-  if [[ "$cluster_exists" == "" ]]; then
-    echo "Successfully deleted cluster [$clustername]"
-    echo "Current list of PKS clusters:"
-    pks clusters --json
-  else
+  # check if cluster to be deleted still exist after delete try
+  if [[ $(pks clusters --json | jq -rc '.[].name' | grep $clustername) ]]; then
     last_action_description=$(pks clusters --json | jq --arg clustername "$clustername" -rc '.[] | select(.name==$clustername) | .last_action_description')
     echo "Error deleting cluster [$clustername], last_action_state=[$cluster_state], last_action_description=[$last_action_description]"
     exit 1
+  else
+    echo "Successfully deleted cluster [$clustername]"
+    echo "Current list of PKS clusters:"
+    pks clusters --json
   fi
 
 done <list_of_clusters.txt
