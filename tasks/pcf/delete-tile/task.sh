@@ -12,7 +12,7 @@ main() {
     --username "$OPSMAN_USERNAME" \
     --password "$OPSMAN_PASSWORD" \
     --skip-ssl-validation \
-    staged-products | grep ${TILE_PRODUCT_NAME} | cut -d "|" -f 3 | tr -d " ")
+    deployed-products | grep ${TILE_PRODUCT_NAME} | cut -d "|" -f 3 | tr -d " ")
 
   echo "Deleting product [${TILE_PRODUCT_NAME}], version [${product_version}] , from ${OPSMAN_DOMAIN_OR_IP_ADDRESS}"
 

@@ -7,7 +7,7 @@ groups:
   - configure-product
   - deploy-product
   - create-pks-cli-user
-- name: Delete-PKS
+- name: Delete-PKS-Clusters
   jobs:
   - delete-clusters
   - delete-product
@@ -277,26 +277,26 @@ jobs:
       PKS_CLI_PASSWORD: {{pks_cli_password}}
       DEBUG: false
 
-- name: delete-product
-  plan:
-  - get: pcf-pipelines-utils
-    passed:
-    - delete-clusters
-    trigger: true
-  - task: delete-product
-    file: pcf-pipelines-utils/tasks/pcf/delete-tile/task.yml
-    params:
-      OPSMAN_CLIENT_ID: {{opsman_client_id}}
-      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
-      OPSMAN_PASSWORD: {{opsman_admin_password}}
-      OPSMAN_USERNAME: {{opsman_admin_username}}
-      TILE_PRODUCT_NAME: {{product_name}}
-  - task: apply-changes
-    file: pcf-pipelines-utils/tasks/pcf/apply-changes/task.yml
-    params:
-      OPSMAN_CLIENT_ID: {{opsman_client_id}}
-      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
-      OPSMAN_PASSWORD: {{opsman_admin_password}}
-      OPSMAN_USERNAME: {{opsman_admin_username}}
+# - name: delete-product
+#   plan:
+#   - get: pcf-pipelines-utils
+#     passed:
+#     - delete-clusters
+#     trigger: true
+#   - task: delete-product
+#     file: pcf-pipelines-utils/tasks/pcf/delete-tile/task.yml
+#     params:
+#       OPSMAN_CLIENT_ID: {{opsman_client_id}}
+#       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+#       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
+#       OPSMAN_PASSWORD: {{opsman_admin_password}}
+#       OPSMAN_USERNAME: {{opsman_admin_username}}
+#       TILE_PRODUCT_NAME: {{product_name}}
+#   - task: apply-changes
+#     file: pcf-pipelines-utils/tasks/pcf/apply-changes/task.yml
+#     params:
+#       OPSMAN_CLIENT_ID: {{opsman_client_id}}
+#       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+#       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
+#       OPSMAN_PASSWORD: {{opsman_admin_password}}
+#       OPSMAN_USERNAME: {{opsman_admin_username}}
