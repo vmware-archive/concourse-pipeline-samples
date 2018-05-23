@@ -1,0 +1,24 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: czero/rootfs
+
+inputs:
+- name: pcf-pipelines-utils
+
+outputs:
+- name: expiring_certs
+
+run:
+  path: pcf-pipelines-utils/tasks/pcf/certificates/check-expiring-certificates/task.sh
+
+params:
+  OPSMAN_DOMAIN_OR_IP_ADDRESS:
+  OPSMAN_USERNAME:
+  OPSMAN_PASSWORD:
+  OPSMAN_CLIENT_ID:
+  OPSMAN_CLIENT_SECRET:
+  EXPIRATION_TIME_FRAME:
