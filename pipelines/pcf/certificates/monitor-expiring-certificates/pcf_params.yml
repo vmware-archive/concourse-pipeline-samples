@@ -1,0 +1,11 @@
+######## PCF Foundation-specific parameters
+
+# Ops Manager information and admin credentials
+opsman_domain: ((opsman_domain))
+opsman_admin_username: ((opsman_admin_username))      # Username for Ops Manager admin account
+opsman_admin_password: ((opsman_admin_password))       # Password for Ops Manager admin account
+# Either opsman_client_id/opsman_client_secret or opsman_admin_username/opsman_admin_password needs to be specified.
+# If you are using opsman_admin_username/opsman_admin_password, edit opsman_client_id/opsman_client_secret to be an empty value.
+# If you are using opsman_client_id/opsman_client_secret, edit opsman_admin_username/opsman_admin_password to be an empty value.
+opsman_client_id: ((opsman_client_id))
+opsman_client_secret: ((opsman_client_secret))

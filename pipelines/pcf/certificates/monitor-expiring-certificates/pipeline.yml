@@ -1,0 +1,76 @@
+---
+#
+# PCF Documentation: https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html
+#
+resources:
+- name: time-trigger
+  type: time
+  source:
+    interval: 168h
+
+- name: pcf-pipelines-utils
+  type: git
+  source:
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
+
+- name: send-an-email
+  type: email
+  source:
+    smtp:
+      host: ((smtp_host))    # e.g. smtp.gmail.com
+      port: "587" # this must be a string
+      username: ((smpt_username))
+      password: ((smpt_password))
+    from: ((from_email_address))
+    to: [ "email@example.com" ] #optional if `params.additional_recipient` is specified
+
+jobs:
+- name: Monitor-Expiring-Certificates
+  plan:
+  - get: time-trigger
+    trigger: true
+  - get: pcf-pipelines-utils
+  - task: check-expiring-certificates
+    file: pcf-pipelines-utils/tasks/pcf/certificates/check-expiring-certificates/task.yml
+    params:
+      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain}}
+      OPSMAN_USERNAME: {{opsman_admin_username}}
+      OPSMAN_PASSWORD: {{opsman_admin_password}}
+      OPSMAN_CLIENT_ID: {{opsman_client_id}}
+      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+      EXPIRATION_TIME_FRAME: 3m    # e.g. 10d, 2m, 3w, 1y
+
+  - task: notify-of-expiring-certificates
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: czero/rootfs
+      inputs:
+      - name: expiring_certs
+      run:
+        path: bash
+        args:
+        - -ec
+        - |
+          echo "List of expiring certificates:"
+          cat ./expiring_certs/expiring_certs.json
+          number_of_exp_certs=$(cat ./expiring_certs/expiring_certs.json | jq -r '.certificates | length')
+          if [[ ${number_of_exp_certs} > 0 ]]; then
+             echo "There are expiring certificates!!"
+             exit 1
+          else
+             echo "No expiring certificates found."
+          fi
+    on_failure:
+      put: send-an-email
+      params:
+        subject_text: "Action required - PCF certificates are about to expire."
+        body_text: "PCF certificates are about to expire, see list from ${ATC_EXTERNAL_URL}/teams/main/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}/builds/${BUILD_NAME}. For more information: https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html"
+
+resource_types:
+- name: email
+  type: docker-image
+  source:
+    repository: pcfseceng/email-resource
