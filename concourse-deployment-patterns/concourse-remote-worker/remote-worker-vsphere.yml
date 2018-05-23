@@ -28,7 +28,7 @@ cloud_provider:
 instance_groups:
 - instances: 1
   jobs:
-  - name: groundcrew
+  - name: worker 
     properties:
       tags: ((external_worker_tags))
       garden:
