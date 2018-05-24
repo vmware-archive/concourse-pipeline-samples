@@ -19,8 +19,8 @@ resources:
     smtp:
       host: ((smtp_host))    # e.g. smtp.gmail.com
       port: "587" # this must be a string
-      username: ((smpt_username))
-      password: ((smpt_password))
+      username: ((smtp_username))
+      password: ((smtp_password))
     from: ((from_email_address))
     to: [ "email@example.com" ] #optional if `params.additional_recipient` is specified
 
@@ -38,7 +38,7 @@ jobs:
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      EXPIRATION_TIME_FRAME: 3m    # e.g. 10d, 2m, 3w, 1y
+      EXPIRATION_TIME_FRAME: 18m    # e.g. 10d, 2m, 3w, 1y
 
   - task: notify-of-expiring-certificates
     config:
@@ -54,10 +54,15 @@ jobs:
         args:
         - -ec
         - |
-          echo "List of expiring certificates:"
-          cat ./expiring_certs/expiring_certs.json
-          number_of_exp_certs=$(cat ./expiring_certs/expiring_certs.json | jq -r '.certificates | length')
-          if [[ ${number_of_exp_certs} > 0 ]]; then
+          number_of_exp_conf_certs=$(cat ./expiring_certs/expiring_configurable_certs.json | jq -r '. | length')
+          number_of_exp_non_conf_certs=$(cat ./expiring_certs/expiring_non_configurable_certs.json | jq -r '. | length')
+          number_of_exp_ca_certs=$(cat ./expiring_certs/expiring_ca_certs.json | jq -r '. | length')
+          number_of_exp_root_cert=0
+          if [[ -s ./expiring_certs/expiring_root_cert.pem ]]; then
+            number_of_exp_root_cert=1
+          fi
+          total_number_of_exp_certs=$(expr $number_of_exp_conf_certs+$number_of_exp_non_conf_certs+$number_of_exp_ca_certs+$number_of_exp_root_cert)
+          if [[ ${total_number_of_exp_certs} > 0 ]]; then
              echo "There are expiring certificates!!"
              exit 1
           else

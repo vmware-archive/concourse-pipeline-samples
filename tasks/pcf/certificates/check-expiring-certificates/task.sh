@@ -31,7 +31,7 @@ main() {
     --username "${OPSMAN_USERNAME}" \
     --password "${OPSMAN_PASSWORD}" \
     curl \
-    --path /api/v0/certificate_authorities > ./ca_certs.json
+    --path /api/v0/certificate_authorities 2>/dev/null  > ./ca_certs.json
 
   # get expiration_date and compare it with EXPIRATION_TIME_FRAME
   date_delta=$(echo ${EXPIRATION_TIME_FRAME} | sed -e 's/w/ week/;s/m/ month/;s/y/ year/;s/d/ day/')
@@ -48,7 +48,7 @@ main() {
     --username "${OPSMAN_USERNAME}" \
     --password "${OPSMAN_PASSWORD}" \
     curl \
-    --path /download_root_ca_cert > ./root_cert.pem
+    --path /download_root_ca_cert 2>/dev/null  > ./root_cert.pem
 
   root_cert_expDate=$(openssl x509 -enddate -noout -in ./root_cert.pem | sed -e 's/notAfter=//')
   formatted_root_ca_date=$(date --date="+${root_cert_expDate}" +"%Y-%m-%dT%H:%M:%SZ")
