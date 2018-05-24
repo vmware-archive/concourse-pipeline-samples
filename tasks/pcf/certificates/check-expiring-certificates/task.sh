@@ -17,10 +17,10 @@ main() {
     --path /api/v0/deployed/certificates?expires_within=${EXPIRATION_TIME_FRAME} > ./expiring_certs.json
 
   # get expiring configurable certs
-  cat ./expiring_certs.json | jq '.certificates[] | select(.configurable==true)' > ./expiring_certs/expiring_configurable_certs.json
+  cat ./expiring_certs.json | jq '.certificates[] | select(.configurable==true)' | jq --slurp .  > ./expiring_certs/expiring_configurable_certs.json
 
   # get expiring non-configurable certs
-  cat ./expiring_certs.json | jq '.certificates[] | select(.configurable==false)' > ./expiring_certs/expiring_non_configurable_certs.json
+  cat ./expiring_certs.json | jq '.certificates[] | select(.configurable==false)' | jq --slurp . > ./expiring_certs/expiring_non_configurable_certs.json
 
   # check CA certs expiration
   om-linux \
@@ -38,7 +38,7 @@ main() {
   echo $date_delta
   limit_date=$(date --date="+${date_delta}" +"%Y-%m-%dT%H:%M:%SZ")
 
-  cat ./ca_certs.json | jq --arg limit_date "$limit_date" '.certificate_authorities[] | select(.expires_on<$limit_date)' > ./expiring_certs/expiring_ca_certs.json
+  cat ./ca_certs.json | jq --arg limit_date "$limit_date" '.certificate_authorities[] | select(.expires_on<$limit_date)' | jq --slurp .  > ./expiring_certs/expiring_ca_certs.json
 
   om-linux \
     --target "https://${OPSMAN_DOMAIN_OR_IP_ADDRESS}" \
