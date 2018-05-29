@@ -4,7 +4,15 @@
 
 This sample pipeline checks for expiring certificates of a PCF deployment.
 
-It gets automatically triggered on a regular basis (e.g. once a week) to check for the list of certificates about to expire from the corresponding PCF Ops Manager API.
+It gets automatically triggered on a regular basis by a time resource to check for the list of certificates about to expire from the corresponding PCF Ops Manager.
+
+The pipeline monitors four types of PCF certificates:
+- [Configurable Certificates](https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-config)
+- [Non-Configurable Certificates](https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-non-config)
+- [CA Certificates](https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-ca)
+- [Ops Manager Root Certificates](https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-root)
+
+If a certificate is about to expire within the given `EXPIRATION_TIME_FRAME` pipeline parameter, then the pipeline will throw an error and send out a notification (e.g. email) to the configured recipients.
 
 ---
 

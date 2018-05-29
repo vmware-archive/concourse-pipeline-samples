@@ -6,7 +6,7 @@ resources:
 - name: time-trigger
   type: time
   source:
-    interval: 168h
+    interval: 168h      # e.g. once a week
 
 - name: pcf-pipelines-utils
   type: git
@@ -38,7 +38,7 @@ jobs:
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      EXPIRATION_TIME_FRAME: 18m    # e.g. 10d, 2m, 3w, 1y
+      EXPIRATION_TIME_FRAME: 3m    # e.g. 10d, 2m, 3w, 1y
 
   - task: notify-of-expiring-certificates
     config:
@@ -61,9 +61,33 @@ jobs:
           if [[ -s ./expiring_certs/expiring_root_cert.pem ]]; then
             number_of_exp_root_cert=1
           fi
+
+          # Configurable certs
+          if [[ ${number_of_exp_conf_certs} > 0 ]]; then
+             echo "Configurable certificate(s) expiring. See PCF documentation for more information on how to rotate them:"
+             echo "https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-config"
+          fi
+
+          # Non-Configurable certs
+          if [[ ${number_of_exp_non_conf_certs} > 0 ]]; then
+             echo "Non-Configurable certificate(s) expiring. See PCF documentation for more information on how to rotate them:"
+             echo "https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-non-config"
+          fi
+
+          # CA certs
+          if [[ ${number_of_exp_ca_certs} > 0 ]]; then
+             echo "CA certificate(s) expiring. See PCF documentation for more information on how to rotate them:"
+             echo "https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-ca"
+          fi
+
+          # Ops Manager Root cert
+          if [[ ${number_of_exp_root_cert} > 0 ]]; then
+             echo "Ops Manager root certificate expiring. See PCF documentation for more information on how to rotate it:"
+             echo "https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-root"
+          fi
+
           total_number_of_exp_certs=$(expr $number_of_exp_conf_certs+$number_of_exp_non_conf_certs+$number_of_exp_ca_certs+$number_of_exp_root_cert)
           if [[ ${total_number_of_exp_certs} > 0 ]]; then
-             echo "There are expiring certificates!!"
              exit 1
           else
              echo "No expiring certificates found."
