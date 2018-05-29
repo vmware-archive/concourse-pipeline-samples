@@ -86,8 +86,8 @@ jobs:
              echo "https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-root"
           fi
 
-          total_number_of_exp_certs=$(expr $number_of_exp_conf_certs+$number_of_exp_non_conf_certs+$number_of_exp_ca_certs+$number_of_exp_root_cert)
-          if [[ ${total_number_of_exp_certs} > 0 ]]; then
+          total_number_of_exp_certs=$(($number_of_exp_conf_certs+$number_of_exp_non_conf_certs+$number_of_exp_ca_certs+$number_of_exp_root_cert))
+          if (( ${total_number_of_exp_certs} > 0 )); then
              exit 1
           else
              echo "No expiring certificates found."
