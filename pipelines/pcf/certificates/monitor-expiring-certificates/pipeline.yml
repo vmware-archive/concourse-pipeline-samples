@@ -57,6 +57,10 @@ jobs:
           number_of_exp_conf_certs=$(cat ./expiring_certs/expiring_configurable_certs.json | jq -r '. | length')
           number_of_exp_non_conf_certs=$(cat ./expiring_certs/expiring_non_configurable_certs.json | jq -r '. | length')
           number_of_exp_ca_certs=$(cat ./expiring_certs/expiring_ca_certs.json | jq -r '. | length')
+          number_of_exp_dir_trusted_cert=0
+          if [[ -s ./expiring_certs/expiring_director_trusted_certs.pem ]]; then
+            number_of_exp_dir_trusted_cert=1
+          fi
           number_of_exp_root_cert=0
           if [[ -s ./expiring_certs/expiring_root_cert.pem ]]; then
             number_of_exp_root_cert=1
@@ -80,13 +84,19 @@ jobs:
              echo "https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-ca"
           fi
 
-          # Ops Manager Root cert
+          # Director Trusted certs
+          if [[ ${number_of_exp_dir_trusted_cert} > 0 ]]; then
+             echo "Director Trusted certificate(s) expiring. See PCF documentation for more information on how to rotate them:"
+             echo "https://docs.pivotal.io/pivotalcf/customizing/trusted-certificates.html"
+          fi
+
+          # Ops Mgr root certs
           if [[ ${number_of_exp_root_cert} > 0 ]]; then
-             echo "Ops Manager root certificate expiring. See PCF documentation for more information on how to rotate it:"
+             echo "Ops Mgr root certificate expiring. See PCF documentation for more information on how to rotate it:"
              echo "https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html#rotate-root"
           fi
 
-          total_number_of_exp_certs=$(($number_of_exp_conf_certs+$number_of_exp_non_conf_certs+$number_of_exp_ca_certs+$number_of_exp_root_cert))
+          total_number_of_exp_certs=$(($number_of_exp_conf_certs+$number_of_exp_non_conf_certs+$number_of_exp_ca_certs+$number_of_exp_root_cert+$number_of_exp_dir_trusted_cert))
           if (( ${total_number_of_exp_certs} > 0 )); then
              exit 1
           else
