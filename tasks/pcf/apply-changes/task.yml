@@ -16,4 +16,4 @@ params:
   OPSMAN_DOMAIN_OR_IP_ADDRESS:
 
 run:
-  path: pcf-pipelines/tasks/apply-changes/task.sh
+  path: pcf-pipelines-utils/tasks/pcf/apply-changes/task.sh
