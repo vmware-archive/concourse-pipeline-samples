@@ -39,7 +39,7 @@ Sample code and recipes on Concourse CI pipelines and deployments.
 ### **[Sample PCF Pipelines](.)**  
   - [PKS tile](pipelines/pcf/pks/install-pks)  
   - [VMWare Harbor tile](pipelines/vmware/install-harbor)  
-
+  - [Monitor about-to-expire PCF TLS Certificates](pipelines/pcf/certificates/monitor-expiring-certificates)  
 
 
 <img src="https://cdn1.iconfinder.com/data/icons/universal-signs-symbols/128/recycle-green-512.png" alt="Concourse concourse_pipeline_level_secrets_path" width="45" align="right" style="margin: 20px;"/>
@@ -49,9 +49,10 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Configure PKS CLI User](tasks/pcf/pks/configure-pks-cli-user)  
   - [Create PKS Cluster](tasks/pcf/pks/create-pks-cluster)  
   - [Delete PKS Cluster](tasks/pcf/pks/delete-pks-cluster)  
+  - [Monitor about-to-expire PCF TLS certificates](tasks/pcf/certificates/check-expiring-certificates)  
+  - [Regenerate non-configurable PCF TLS certificates](tasks/pcf/certificates/regenerate-internal-certificates)  
   - [Configure VMWare NSX-V artifacts](tasks/vsphere/nsxv)  
   - [Configure VMWare NSX-T artifacts](tasks/vsphere/nsxt)  
-
 
 
 <img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/concourse-and-artifactory.png" alt="Artifactory integration with Concourse pipelines" width="100" align="right" style="margin: 20px"/>

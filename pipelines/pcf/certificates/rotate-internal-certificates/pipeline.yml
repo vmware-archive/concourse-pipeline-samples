@@ -1,6 +1,8 @@
 ---
 #
 # PCF Documentation: https://docs.pivotal.io/pivotalcf/security/pcf-infrastructure/api-cert-rotation.html
+# Note: use with caution (check for existing bugs in Ops Manager for certs rotation) or
+#       just use it as a template to start a pipeline that automates the complete set of steps in the docs (and not just rotate certs api endpoint call)
 #
 resources:
 - name: pcf-pipelines-utils

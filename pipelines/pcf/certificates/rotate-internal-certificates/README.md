@@ -1,4 +1,4 @@
-<img src="https://cdn1.iconfinder.com/data/icons/universal-signs-symbols/128/recycle-green-512.png" alt="Rotate" height="70"/>&nbsp;&nbsp;<img src="https://www.whatissslcertificate.com/wp-content/uploads/2016/10/tls13.jpg" alt="Certs" height="70"/>
+<!-- <img src="https://cdn1.iconfinder.com/data/icons/universal-signs-symbols/128/recycle-green-512.png" alt="Rotate" height="70"/>&nbsp;&nbsp;<img src="https://www.whatissslcertificate.com/wp-content/uploads/2016/10/tls13.jpg" alt="Certs" height="70"/>
 
 # Rotate PCF Non-Configurable Certificates
 
@@ -18,4 +18,4 @@ This sample pipeline invokes the PCF Ops Manager API to regenerate and renew all
 
 3) Un-pause and run pipeline `regenerate-internal-certificates`
 
----
+--- -->
