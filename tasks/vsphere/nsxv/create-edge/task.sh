@@ -20,8 +20,6 @@ edge_datastore =  $NSX_EDGE_GEN_EDGE_DATASTORE
 edge_cluster = $NSX_EDGE_GEN_EDGE_CLUSTER
 EOF
 
-pushd pynsxv
-
 pynsxv_local() {
   /opt/pynsxv/cli.py "$@"
 }
