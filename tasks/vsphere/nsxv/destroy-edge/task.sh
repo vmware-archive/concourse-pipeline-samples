@@ -2,7 +2,7 @@
 
 echo "Destroying edge"
 
-cat << EOF > pynsxv/nsx.ini
+cat << EOF > nsx.ini
 [nsxv]
 nsx_manager = $NSX_EDGE_GEN_NSX_MANAGER_ADDRESS
 nsx_username = $NSX_EDGE_GEN_NSX_MANAGER_ADMIN_USER
