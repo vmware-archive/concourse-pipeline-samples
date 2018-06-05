@@ -15,7 +15,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_SWITCH_NAME: vlan-uplink
+      LOGICAL_SWITCH_NAME: ((vlan_uplink_switch_name))
       LOGICAL_SWITCH_TRANSPORT_ZONE: ((vlan_transport_zone))
       LOGICAL_SWITCH_VLAN: 0
 
@@ -25,7 +25,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_SWITCH_NAME: infrastructure-ls
+      LOGICAL_SWITCH_NAME: ((infrastructure_switch_name))
       LOGICAL_SWITCH_TRANSPORT_ZONE: ((overlay_transport_zone))
 
   - task: create-pks-services-logical-switch
@@ -34,16 +34,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_SWITCH_NAME: pks-services-ls
-      LOGICAL_SWITCH_TRANSPORT_ZONE: ((overlay_transport_zone))
-
-  - task: create-pks-clusters-logical-switch
-    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-switch/task.yml
-    params:
-      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
-      NSX_MANAGER_USERNAME: ((nsx_manager_username))
-      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_SWITCH_NAME: pks-clusters-ls
+      LOGICAL_SWITCH_NAME: ((services_switch_name))
       LOGICAL_SWITCH_TRANSPORT_ZONE: ((overlay_transport_zone))
 
 - name: create-logical-routers
@@ -57,7 +48,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_NAME: t0-router
+      LOGICAL_ROUTER_NAME: ((t0_router_name))
       LOGICAL_ROUTER_TYPE: TIER0
       EDGE_CLUSTER_NAME: ((edge_cluster_name))
       T0_ROUTER_NAME:
@@ -69,10 +60,10 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_NAME: infrastructure-t1-router
+      LOGICAL_ROUTER_NAME: ((infrastructure_router_name))
       LOGICAL_ROUTER_TYPE: TIER1
       EDGE_CLUSTER_NAME: ((edge_cluster_name))
-      T0_ROUTER_NAME: t0-router
+      T0_ROUTER_NAME: ((t0_router_name))
       PCF_FOUNDATION_NAME: ((pcf_foundation_name))
 
   - task: create-pks-services-tier-1-logical-router
@@ -81,22 +72,10 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_NAME: pks-services-t1-router
+      LOGICAL_ROUTER_NAME: ((services_router_name))
       LOGICAL_ROUTER_TYPE: TIER1
       EDGE_CLUSTER_NAME: ((edge_cluster_name))
-      T0_ROUTER_NAME: t0-router
-      PCF_FOUNDATION_NAME: ((pcf_foundation_name))
-
-  - task: create-pks-clusters-tier-1-logical-router
-    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.yml
-    params:
-      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
-      NSX_MANAGER_USERNAME: ((nsx_manager_username))
-      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_NAME: pks-clusters-t1-router
-      LOGICAL_ROUTER_TYPE: TIER1
-      EDGE_CLUSTER_NAME: ((edge_cluster_name))
-      T0_ROUTER_NAME: t0-router
+      T0_ROUTER_NAME: ((t0_router_name))
       PCF_FOUNDATION_NAME: ((pcf_foundation_name))
 
 - name: create-logical-router-ports
@@ -112,8 +91,8 @@ jobs:
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
       LOGICAL_ROUTER_PORT_NAME: uplink-to-physical
       LOGICAL_ROUTER_PORT_TYPE: uplink
-      LOGICAL_SWITCH_NAME: vlan-uplink
-      LOGICAL_ROUTER_NAME: t0-router
+      LOGICAL_SWITCH_NAME: ((vlan_uplink_switch_name))
+      LOGICAL_ROUTER_NAME: ((t0_router_name))
       LOGICAL_ROUTER_PORT_IP: ((t0_router_ip))
       LOGICAL_ROUTER_PORT_IP_MASK: ((t0_router_ip_mask))
 
@@ -125,8 +104,8 @@ jobs:
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
       LOGICAL_ROUTER_PORT_NAME: infrastructure-gw
       LOGICAL_ROUTER_PORT_TYPE: downlink
-      LOGICAL_SWITCH_NAME: infrastructure-ls
-      LOGICAL_ROUTER_NAME: infrastructure-t1-router
+      LOGICAL_SWITCH_NAME: ((infrastructure_switch_name))
+      LOGICAL_ROUTER_NAME: ((infrastructure_router_name))
       LOGICAL_ROUTER_PORT_IP: 172.20.1.1
       LOGICAL_ROUTER_PORT_IP_MASK: 24
 
@@ -138,22 +117,9 @@ jobs:
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
       LOGICAL_ROUTER_PORT_NAME: pks-services-gw
       LOGICAL_ROUTER_PORT_TYPE: downlink
-      LOGICAL_SWITCH_NAME: pks-services-ls
-      LOGICAL_ROUTER_NAME: pks-services-t1-router
+      LOGICAL_SWITCH_NAME: ((services_switch_name))
+      LOGICAL_ROUTER_NAME: ((services_router_name))
       LOGICAL_ROUTER_PORT_IP: 172.20.2.1
-      LOGICAL_ROUTER_PORT_IP_MASK: 24
-
-  - task: create-pks-clusters-tier-1-logical-router-downlink-port
-    file: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router-port/task.yml
-    params:
-      NSX_MANAGER_ADDRESS: ((nsx_manager_address))
-      NSX_MANAGER_USERNAME: ((nsx_manager_username))
-      NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_PORT_NAME: pks-clusters-gw
-      LOGICAL_ROUTER_PORT_TYPE: downlink
-      LOGICAL_SWITCH_NAME: pks-clusters-ls
-      LOGICAL_ROUTER_NAME: pks-clusters-t1-router
-      LOGICAL_ROUTER_PORT_IP: 172.20.3.1
       LOGICAL_ROUTER_PORT_IP_MASK: 24
 
 - name: create-static-route-for-tier-0-logical-router
@@ -168,7 +134,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_NAME: t0-router
+      LOGICAL_ROUTER_NAME: ((t0_router_name))
       STATIC_ROUTE_NETWORK: 0.0.0.0/0
       NEXT_HOP: ((t0_next_hop_ip))
 
@@ -183,7 +149,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_NAME: t0-router
+      LOGICAL_ROUTER_NAME: ((t0_router_name))
       NAT_TYPE: SNAT
       ORIGINAL_IP: 172.20.1.0/24
       TRANSLATED_IP: ((infrastructure_network_snat_ip))
@@ -194,7 +160,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      LOGICAL_ROUTER_NAME: t0-router
+      LOGICAL_ROUTER_NAME: ((t0_router_name))
       NAT_TYPE: DNAT
       ORIGINAL_IP: ((ops_mgr_dnat_ip))
       TRANSLATED_IP: 172.20.1.10
@@ -224,7 +190,7 @@ jobs:
       NSX_MANAGER_ADDRESS: ((nsx_manager_address))
       NSX_MANAGER_USERNAME: ((nsx_manager_username))
       NSX_MANAGER_PASSWORD: ((nsx_manager_password))
-      IP_POOL_NAME: external-nat-ip-pool
+      IP_POOL_NAME: ((pcf_foundation_name))-external-nat-ip-pool
       IP_POOL_CIDR: ((external_nat_ip_pool_cidr))
       IP_POOL_START_IP: ((external_nat_ip_pool_start_ip))
       IP_POOL_END_IP: ((external_nat_ip_pool_end_ip))

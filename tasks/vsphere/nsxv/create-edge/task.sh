@@ -23,7 +23,7 @@ EOF
 pushd pynsxv
 
 pynsxv_local() {
-  python pynsxv/cli.py "$@"
+  /opt/pynsxv/cli.py "$@"
 }
 
 get_cidr() {

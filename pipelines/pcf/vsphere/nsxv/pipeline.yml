@@ -66,18 +66,12 @@ resources:
   type: git
   source:
     uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
-- name: pynsxv
-  type: git
-  source:
-    uri: https://github.com/pivotalservices/pynsxv.git
-    branch: master
 
 jobs:
 - name: create-edge
   plan:
   - aggregate:
     - get: pcf-pipelines-utils
-    - get: pynsxv
   - task: create-edge
     file: pcf-pipelines-utils/tasks/vsphere/nsxv/create-edge/task.yml
     params: *nsx-edge-params
@@ -86,7 +80,6 @@ jobs:
   plan:
   - aggregate:
     - get: pcf-pipelines-utils
-    - get: pynsxv
   - task: destroy-edge
     file: pcf-pipelines-utils/tasks/vsphere/nsxv/destroy-edge/task.yml
     params: *nsx-edge-params

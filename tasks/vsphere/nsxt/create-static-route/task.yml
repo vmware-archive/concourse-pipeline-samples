@@ -10,7 +10,7 @@ inputs:
 - name: pcf-pipelines-utils
 
 run:
-  path: pcf-pipelines-utils/tasks/vsphere/nsxt/create-logical-router/task.sh
+  path: pcf-pipelines-utils/tasks/vsphere/nsxt/create-static-route/task.sh
 
 params:
   NSX_MANAGER_ADDRESS:

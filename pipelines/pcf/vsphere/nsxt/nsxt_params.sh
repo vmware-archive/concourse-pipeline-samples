@@ -57,6 +57,17 @@ export pipeline_secrets=(
 "external_nat_ip_pool_cidr"::"1.2.3.0/24"
 "external_nat_ip_pool_start_ip"::"1.2.3.100"
 "external_nat_ip_pool_end_ip"::"1.2.3.119"
+"vlan_uplink_switch_name"::"vlan-uplink"
+"infrastructure_switch_name"::"infrastructure-ls"
+"deployment_switch_name"::"deployment-ls"
+"services_switch_name"::"services-ls"
+"dynamic_services_switch_name"::"dynamic-services-ls"
+
+"t0_router_name"::"t0-router"
+"infrastructure_router_name"::"infrastructure-t1"
+"deployment_router_name"::"deployment-t1"
+"services_router_name"::"services-t1"
+"dynamic_services_router_name"::"dynamic-services-t1"
 
 )
 
