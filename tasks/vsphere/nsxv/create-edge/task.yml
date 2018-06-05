@@ -4,7 +4,7 @@ platform: linux
 
 image_resource:
   type: docker-image
-  source: {repository: czero/nsx-gen}
+  source: {repository: pivotalservices/pynsxv}
 
 inputs:
   - name: pcf-pipelines-utils
