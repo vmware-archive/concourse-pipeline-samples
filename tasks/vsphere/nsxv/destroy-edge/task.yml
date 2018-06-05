@@ -8,7 +8,6 @@ image_resource:
 
 inputs:
   - name: pcf-pipelines-utils
-  - name: pynsxv
 
 run:
   path: pcf-pipelines-utils/tasks/vsphere/nsxv/destroy-edge/task.sh
