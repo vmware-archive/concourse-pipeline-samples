@@ -1,0 +1,25 @@
+---
+
+platform: linux
+
+image_resource:
+  type: docker-image
+  source: {repository: pcfnorm/rootfs}
+
+params:
+  OPSMAN_DOMAIN_OR_IP_ADDRESS:
+  OPSMAN_CLIENT_ID:
+  OPSMAN_CLIENT_SECRET:
+  OPS_MGR_USR:
+  OPS_MGR_PWD:
+  PIVNET_API_TOKEN:
+  NO_PROXY:
+  OM_IP:
+  IAAS:
+
+inputs:
+  - name: pivnet-product
+  - name: pcf-pipelines
+
+run:
+  path: pcf-pipelines/tasks/upload-product-and-stemcell/task.sh
