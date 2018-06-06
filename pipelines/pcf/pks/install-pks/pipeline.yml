@@ -14,12 +14,6 @@ groups:
 
 
 resources:
-- name: pcf-pipelines-tarball
-  type: pivnet
-  source:
-    api_token: {{pivnet_token}}
-    product_slug: pcf-automation
-    product_version: v0.23.0
 - name: pcf-pipelines-utils
   type: git
   source:
@@ -43,33 +37,16 @@ jobs:
 - name: upload-product
   plan:
   - aggregate:
-    - do:
-      - get: pcf-pipelines-tarball
-      - task: unpack-tarball
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: czero/rootfs
-          run:
-            path: bash
-            args:
-            - -c
-            - tar -xvf pcf-pipelines-tarball/*.tgz
-          inputs:
-          - name: pcf-pipelines-tarball
-            path: ""
-          outputs:
-          - name: pcf-pipelines
-            path: ""
+    - get: pcf-pipelines-utils
     - get: pivnet-product
       resource: product-release
       params:
         globs:
         - "*.pivotal"
   - task: upload-tile
-    file: pcf-pipelines/tasks/upload-product-and-stemcell/task.yml
+    file: pcf-pipelines-utils/tasks/pcf/upload-product-and-stemcell/task.yml
+    input_mapping:
+      pcf-pipelines: pcf-pipelines-utils
     params:
       IAAS: {{iaas_type}}
       NO_PROXY: {{company_proxy_domain}}
@@ -83,26 +60,7 @@ jobs:
 - name: stage-product
   plan:
   - aggregate:
-    - do:
-      - get: pcf-pipelines-tarball
-      - task: unpack-tarball
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: czero/rootfs
-          run:
-            path: bash
-            args:
-            - -c
-            - tar -xvf pcf-pipelines-tarball/*.tgz
-          inputs:
-          - name: pcf-pipelines-tarball
-            path: ""
-          outputs:
-          - name: pcf-pipelines
-            path: ""
+    - get: pcf-pipelines-utils
     - get: pivnet-product
       passed:
       - upload-product
@@ -112,7 +70,9 @@ jobs:
         globs: ["*.pivotal"]
 
   - task: stage
-    file: pcf-pipelines/tasks/stage-product/task.yml
+    file: pcf-pipelines-utils/tasks/pcf/stage-product/task.yml
+    input_mapping:
+      pcf-pipelines: pcf-pipelines-utils
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
@@ -176,26 +136,7 @@ jobs:
 - name: configure-product
   plan:
   - aggregate:
-    - do:
-      - get: pcf-pipelines-tarball
-      - task: unpack-tarball
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: czero/rootfs
-          run:
-            path: bash
-            args:
-            - -c
-            - tar -xvf pcf-pipelines-tarball/*.tgz
-          inputs:
-          - name: pcf-pipelines-tarball
-            path: ""
-          outputs:
-          - name: pcf-pipelines
-            path: ""
+    - get: pcf-pipelines-utils
     - get: pivnet-product
       passed:
       - update-director-config
@@ -203,8 +144,6 @@ jobs:
       trigger: true
       params:
         globs: []
-    - get: pcf-pipelines-utils
-
   - task: configure-tile
     file: pcf-pipelines-utils/tasks/pcf/configure-tile/task.yml
     params:
@@ -219,7 +158,9 @@ jobs:
       TILE_PRODUCT_NAME: {{product_name}}
 
   - task: disable-errands
-    file: pcf-pipelines/tasks/disable-errands/task.yml
+    file: pcf-pipelines-utils/tasks/pcf/disable-errands/task.yml
+    input_mapping:
+      pcf-pipelines: pcf-pipelines-utils
     params:
       ERRANDS_TO_DISABLE: {{errands_to_disable}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}

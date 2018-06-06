@@ -22,4 +22,4 @@ inputs:
   - name: pcf-pipelines
 
 run:
-  path: pcf-pipelines/tasks/upload-product-and-stemcell/task.sh
+  path: pcf-pipelines/tasks/pcf/upload-product-and-stemcell/task.sh
