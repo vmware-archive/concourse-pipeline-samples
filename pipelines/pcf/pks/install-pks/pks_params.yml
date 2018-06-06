@@ -166,8 +166,8 @@ properties: |
   #     password: ( ( vcenter_password ) ) # vcenter_admin_password
   # .properties.cloud_provider.vsphere.vcenter_worker_creds:
   #   value:
-  #     identity: ( ( vcenter_usr ) ) # vcenter_admin_username
-  #     password: ( ( vcenter_pwd ) ) # vcenter_admin_password
+  #     identity: ( ( vcenter_username ) ) # vcenter_admin_username
+  #     password: ( ( vcenter_password ) ) # vcenter_admin_password
   # .properties.cloud_provider.vsphere.vcenter_ip:
   #   value: ( ( vcenter_host ) )
   # .properties.cloud_provider.vsphere.vcenter_dc:
