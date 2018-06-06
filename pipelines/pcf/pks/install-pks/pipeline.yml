@@ -261,7 +261,7 @@ jobs:
       OPSMAN_PASSWORD: {{opsman_admin_password}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      PKS_DOMAIN: {{pcf_pks_domain}}
+      PKS_API_DOMAIN: {{pcf_pks_api_domain}}
       PKS_CLI_USERNAME: {{pks_cli_username}}
       PKS_CLI_USEREMAIL: {{pks_cli_useremail}}
       PKS_CLI_PASSWORD: {{pks_cli_password}}
@@ -272,7 +272,7 @@ jobs:
   - task: delete-all-pks-clusters
     file: pcf-pipelines-utils/tasks/pcf/pks/delete-all-pks-clusters/task.yml
     params:
-      PCF_PKS_API: api.((pcf_pks_domain))
+      PCF_PKS_API: ((pcf_pks_api_domain))
       PKS_CLI_USERNAME: {{pks_cli_username}}
       PKS_CLI_PASSWORD: {{pks_cli_password}}
       DEBUG: false

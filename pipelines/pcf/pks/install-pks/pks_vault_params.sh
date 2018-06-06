@@ -39,6 +39,8 @@ secrets=(
   "opsman_client_secret"::""
   # domain for certificate generation when applicable, pks.mydomain.com
   "pcf_pks_domain"::"pks.domain.com"
+  "pcf_pks_api_domain"::"api.pks.domain.com"
+
   # username for PKS CLI username creation
   "pks_cli_username"::"pksadmin"
   # password for PKS CLI username creation

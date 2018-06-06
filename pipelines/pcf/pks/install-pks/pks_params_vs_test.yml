@@ -5,16 +5,13 @@ product_version: ^1\.0\..*$  # PKS tile version to install
 # Note: check companion "pks_vault_params.sh" script for automated credentials
 #       creation for this pipeline in either Vault or CredHub.
 
-# base domain for PKS - # e.g. pks.mydomain.com
+# base domain for PKS API - # e.g. pks.mydomain.com
 pcf_pks_domain: ((pcf_pks_domain))
-# domain for PKS API - # e.g. api.pks.mydomain.com
-pcf_pks_api_domain: ((pcf_pks_api_domain))
 
 # PKS CLI client ID to be created (if applicable) by post-deploy job "create-pks-cli-user"
 pks_cli_username: ((pks_cli_username))  # username to be created in PKS UAA
 pks_cli_password: ((pks_cli_password))  # password for PKS user to be created
 pks_cli_useremail: pksadmin@example.com # email address for PKS user to be created
-
 
 ######## AZs and Networks configuration for the tile
 networks: |
@@ -47,10 +44,13 @@ properties: |
     #   provide the certificate (cert_pem) and private key (private_key_pem) values
     #   in the corresponding parameters further below.
     #
-    generate_cert_domains: ["*.((pcf_pks_domain))","*.((pcf_pks_api_domain))"]
+    generate_cert_domains: ["*.((pcf_pks_domain))","*.api.((pcf_pks_domain))"]
     value:
       cert_pem:
       private_key_pem:
+  ## API Hostname (FQDN)
+  .properties.pks_api_hostname:
+    value: api.((pcf_pks_domain))
 
   ######## Configuration for Plan 1
   .properties.plan1_selector:
@@ -59,8 +59,10 @@ properties: |
     value: "small"  # the name that appears for end users to choose
   .properties.plan1_selector.active.description:
     value: "Small plan"
-  .properties.plan1_selector.active.az_placement:
-    value: ((az_1_name))  # Specify the AZ in which the cluster will be created
+  .properties.plan1_selector.active.master_az_placement:
+    value: [((az_1_name))]   # Specify the availability zones you want your master and ETCD nodes spread across equally. If only one master/ETCD has been selected, choose a single AZ for your singleton job.
+  .properties.plan1_selector.active.worker_az_placement:
+    value: [((az_1_name)),((az_2_name)),((az_3_name))]  # Specify the availability zones you want your worker nodes spread across equally.
   .properties.plan1_selector.active.authorization_mode:
     value: rbac    # rbac or abac - Default Cluster Authorization Mode
   .properties.plan1_selector.active.master_vm_type:
@@ -69,7 +71,7 @@ properties: |
     value: "10240"
   .properties.plan1_selector.active.worker_vm_type:
     value: medium
-  .properties.plan1_selector.active.persistent_disk_type:
+  .properties.plan1_selector.active.worker_persistent_disk_type:
     value: "10240"
   .properties.plan1_selector.active.worker_instances:
     value: 3    # The number of K8s worker instances
@@ -90,8 +92,8 @@ properties: |
   #   value: "medium"  # the name that appears for end users to choose
   # .properties.plan2_selector.active.description:
   #   value: "Plan 2 description"
-  # .properties.plan2_selector.active.az_placement:
-  #   value: ( ( az_1_name ) )  # Specify the AZ in which the cluster will be created
+  # .properties.plan2_selector.active.master_az_placement:
+  #   value: ( ( az_1_name ) )  # Specify the availability zones you want your master and ETCD nodes spread across equally. If only one master/ETCD has been selected, choose a single AZ for your singleton job.
   # .properties.plan2_selector.active.authorization_mode:
   #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
   # .properties.plan2_selector.active.master_vm_type:
@@ -100,7 +102,7 @@ properties: |
   #   value: "10240"
   # .properties.plan2_selector.active.worker_vm_type:
   #   value: medium
-  # .properties.plan2_selector.active.persistent_disk_type:
+  # .properties.plan2_selector.active.worker_persistent_disk_type:
   #   value: "10240"
   # .properties.plan2_selector.active.worker_instances:
   #   value: 5    # The number of K8s worker instances
@@ -121,8 +123,8 @@ properties: |
   #   value: "large"  # the name that appears for end users to choose
   # .properties.plan3_selector.active.description:
   #   value: "Plan 3 description"
-  # .properties.plan3_selector.active.az_placement:
-  #   value: ( ( az_1_name ) )  # Specify the AZ in which the cluster will be created
+  # .properties.plan3_selector.active.master_az_placement:
+  #   value: ( ( az_1_name ) )  # Specify the availability zones you want your master and ETCD nodes spread across equally. If only one master/ETCD has been selected, choose a single AZ for your singleton job.
   # .properties.plan3_selector.active.authorization_mode:
   #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
   # .properties.plan3_selector.active.master_vm_type:
@@ -131,7 +133,7 @@ properties: |
   #   value: "10240"
   # .properties.plan3_selector.active.worker_vm_type:
   #   value: large
-  # .properties.plan3_selector.active.persistent_disk_type:
+  # .properties.plan3_selector.active.worker_persistent_disk_type:
   #   value: "10240"
   # .properties.plan3_selector.active.worker_instances:
   #   value: 8    # The number of K8s worker instances
@@ -143,40 +145,50 @@ properties: |
   #   value: false  # Privileged containers run with host-like permissions. Allowing your users to deploy privileged containers in clusters using this plan can create security vulnerabilities and may impact other tiles. Use with caution.
 
 
-  ######## Kubernetes cloud provider: GCP or vSphere
+  ######## Kubernetes cloud provider: GCP, vSphere, or AWS
   .properties.cloud_provider:
-    value: GCP
+    value: vSphere
 
   ### if GCP is to be selected, then uncomment and fill out the GCP parameters below.
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
-  .properties.cloud_provider.gcp.project_id:
-    value: ((gcp_project_id))
-  .properties.cloud_provider.gcp.network:
-    value: ((gcp_vpc_network))  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
-  .properties.cloud_provider.gcp.master_service_account_key:
-    value: ((gcp_service_key))
-  .properties.cloud_provider.gcp.worker_service_account_key:
-    value: ((gcp_service_key))
+  # .properties.cloud_provider.gcp.project_id:
+  #   value: ( ( gcp_project_id ) )
+  # .properties.cloud_provider.gcp.network:
+  #   value: ( ( gcp_vpc_network ) )  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
+  # .properties.cloud_provider.gcp.service_key:
+  #   value: ( ( gcp_service_key ) )
 
   ### if VSPHERE is to be selected, then uncomment and fill out the VSPHERE parameters below
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
-  # .properties.cloud_provider.vsphere.vcenter_master_creds:
-  #   value:
-  #     identity: ( ( vcenter_username ) ) # vcenter_admin_username
-  #     password: ( ( vcenter_password ) ) # vcenter_admin_password
-  # .properties.cloud_provider.vsphere.vcenter_worker_creds:
-  #   value:
-  #     identity: ( ( vcenter_usr ) ) # vcenter_admin_username
-  #     password: ( ( vcenter_pwd ) ) # vcenter_admin_password
-  # .properties.cloud_provider.vsphere.vcenter_ip:
-  #   value: ( ( vcenter_host ) )
-  # .properties.cloud_provider.vsphere.vcenter_dc:
-  #   value: ( ( vcenter_datacenter ) )
-  # .properties.cloud_provider.vsphere.vcenter_ds:
-  #   value: ( ( vcenter_datastore ) )
-  # .properties.cloud_provider.vsphere.vcenter_vms:
-  #   value: ( ( vcenter_pcf_folder ) ) # The name should be the same as the VM Folder in the Ops Manager Director tile, under the vCenter config page.
+  .properties.cloud_provider.vsphere.vcenter_master_creds:
+    value:
+      identity: ((vcenter_username)) # vcenter_admin_username
+      password: ((vcenter_password)) # vcenter_admin_password
+  .properties.cloud_provider.vsphere.vcenter_worker_creds:
+    value:
+      identity: ((vcenter_username)) # vcenter_admin_username
+      password: ((vcenter_password)) # vcenter_admin_password
+  .properties.cloud_provider.vsphere.vcenter_ip:
+    value: ((vcenter_host))
+  .properties.cloud_provider.vsphere.vcenter_dc:
+    value: ((vcenter_datacenter))
+  .properties.cloud_provider.vsphere.vcenter_ds:
+    value: ((vcenter_datastore))
+  .properties.cloud_provider.vsphere.vcenter_vms:
+    value: ((vcenter_pcf_folder)) # The name should be the same as the VM Folder in the Ops Manager Director tile, under the vCenter config page.
 
+  ### if AWS is selected, then uncomment and fill out the AWS parameters below.
+  ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
+  # .properties.cloud_provider.aws.aws_access_key_id_master:
+  #   value:
+  # .properties.cloud_provider.aws.aws_secret_access_key_master:
+  #   value:
+  #     secret: "***"
+  # .properties.cloud_provider.aws.aws_access_key_id_worker:
+  #   value:
+  # .properties.cloud_provider.aws.aws_secret_access_key_worker:
+  #   value:
+  #     secret: "***"
 
   ######## Network selector - flannel or nsx
   .properties.network_selector:
@@ -198,24 +210,105 @@ properties: |
   #   value: ( ( nsxt_vcenter_cluster ) )   # Please enter the vSphere cluster name where PKS will be deployed
   # .properties.network_selector.nsx.nsx-t-insecure:
   #   value: false    # whether to disable SSL certificate verification when connecting to the NSX Manager
-  # .properties.network_selector.nsx.t0-router-id:
-  #   value: ( ( nsxt_t0_routerid ) )  # the UUID of the Tier-0 logical router configured in NSX manager
   # .properties.network_selector.nsx.ip-block-id:
   #   value: ( ( nxst_ip_block_id ) )  # the UUID of the IP Block configured in NSX manager
+  # .properties.network_selector.nsx.t0-router-id:
+  #   value: ( ( nsxt_t0_routerid ) )  # the UUID of the Tier-0 logical router configured in NSX manager
   # .properties.network_selector.nsx.floating-ip-pool-ids:
   #   value: ( ( nsxt_floating_ip_pool_id ) )  # the UUID of the Floating IP Pool configured in NSX manager (for the current release only a single ID is supported)
+  # .properties.network_selector.nsx.network_automation:
+  #   value: true     # Automated Network Provisioning
+  # .properties.network_selector.nsx.nat_mode:
+  #   value: true
+  # .properties.network_selector.nsx.nodes-ip-block-id:
+  #   value:               # Nodes IP Block ID
+  # .properties.network_selector.nsx.bosh-client-id:
+  #   value:
+  # .properties.network_selector.nsx.bosh-client-secret:
+  #   value:
+  #     secret: "***"
+  # .properties.proxy_selector:
+  #   value: Disabled      # HTTP/HTTPS Proxy (for vSphere only) - Enabled or Disabled
+  # .properties.proxy_selector.enabled.http_proxy_url:
+  #   value:
+  # .properties.proxy_selector.enabled.http_proxy_credentials:
+  #   value:
+  #     password: "***"
+  # .properties.proxy_selector.enabled.https_proxy_url:
+  #   value:
+  # .properties.proxy_selector.enabled.https_proxy_credentials:
+  #   value:
+  #     password: "***"
+  # .properties.proxy_selector.enabled.no_proxy:
+  #   value:
+  # .properties.vm_extensions:
+  #   value:           # Allow outbound internet access from Kubernetes cluster vms (IaaS-dependent)
+  #   - public_ip      # Enable outbound internet access. Warning: Not allowing internet access will require a NAT instance.
+
+
 
 
   ######## UAA configuration page
-  .properties.uaa_url:
-    value: ((pcf_pks_api_domain))
   .properties.uaa_pks_cli_access_token_lifetime:
     value: 86400
   .properties.uaa_pks_cli_refresh_token_lifetime:
     value: 172800
 
+  ## Configure your UAA user account store with either internal or external authentication mechanisms
+  ## Accepted values:
+  ## - internal    (Internal UAA)
+  ## - ldap        (LDAP Server)
+  .properties.uaa:
+    value: internal
 
-  ######## SYSLOG - disabled or enabled
+  ### if ldap server, then uncomment and fill out the ldap parameters below
+  ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
+  # .properties.syslog_migration_selector.enabled.address:
+  # .properties.uaa.ldap.url:
+  #   value:
+  # .properties.uaa.ldap.credentials:
+  #   value:
+  #     password: "***"
+  # .properties.uaa.ldap.search_base:
+  #   value:
+  # .properties.uaa.ldap.search_filter:
+  #   value: cn={0}
+  # .properties.uaa.ldap.group_search_base:
+  #   value:
+  # .properties.uaa.ldap.group_search_filter:
+  #   value: member={0}
+  # .properties.uaa.ldap.server_ssl_cert:
+  #   value:
+  # .properties.uaa.ldap.server_ssl_cert_alias:
+  #   value:
+  # .properties.uaa.ldap.mail_attribute_name:
+  #   value: mail
+  # .properties.uaa.ldap.email_domains:
+  #   value:
+  # .properties.uaa.ldap.first_name_attribute:
+  #   value:
+  # .properties.uaa.ldap.last_name_attribute:
+  #   value:
+  # .properties.uaa.ldap.ldap_referrals:
+  #   value: follow
+
+  ######## MONITORING
+  ## Wavefront Integration - enabled or disabled
+  .properties.wavefront:
+    value: disabled
+  ### if wavefront integration is enabled, uncomment and fill out the wavefront parameters below
+  ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
+  # .properties.wavefront.enabled.wavefront_api_url:
+  #   value:
+  # .properties.wavefront.enabled.wavefront_token:
+  #   value:
+  #     secret: "***"
+  # .properties.wavefront.enabled.wavefront_alert_targets:
+  #   value:
+
+
+  ######## LOGGING
+  ### SYSLOG - disabled or enabled
   .properties.syslog_migration_selector:
     value: disabled
   ### if syslog is enabled, uncomment and fill out the syslog parameters below
@@ -235,6 +328,22 @@ properties: |
   #     -----BEGIN CERTIFICATE-----
   #     ...
   #     -----END CERTIFICATE-----
+  ###
+  ### VMware vRealize Log Insight Integration - disabled or enabled
+  .properties.pks-vrli:
+    value: disabled
+  ### if vRealize Log Insight Integration is enabled, uncomment and fill out the corresponding parameters below
+  ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
+  # .properties.pks-vrli.enabled.host:
+  #   value:
+  # .properties.pks-vrli.enabled.use_ssl:
+  #   value: true
+  # .properties.pks-vrli.enabled.skip_cert_verify:
+  #   value: false
+  # .properties.pks-vrli.enabled.ca_cert:
+  #   value:
+  # .properties.pks-vrli.enabled.rate_limit_msec:
+  #   value: 0
 
 ######## Errands to disable
 errands_to_disable: ""
