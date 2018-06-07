@@ -25,6 +25,7 @@ resources:
     product_slug: pivotal-container-service
     product_version: {{product_version}}
     sort_by: semver
+    # release_type: "Release Candidate"
 
 resource_types:
 - name: pivnet
