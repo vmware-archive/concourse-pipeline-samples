@@ -16,6 +16,7 @@ set -eu
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# this is the version of the tile package in PivNet
 desired_version=$(jq --raw-output '.Release.Version' < ./pivnet-product/metadata.json)
 
 AVAILABLE=$(om-linux \
@@ -26,6 +27,7 @@ AVAILABLE=$(om-linux \
   --password "${OPSMAN_PASSWORD}" \
   --target "https://${OPSMAN_DOMAIN_OR_IP_ADDRESS}" \
   curl -path /api/v0/available_products)
+
 STAGED=$(om-linux \
   --skip-ssl-validation \
   --client-id "${OPSMAN_CLIENT_ID}" \
@@ -37,6 +39,7 @@ STAGED=$(om-linux \
 
 # Should the slug contain more than one product, pick only the first.
 FILE_PATH=`find ./pivnet-product -name *.pivotal | sort | head -1`
+FILE_NAME=$(basename -- $FILE_PATH)
 unzip $FILE_PATH metadata/*
 
 PRODUCT_NAME="$(cat metadata/*.yml | grep '^name' | cut -d' ' -f 2)"
@@ -53,9 +56,27 @@ UNSTAGED_PRODUCT=$(echo "$UNSTAGED_ALL" | jq \
 
 # There should be only one such unstaged product.
 if [ "$(echo $UNSTAGED_PRODUCT | jq '. | length')" -ne "1" ]; then
-  echo "Need exactly one unstaged build for $PRODUCT_NAME version $desired_version"
-  jq -n "$UNSTAGED_PRODUCT"
-  exit 1
+  # did not find the version of the tile package from PivNet staged in OpsMgr. Try fallback version.
+
+  # this is the version of the specific tile file registered with Ops Mgr
+  fall_back_version=$(jq --arg FILE_NAME "$FILE_NAME" --raw-output '.ProductFiles[] | select(.File==$FILE_NAME) | .FileVersion' < ./pivnet-product/metadata.json)
+
+  if [ "$desired_version" != "$fall_back_version" ]; then
+    echo "Did not find unstaged product version [$desired_version], retrying it with tile file version [$fall_back_version]"
+    # try to fall back to tile file Version before failing task
+    UNSTAGED_PRODUCT=$(echo "$UNSTAGED_ALL" | jq \
+      --arg product_name "$PRODUCT_NAME" \
+      --arg product_version "$fall_back_version" \
+      'map(select(.name == $product_name)) | map(select(.product_version | startswith($product_version)))'
+    )
+  fi
+
+  if [ "$(echo $UNSTAGED_PRODUCT | jq '. | length')" -ne "1" ]; then
+    echo "Need exactly one unstaged build for $PRODUCT_NAME version $desired_version"
+    jq -n "$UNSTAGED_PRODUCT"
+    exit 1
+  fi
+
 fi
 
 full_version=$(echo "$UNSTAGED_PRODUCT" | jq -r '.[].product_version')
