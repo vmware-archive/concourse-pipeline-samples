@@ -53,7 +53,7 @@ properties: |
       private_key_pem:
   ## API Hostname (FQDN)
   .properties.pks_api_hostname:
-    value: api.((pcf_pks_domain))
+    value: ((pcf_pks_api_domain))
 
   ######## Configuration for Plan 1
   .properties.plan1_selector:
