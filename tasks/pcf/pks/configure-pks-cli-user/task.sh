@@ -9,7 +9,14 @@ echo "Retrieving PKS tile properties from Ops Manager [https://$OPSMAN_DOMAIN_OR
 # get PKS UAA admin credentails from OpsMgr
 PRODUCTS=$(om-linux --target "https://$OPSMAN_DOMAIN_OR_IP_ADDRESS" --client-id "${OPSMAN_CLIENT_ID}" --client-secret "${OPSMAN_CLIENT_SECRET}" --username "$OPSMAN_USERNAME" --password "$OPSMAN_PASSWORD" --skip-ssl-validation curl -p /api/v0/staged/products)
 PKS_GUID=$(echo "$PRODUCTS" | jq -r '.[] | .guid' | grep pivotal-container-service)
-UAA_ADMIN_SECRET=$(om-linux --target "https://$OPSMAN_DOMAIN_OR_IP_ADDRESS" --client-id "${OPSMAN_CLIENT_ID}" --client-secret "${OPSMAN_CLIENT_SECRET}" --username "$OPSMAN_USERNAME" --password "$OPSMAN_PASSWORD" --skip-ssl-validation curl -p /api/v0/deployed/products/$PKS_GUID/credentials/.properties.uaa_admin_secret | jq -rc '.credential.value.secret')
+PKS_VERSION=$(echo "$PRODUCTS" | jq --arg PKS_GUID "$PKS_GUID" -r '.[] | select(.guid==$PKS_GUID) | .product_version')
+
+PKS_UAA_ADMIN_SECRET_FIELD=".properties.pks_uaa_management_admin_client"  # for 1.1+
+if [[ ${PKS_VERSION:0:3} == "1.0" ]]; then
+  PKS_UAA_ADMIN_SECRET_FIELD=".properties.uaa_admin_secret"  # for 1.0.x
+fi
+
+UAA_ADMIN_SECRET=$(om-linux --target "https://$OPSMAN_DOMAIN_OR_IP_ADDRESS" --client-id "${OPSMAN_CLIENT_ID}" --client-secret "${OPSMAN_CLIENT_SECRET}" --username "$OPSMAN_USERNAME" --password "$OPSMAN_PASSWORD" --skip-ssl-validation curl -p /api/v0/deployed/products/$PKS_GUID/credentials/$PKS_UAA_ADMIN_SECRET_FIELD | jq -rc '.credential.value.secret')
 
 echo "Connecting to PKS UAA server [<$PKS_API_DOMAIN>]..."
 # login to PKS UAA
