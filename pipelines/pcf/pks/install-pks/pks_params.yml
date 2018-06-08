@@ -68,6 +68,8 @@ properties: |
     value: [((az_1_name)),((az_2_name)),((az_3_name))]  # Specify the availability zones you want your worker nodes spread across equally.
   .properties.plan1_selector.active.authorization_mode:
     value: rbac    # rbac or abac - Default Cluster Authorization Mode
+  .properties.plan1_selector.active.master_instances:
+    value: 1
   .properties.plan1_selector.active.master_vm_type:
     value: medium
   .properties.plan1_selector.active.master_persistent_disk_type:
@@ -101,6 +103,8 @@ properties: |
   #   value: [( ( az_1_name ) ),( ( az_2_name ) ),( ( az_3_name ) )]  # Specify the availability zones you want your worker nodes spread across equally.
   # .properties.plan2_selector.active.authorization_mode:
   #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
+  # .properties.plan2_selector.active.master_instances:
+  #   value: 3
   # .properties.plan2_selector.active.master_vm_type:
   #   value: large
   # .properties.plan2_selector.active.master_persistent_disk_type:
@@ -134,6 +138,8 @@ properties: |
   #   value: [( ( az_1_name ) ),( ( az_2_name ) ),( ( az_3_name ) )]  # Specify the availability zones you want your worker nodes spread across equally.
   # .properties.plan3_selector.active.authorization_mode:
   #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
+  # .properties.plan3_selector.active.master_instances:
+  #   value: 3
   # .properties.plan3_selector.active.master_vm_type:
   #   value: large
   # .properties.plan3_selector.active.master_persistent_disk_type:
