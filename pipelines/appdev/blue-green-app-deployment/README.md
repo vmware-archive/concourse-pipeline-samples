@@ -54,7 +54,7 @@ How to setup this sample pipeline on your Concourse server:
 
 1. Clone this git repository on your local machine  
    __clone https://github.com/pivotalservices/concourse-pipeline-samples.git__  
-   __cd concourse-pipeline-samples/blue-green-app-deployment__
+   __cd concourse-pipeline-samples/appdev/blue-green-app-deployment__
 
 1. Setup the pipeline credentials file
   * Make a copy of the sample credentials file  
