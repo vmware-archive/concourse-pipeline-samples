@@ -1,6 +1,6 @@
 <img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Concourse" height="70"/>&nbsp;&nbsp;<img src="https://png.icons8.com/color/1600/disconnected.png" alt="Connectivity" height="70"/>
 
-## Test Worker Connectivity to a Resource
+## Test Worker Connectivity
 
 This sample task can be used to test connectivity from Concourse workers to a routable network address.
 

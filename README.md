@@ -22,6 +22,7 @@ Sample code and recipes on Concourse CI pipelines and deployments.
 ### **[Concourse Pro Tips](concourse-pipeline-hacks)**   
   - [Running tasks with images on S3 for disconnected environments](concourse-pipeline-hacks/docker-images-from-s3)  
   - [Make Concourse retrieve an older version of a resource](concourse-pipeline-hacks/check-resource)  
+  - [Test Worker Connectivity](tasks/concourse/will-worker-connect)  
   - [Run a task container with a user other than `root`](concourse-pipeline-hacks/task-run-user)  
   - [Configure Concourse with an HTTP/HTTPS proxy](concourse-pipeline-hacks/http-proxy-config)  
   - [Running tasks and resources without a Docker registry](concourse-pipeline-hacks/docker-images-from-repo)  
