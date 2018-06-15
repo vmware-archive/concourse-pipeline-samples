@@ -27,6 +27,7 @@ echo "Creating PKS CLI administrator user per PK tile documentation https://docs
 # create pks admin user
 uaac user add "$PKS_CLI_USERNAME" --emails "$PKS_CLI_USEREMAIL" -p "$PKS_CLI_PASSWORD"
 uaac member add pks.clusters.admin "$PKS_CLI_USERNAME"
+uaac member add pks.clusters.manage "$PKS_CLI_USERNAME"
 
 echo "PKS CLI administrator user [$PKS_CLI_USERNAME] successfully created."
 
