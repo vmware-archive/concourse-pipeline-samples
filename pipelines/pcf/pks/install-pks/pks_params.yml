@@ -66,8 +66,6 @@ properties: |
     value: [((az_1_name))]  # Specify the availability zones you want your master and ETCD nodes spread across equally. If only one master/ETCD has been selected, choose a single AZ for your singleton job.
   .properties.plan1_selector.active.worker_az_placement:
     value: [((az_1_name)),((az_2_name)),((az_3_name))]  # Specify the availability zones you want your worker nodes spread across equally.
-  .properties.plan1_selector.active.authorization_mode:
-    value: rbac    # rbac or abac - Default Cluster Authorization Mode
   .properties.plan1_selector.active.master_instances:
     value: 1
   .properties.plan1_selector.active.master_vm_type:
@@ -86,6 +84,8 @@ properties: |
     value: "" # Kubernetes yml that contains specifications of addons to run on every cluster. This is an experimental feature. Please consider carefully before applying this to your plan
   .properties.plan1_selector.active.allow_privileged_containers:
     value: false  # Privileged containers run with host-like permissions. Allowing your users to deploy privileged containers in clusters using this plan can create security vulnerabilities and may impact other tiles. Use with caution.
+  .properties.plan1_selector.active.disable_deny_escalating_exec:
+    value: false  # This admission controller will deny exec and attach commands to pods that run with escalated privileges that allow host access. If checked, the admission controller will be disabled. Clusters in this plan can then create security vulnerabilities and may impact other tiles. Use with caution.
 
 
   ######## Configuration for Plan 2 - "Plan Inactive" or "Plan Active"
@@ -101,8 +101,6 @@ properties: |
   #   value: [( ( az_1_name ) )]  # Specify the AZ in which the cluster will be created
   # .properties.plan2_selector.active.worker_az_placement:
   #   value: [( ( az_1_name ) ),( ( az_2_name ) ),( ( az_3_name ) )]  # Specify the availability zones you want your worker nodes spread across equally.
-  # .properties.plan2_selector.active.authorization_mode:
-  #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
   # .properties.plan2_selector.active.master_instances:
   #   value: 3
   # .properties.plan2_selector.active.master_vm_type:
@@ -121,6 +119,8 @@ properties: |
   #   value: "" # Kubernetes yml that contains specifications of addons to run on every cluster. This is an experimental feature. Please consider carefully before applying this to your plan
   # .properties.plan2_selector.active.allow_privileged_containers:
   #   value: false  # Privileged containers run with host-like permissions. Allowing your users to deploy privileged containers in clusters using this plan can create security vulnerabilities and may impact other tiles. Use with caution.
+  # .properties.plan2_selector.active.disable_deny_escalating_exec:
+  #   value: false  # This admission controller will deny exec and attach commands to pods that run with escalated privileges that allow host access. If checked, the admission controller will be disabled. Clusters in this plan can then create security vulnerabilities and may impact other tiles. Use with caution.
 
 
   ######## Configuration for Plan 3 - "Plan Inactive" or "Plan Active"
@@ -136,8 +136,6 @@ properties: |
   #   value: [( ( az_1_name ) )]  # Specify the AZ in which the cluster will be created
   # .properties.plan3_selector.active.worker_az_placement:
   #   value: [( ( az_1_name ) ),( ( az_2_name ) ),( ( az_3_name ) )]  # Specify the availability zones you want your worker nodes spread across equally.
-  # .properties.plan3_selector.active.authorization_mode:
-  #   value: rbac    # rbac or abac - Default Cluster Authorization Mode
   # .properties.plan3_selector.active.master_instances:
   #   value: 3
   # .properties.plan3_selector.active.master_vm_type:
@@ -156,6 +154,8 @@ properties: |
   #   value: "" # Kubernetes yml that contains specifications of addons to run on every cluster. This is an experimental feature. Please consider carefully before applying this to your plan
   # .properties.plan3_selector.active.allow_privileged_containers:
   #   value: false  # Privileged containers run with host-like permissions. Allowing your users to deploy privileged containers in clusters using this plan can create security vulnerabilities and may impact other tiles. Use with caution.
+  # .properties.plan3_selector.active.disable_deny_escalating_exec:
+  #   value: false  # This admission controller will deny exec and attach commands to pods that run with escalated privileges that allow host access. If checked, the admission controller will be disabled. Clusters in this plan can then create security vulnerabilities and may impact other tiles. Use with caution.
 
 
   ######## Kubernetes cloud provider: GCP or vSphere, or AWS
