@@ -1,7 +1,7 @@
 ######## PKS tile-specific parameters
 product_name: harbor-container-registry  # do not change
 product_slug: harbor-container-registry  # do not change
-product_version: ^1\.4\..*$  # PKS tile version to install
+product_version: ^1\.5\..*$  # PKS tile version to install
 product_globs: "*.pivotal"
 
 # Note: check companion "pks_vault_params.sh" script for automated credentials
