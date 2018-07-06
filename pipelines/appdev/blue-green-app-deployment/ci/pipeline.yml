@@ -11,7 +11,7 @@ resources:
   type: git
   source:
     branch: master
-    uri: https://github.com/asaikali/concourse-pipeline-samples.git
+    uri: https://github.com/pivotalservices/concourse-pipeline-samples.git
 - name: PWS
   type: cf
   source:
