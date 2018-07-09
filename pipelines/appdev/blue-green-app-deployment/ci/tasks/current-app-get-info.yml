@@ -14,4 +14,4 @@ outputs:
 - name: current-app-info
 
 run:
-  path: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/current-app-get-info
+  path: concourse-pipeline-samples/pipelines/appdev/blue-green-app-deployment/ci/tasks/current-app-get-info

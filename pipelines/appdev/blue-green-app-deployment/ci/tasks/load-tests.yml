@@ -12,4 +12,4 @@ inputs:
 - name: current-app-info
 
 run:
-  path: concourse-pipeline-samples/blue-green-app-deployment/ci/tasks/load-tests
+  path: concourse-pipeline-samples/pipelines/appdev/blue-green-app-deployment/ci/tasks/load-tests
