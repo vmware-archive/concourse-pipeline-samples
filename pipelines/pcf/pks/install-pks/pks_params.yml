@@ -168,10 +168,10 @@ properties: |
     value: ((gcp_project_id))
   .properties.cloud_provider.gcp.network:
     value: ((gcp_vpc_network))  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
-  .properties.cloud_provider.gcp.master_service_account_key:
-    value: ((gcp_service_key))
-  .properties.cloud_provider.gcp.worker_service_account_key:
-    value: ((gcp_service_key))
+  .properties.cloud_provider.gcp.master_service_account:
+    value: ((gcp_master_service_account))   # A service account used by kubernetes to configure load balancers, persistent volumes, firewalls, vms, etc. on behalf of the kubernetes master.
+  .properties.cloud_provider.gcp.worker_service_account:
+    value: ((gcp_worker_service_account))  # A service account used by kubernetes workers. This account should have fewer permissions than the master.
 
   ### if VSPHERE is to be selected, then uncomment and fill out the VSPHERE parameters below
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
