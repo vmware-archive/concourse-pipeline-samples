@@ -23,14 +23,24 @@ Deploy Concourse workers with appropriate proxy configuration for the `groundcre
       no_proxy:
       - localhost
       - 127.0.0.1
-      - 10.1.1.0/24   # subnet CIDR
-      - mydomain.com  
+      - mydomain.com
+      - 10.190
 ```
 
 Documentation on accepted groundcrew job's parameters:
 https://bosh.io/jobs/groundcrew?source=github.com/concourse/concourse#p=http_proxy_url
 
 In order to verify if the proxy configuration was applied after redeploying Concourse with the updates above, intercept the container of a pipeline task and check its environment variables (`env` command). It should contain the corresponding `http_proxy`,`https_proxy` and `no_proxy` variables along with their configured values from the Concourse deployment manifest.
+
+The garden job has similar parameters which may or may not need to be set.
+
+Note: no_proxy is not always supported for CIDRs. Some libraries will support it and
+some will not. You can however add IP ranges by doing the following:
+
+```
+10.190  -> will match 10.190.0.0 - the equivalent of 10.190.0.0/16
+```
+
 
 
 #### Known issues
@@ -48,7 +58,5 @@ fatal: unable to access ... : Failed to connect to <proxy_ip> port 1080: Connect
     https_proxy_url: http://10.160.0.29:80
     ...
 ```
-
-
 
 #### [Back to Concourse Pipeline Hacks](..)
