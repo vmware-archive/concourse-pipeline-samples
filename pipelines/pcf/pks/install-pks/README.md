@@ -22,10 +22,8 @@ properties: |
 
 This approach allows for the `configure-tile` task of this pipeline to be generic and *tile-agnostic*, by delegating the tile configuration options to the content of the main three parameters `networks`, `properties` and `resources`.
 
-**Note 1:** *PKS 1.1.x may not be publicly available until the end of June/2018. In the meantime, if you do not have access to the v1.1.x RC versions of the tile on PivNet, please use the instructions to deploy v1.0.x below."*
 
-
-**Note 2:** *This pipeline provides a job (`update-director-config`) that enables BOSH Director's
+**Note:** *This pipeline provides a job (`update-director-config`) that enables BOSH Director's
 post deploy scripts configuration. The reason: the PKS 1.0.0 tile does not deploy Kubernetes addons such as kube-dns, heapster, the dashboard and influxdb when you create a PKS cluster unless post deploy is enabled on the Director."*
 
 
