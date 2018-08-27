@@ -15,6 +15,8 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Credentials Management with CredHub](https://github.com/pivotal-cf/pcf-pipelines/blob/master/docs/credhub-integration.md)  
   - [Credentials Management with Vault](concourse-pipeline-patterns/vault-integration)  
   - [Authenticate Concourse team members with PCF UAA](concourse-pipeline-patterns/uaa-authentication)  
+  - [Insert Build Metadata into user notifications](https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/pipelines/notifications/email-with-attachments/build-metadata.md)  
+
 
 
 <img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>

@@ -9,6 +9,8 @@ Hints and samples on how to get not-so-well-documented or never-thought-before f
 
 - [Make Concourse retrieve an older version of a resource](check-resource)
 
+- [Test Worker Connectivity](https://github.com/pivotalservices/concourse-pipeline-samples/tree/master/tasks/concourse/will-worker-connect)  
+
 - [Run a task container with a user other than `root`](task-run-user)
 
 - [Configure Concourse with an HTTP/HTTPS proxy](http-proxy-config)
