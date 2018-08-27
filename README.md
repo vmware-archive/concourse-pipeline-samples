@@ -18,7 +18,6 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Insert Build Metadata into user notifications](https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/pipelines/notifications/email-with-attachments/build-metadata.md)  
 
 
-
 <img src="https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/icons/pipeline-hacks.png" alt="Concourse Pipeline Hacks" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
 
 ### **[Concourse Pro Tips](concourse-pipeline-hacks)**   
@@ -31,6 +30,8 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Concourse pipeline integration with local Docker Registry](concourse-pipeline-hacks/private-docker-registry)  
   - [Deploying a Private Docker Registry with Bosh](concourse-pipeline-hacks/private-docker-registry/docker-registry-release)  
   - [Running local tasks while developing your CI pipeline in Concourse](concourse-pipeline-hacks/fly-execute)  
+  - [Preview Concourse pipelines in ATOM](concourse-pipeline-hacks/concourse-atom-plugin)  
+
 
 <img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/remote_workers_icon.png" alt="Concourse Deployment Patterns" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
 

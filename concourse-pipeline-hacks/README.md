@@ -17,4 +17,6 @@ Hints and samples on how to get not-so-well-documented or never-thought-before f
 
 - [Running local tasks while developing your CI pipeline in Concourse](fly-execute)
 
-- [Running tasks and resources without a Docker registry](docker-images-from-repo)
+- [Running tasks and resources without a Docker registry](docker-images-from-repo)  
+
+- [Preview Concourse pipelines in ATOM](concourse-atom-plugin)  
