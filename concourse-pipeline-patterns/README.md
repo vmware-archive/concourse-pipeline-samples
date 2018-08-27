@@ -11,7 +11,10 @@ This article provides examples of common patterns for platform operations and ap
 
 1. [Credentials Management with Vault](vault-integration)
 
-1. [Authenticate Concourse team members with PCF UAA](uaa-authentication)
+1. [Authenticate Concourse team members with PCF UAA](uaa-authentication)  
+
+1. [Insert build metadata into user notifications in Concourse](https://github.com/pivotalservices/concourse-pipeline-samples/blob/master/pipelines/notifications/email-with-attachments/build-metadata.md)
+
 
 <!-- #### In the backlog TBD:
 
