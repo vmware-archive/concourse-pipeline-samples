@@ -28,6 +28,7 @@ Sample code and recipes on Concourse CI pipelines and deployments.
   - [Running tasks and resources without a Docker registry](concourse-pipeline-hacks/docker-images-from-repo)  
   - [Concourse pipeline integration with local Docker Registry](concourse-pipeline-hacks/private-docker-registry)  
   - [Deploying a Private Docker Registry with Bosh](concourse-pipeline-hacks/private-docker-registry/docker-registry-release)  
+  - [Running local tasks while developing your CI pipeline in Concourse](concourse-pipeline-hacks/fly-execute)  
 
 <img src="https://raw.githubusercontent.com/pivotalservices/concourse-pipeline-samples/master/common/images/remote_workers_icon.png" alt="Concourse Deployment Patterns" width="100" ALIGN="RIGHT"  style="margin: 20px;"/>
 
