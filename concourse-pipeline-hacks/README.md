@@ -21,4 +21,4 @@ Hints and samples on how to get not-so-well-documented or never-thought-before f
 
 - [Preview Concourse pipelines in ATOM](concourse-atom-plugin)  
 
-- [Tag everything in a pipeline] (tagger)
+- [Tag everything in a pipeline](tagger)
