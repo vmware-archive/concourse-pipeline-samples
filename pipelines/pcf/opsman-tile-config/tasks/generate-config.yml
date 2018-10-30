@@ -1,0 +1,20 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/bosh2docker
+
+params:
+  YAML:
+  FILENAME:
+
+outputs:
+- name: config
+
+run:
+  path: bash
+  args:
+  - "-c"
+  - |
+    bosh int <(echo "${YAML}") > config/${FILENAME}

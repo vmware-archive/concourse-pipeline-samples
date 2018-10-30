@@ -1,0 +1,30 @@
+opsman_config:
+  vsphere:
+    vcenter:
+      url: vcenter.example.com
+      username: admin
+      password: password
+      datastore: exmple-ds-1
+      datacenter: example-dc
+      resource_pool: /example-dc/host/example-host/Resources/ResPool # or /<Data Center Name>/host/<Cluster Name>
+      folder: /example-dc/vm/Folder
+      insecure: 1                            # 1 insecure, 0 secure
+    disk_type: thin                          # example: thin|thick
+    private_ip: 10.0.0.2
+    dns: 8.8.8.8
+    ntp: ntp.example.com                     # example: ntp.ubuntu.com
+    ssh_password: password
+    hostname: pcf.example.com
+    network: virtual-network                 # vcenter network to deploy to
+    netmask: 255.255.255.192
+    gateway: 192.168.10.1
+    vm_name: ops-manager-vm
+
+opsman_env:
+  target: https://pcf.example.com
+  connect-timeout: 30            # default 5
+  request-timeout: 1800          # default 1800
+  skip-ssl-validation: false     # default false
+  username: username
+  password: password
+  decryption-passphrase: passphrase
