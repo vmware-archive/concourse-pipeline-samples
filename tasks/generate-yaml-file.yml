@@ -6,15 +6,15 @@ image_resource:
     repository: pivotalservices/bosh2-docker
 
 params:
-  YAML:
   FILENAME:
+  YAML:
 
 outputs:
-- name: config
+- name: yaml_output
 
 run:
   path: bash
   args:
   - "-c"
   - |
-    bosh int <(echo "${YAML}") > config/${FILENAME}
+    bosh int <(echo "${YAML}") > yaml_output/${FILENAME}
