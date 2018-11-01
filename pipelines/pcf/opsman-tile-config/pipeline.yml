@@ -26,125 +26,102 @@ resources:
     branch: opsman-tile-config
     private_key: ((git_private_key))
 
- jobs:
- - name: create-opsman-vm
-   plan:
-   - aggregate:
-     - get: pcf-automation-tasks
-       resource: platform-automation
-       params:
-         globs:
-         - '*tasks*.zip'
-         unpack: true
-     - get: pcf-automation-image
-       resource: platform-automation
-       params:
-         globs:
-         - '*image*.tgz'
-         unpack: true
-     - get: ops-manager
-     - get: pipeline
+jobs:
+- name: create-opsman-vm
+  plan:
+  - aggregate:
+    - get: pcf-automation-tasks
+      resource: platform-automation
+      params:
+        globs:
+        - '*tasks*.zip'
+        unpack: true
+    - get: pcf-automation-image
+      resource: platform-automation
+      params:
+        globs:
+        - '*image*.tgz'
+        unpack: true
+    - get: ops-manager
+    - get: pipeline
 
-   - task: generate-opsman-config
-     file: pipeline/tasks/generate-yaml-file.yml
-     params:
-       FILENAME: opsman.yml
-       YAML:
-         opsman-configuration: ((opsman_config))
-     output_mapping:
-       yaml_output: config
+  - task: generate-opsman-config
+    file: pipeline/tasks/generate-yaml-file.yml
+    params:
+      FILENAME: opsman.yml
+      YAML:
+        opsman-configuration: ((opsman_config))
+    output_mapping:
+      yaml_output: config
 
-   - task: create-vm
-     file: pcf-automation-tasks/tasks/create-vm.yml
-     image: pcf-automation-image
-     input_mapping:
-       image: ops-manager
-       state: pipeline
-     params:
-       STATE_FILE: ((foundation))/state/state.yml
-       OPSMAN_CONFIG_FILE: opsman.yml
+  - task: create-vm
+    file: pcf-automation-tasks/tasks/create-vm.yml
+    image: pcf-automation-image
+    input_mapping:
+      image: ops-manager
+      state: pipeline
+    params:
+      STATE_FILE: ((foundation))/state/state.yml
+      OPSMAN_CONFIG_FILE: opsman.yml
+  - aggregate:
+    - task: generate-opsman-env
+      file: pipeline/tasks/generate-yaml-file.yml
+      params:
+        FILENAME: env.yml
+        YAML: ((opsman_env))
+      output_mapping:
+        yaml_output: env
 
-   - task: generate-opsman-env
-     file: pipeline/tasks/generate-yaml-file.yml
-     params:
-       FILENAME: env.yml
-       YAML: ((opsman_env))
-     output_mapping:
-       yaml_output: env
+    - task: generate-opsman-auth
+      file: pipeline/tasks/generate-yaml-file.yml
+      params:
+        FILENAME: auth.yml
+        YAML:
+          username: ((opsman_env.username))
+          password: ((opsman_env.password))
+          decryption-passphrase: ((opsman_env.decryption-passphrase))
+      output_mapping:
+        yaml_output: config
 
-   - task: generate-opsman-auth
-     file: pipeline/tasks/generate-yaml-file.yml
-     params:
-       FILENAME: auth.yml
-       YAML:
-         username: ((opsman_env.username))
-         password: ((opsman_env.password))
-         decryption-passphrase: ((opsman_env.decryption-passphrase))
-     output_mapping:
-       yaml_output: config
+  - task: configure-authentication
+    file: pcf-automation-tasks/tasks/configure-authentication.yml
+    image: pcf-automation-image
+    attempts: 10
+    params:
+      ENV_FILE: env.yml
+      AUTH_CONFIG_FILE: auth.yml
 
-   - task: configure-authentication
-     file: pcf-automation-tasks/tasks/configure-authentication.yml
-     image: pcf-automation-image
-     attempts: 10
-     params:
-       ENV_FILE: env.yml
-       AUTH_CONFIG_FILE: auth.yml
+  - task: staged-director-config
+    file: pcf-automation-tasks/tasks/staged-director-config.yml
+    image: pcf-automation-image
 
- - name: export-director-config
-   plan:
-   - aggregate:
-     - get: pcf-automation-tasks
-       resource: platform-automation
-       params:
-         globs:
-         - '*tasks*.zip'
-         unpack: true
-     - get: pcf-automation-image
-       resource: platform-automation
-       params:
-         globs:
-         - '*image*.tgz'
-         unpack: true
-     - get: pipeline
+  - task: print-config
+    image: pcf-automation-image
+    config:
+      platform: linux
 
-   - task: generate-opsman-env
-     file: pipeline/tasks/generate-yaml-file.yml
-     image: platform-automation-image
-     params:
-       FILENAME: env.yml
-       YAML: ((opsman_env))
-     output_mapping:
-       yaml_output: env
+      inputs:
+      - name: generated-config
 
-   - task: staged-director-config
-     file: pcf-automation-tasks/tasks/staged-director-config.yml
-     image: pcf-automation-image
+      run:
+        path: cat
+        args:
+        - ./generated-config/director.yml
 
-   - tasks: print-config
-     image: pcf-automation-image
-     config:
-       platform: linux
+  - task: generate-opsman-config
+    file: pipeline/tasks/generate-yaml-file.yml
+    params:
+      FILENAME: opsman.yml
+      YAML:
+        opsman-configuration: ((opsman_config))
+    output_mapping:
+      yaml_output: config
 
-       run:
-         path: cat
-         args:
-         - generated-config/director.yml
-
-   - task: generate-opsman-config
-     file: pipeline/tasks/generate-yaml-file.yml
-     params:
-       FILENAME: opsman.yml
-       YAML:
-         opsman-configuration: ((opsman_config))
-     output_mapping:
-       yaml_output: config
-
-   - task: delete-vm
-     file: pcf-automation-tasks/tasks/delete-vm.yml
-     image: pcf-automation-image
-     input_mapping:
-       state: generated-state
-     params:
-       STATE_FILE: ((foundation))/state/state.yml
-       OPSMAN_CONFIG_FILE: opsman.yml
+  - task: delete-vm
+    file: pcf-automation-tasks/tasks/delete-vm.yml
+    image: pcf-automation-image
+    input_mapping:
+      state: generated-state
+    params:
+      STATE_FILE: ((foundation))/state/state.yml
+      OPSMAN_CONFIG_FILE: opsman.yml
