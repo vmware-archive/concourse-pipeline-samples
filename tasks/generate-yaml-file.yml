@@ -17,4 +17,6 @@ run:
   args:
   - "-c"
   - |
-    bosh int <(echo "${YAML}") > yaml_output/${FILENAME}
+      # Nasty sed command is needed to replace physical newlines, which bosh
+      # will interploate as spaces,  with \n
+      bosh int <(echo "${YAML}" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') > yaml_output/${FILENAME}
