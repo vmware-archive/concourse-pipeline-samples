@@ -1,0 +1,22 @@
+---
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: pivotalservices/bosh2-docker
+
+params:
+  FILENAME:
+  YAML:
+
+outputs:
+- name: yaml_output
+
+run:
+  path: bash
+  args:
+  - "-c"
+  - |
+      # Nasty sed command is needed to replace physical newlines, which bosh
+      # will interploate as spaces,  with \n
+      bosh int <(echo "${YAML}" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g') > yaml_output/${FILENAME}
