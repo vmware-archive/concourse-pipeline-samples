@@ -52,18 +52,20 @@ main() {
 
   touch ./expiring_certs/expiring_director_trusted_certs.pem
   cat ./director_properties.json | jq -rc '.security_configuration.trusted_certificates' > ./director_trusted_certs.pem
-  csplit -s -k -f dir_tcerts director_trusted_certs.pem '/END CERTIFICATE-----/+1' {*} 2>/dev/null
+  if [[ $(< ./director_trusted_certs.pem) != "null" ]]; then
+    csplit -s -k -f dir_tcerts director_trusted_certs.pem '/END CERTIFICATE-----/+1' {*} 2>/dev/null
 
-  for filename in ./dir_tcerts*; do
-    sed -i '/^\s*$/d' $filename    # elimininate empty lines
-    if [[ -s $filename ]]; then
-      dtcert_expDate=$(openssl x509 -enddate -noout -in $filename | sed -e 's/notAfter=//')
-      formatted_dtcert_date=$(date --date="+${dtcert_expDate}" +"%Y-%m-%dT%H:%M:%SZ")
-      if [[ "$formatted_dtcert_date" < "$limit_date" ]]; then
-         cat $filename >> ./expiring_certs/expiring_director_trusted_certs.pem
+    for filename in ./dir_tcerts*; do
+      sed -i '/^\s*$/d' $filename    # elimininate empty lines
+      if [[ -s $filename ]]; then
+        dtcert_expDate=$(openssl x509 -enddate -noout -in $filename | sed -e 's/notAfter=//')
+        formatted_dtcert_date=$(date --date="+${dtcert_expDate}" +"%Y-%m-%dT%H:%M:%SZ")
+        if [[ "$formatted_dtcert_date" < "$limit_date" ]]; then
+           cat $filename >> ./expiring_certs/expiring_director_trusted_certs.pem
+        fi
       fi
-    fi
-  done
+    done
+  fi
 
   # Ops Mgr Root CA
   om-linux \
