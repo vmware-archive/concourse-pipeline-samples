@@ -1,0 +1,22 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: pcfnorm/rootfs
+    version: release-candidate
+
+inputs:
+  - name: pcf-pipelines-utils
+
+params:
+  OPSMAN_CLIENT_ID:
+  OPSMAN_CLIENT_SECRET:
+  OPSMAN_USERNAME:
+  OPSMAN_PASSWORD:
+  OPSMAN_DOMAIN_OR_IP_ADDRESS:
+  PRODUCT_NAME:
+
+run:
+  path: pcf-pipelines-utils/tasks/pcf/apply-changes-single-product/task.sh

@@ -5,7 +5,7 @@ pks login -a "$PCF_PKS_API" -u "$PKS_CLI_USERNAME" -p "$PKS_CLI_PASSWORD" --skip
 pks cluster "$PKS_CLUSTER_NAME"
 
 echo "Deleting PKS cluster [$PKS_CLUSTER_NAME]..."
-pks delete-cluster --non-interactive "$PKS_CLUSTER_NAME"
+pks delete-cluster "$PKS_CLUSTER_NAME" --non-interactive
 
 echo "Monitoring the deletion status for PKS cluster [$PKS_CLUSTER_NAME]"
 in_progress_state="in progress"
