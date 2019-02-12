@@ -20,3 +20,5 @@ Hints and samples on how to get not-so-well-documented or never-thought-before f
 - [Running tasks and resources without a Docker registry](docker-images-from-repo)  
 
 - [Preview Concourse pipelines in ATOM](concourse-atom-plugin)  
+
+- [Tag everything in a pipeline](tagger)
