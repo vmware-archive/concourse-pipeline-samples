@@ -1,6 +1,13 @@
-<img src="https://pivotal.gallerycdn.vsassets.io/extensions/pivotal/vscode-concourse/0.1.3/1517353139519/Microsoft.VisualStudio.Services.Icons.Default" alt="Concourse" height="70"/>&nbsp;&nbsp;<img src="https://dtb5pzswcit1e.cloudfront.net/assets/images/product_logos/icon_pivotalcontainerservice@2x.png" alt="PCF Knowledge Depot" height="70"/>
-
 # Install PKS pipeline
+
+
+> **NOTE**: This pipeline sample has been deprecated and will be removed from this repository soon.
+>> The main reason is the deprecation of the underlying tasks from `pcf-pipelines` which it uses.
+>> Moving forward, the new and supported pipelines from [`pcf-automation`](http://docs.pivotal.io/platform-automation/) should be used for PKS tile installation instead.
+>> The pcf-automation team will soon deliver pipeline samples specific to PKS, however their current generic examples of PCF tiles installation pipelines can be apply to PKS as well.
+
+
+---
 
 This pipeline installs the PKS tile (v1.1.x or 1.0.x) on top of an existing PCF Ops Manager deployment.
 
