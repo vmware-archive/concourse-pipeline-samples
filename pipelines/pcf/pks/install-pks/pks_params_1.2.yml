@@ -165,15 +165,15 @@ properties: |
   ### if GCP is to be selected, then uncomment and fill out the GCP parameters below.
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
   .properties.cloud_provider.gcp.project_id:
-    value: ( (gcp_project_id) )
+    value: ((gcp_project_id))
   .properties.cloud_provider.gcp.network:
-    value: ( (gcp_vpc_network) )  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
+    value: ((gcp_vpc_network))  # Specify the VPC network name that will be used by the Kubernetes Cloud Provider
   .properties.cloud_provider.gcp.master_service_account:
-    value: ( (gcp_master_service_account) )   # A service account used by kubernetes to configure load balancers, persistent volumes, firewalls, vms, etc. on behalf of the kubernetes master.
+    value: ((gcp_master_service_account))   # A service account used by kubernetes to configure load balancers, persistent volumes, firewalls, vms, etc. on behalf of the kubernetes master.
   .properties.cloud_provider.gcp.worker_service_account:
-    value: ( (gcp_worker_service_account) )  # A service account used by kubernetes workers. This account should have fewer permissions than the master.
+    value: ((gcp_worker_service_account))  # A service account used by kubernetes workers. This account should have fewer permissions than the master.
 
-  ### if vSphere is to be selected, then uncomment and fill out the vSphere parameters below
+  ### if VSPHERE is to be selected, then uncomment and fill out the VSPHERE parameters below
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
   # .properties.cloud_provider.vsphere.vcenter_master_creds:
   #   value:
@@ -190,16 +190,10 @@ properties: |
 
   ### if AWS is selected, then uncomment and fill out the AWS parameters below.
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
-  # .properties.cloud_provider.aws.aws_access_key_id_master:
-  #   value:
-  # .properties.cloud_provider.aws.aws_secret_access_key_master:
-  #   value:
-  #     secret: "***"
-  # .properties.cloud_provider.aws.aws_access_key_id_worker:
-  #   value:
-  # .properties.cloud_provider.aws.aws_secret_access_key_worker:
-  #   value:
-  #     secret: "***"
+  #  .properties.cloud_provider.aws.iam_instance_profile.master:
+  #     value: 
+  #   .properties.cloud_provider.aws.iam_instance_profile.worker:
+  #     value: 
 
   ######## Network selector - flannel or nsx
   .properties.network_selector:
@@ -311,7 +305,7 @@ properties: |
 
   ######## LOGGING
   ######## SYSLOG - disabled or enabled
-  .properties.syslog_migration_selector:
+  .properties.syslog_selector:
     value: disabled
   ### if syslog is enabled, uncomment and fill out the syslog parameters below
   ### otherwise, leave this section commented out to avoid Ops Manager parameter settings errors
