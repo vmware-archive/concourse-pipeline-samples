@@ -25,7 +25,7 @@ To create the sample pipeline in your concourse server:
 ![ShipIt gated pipeline screenshot](https://raw.githubusercontent.com/lsilvapvt/misc-support-files/master/docs/images/shipit-gated-pipeline.png)
 
 
-Once the pipeline is un-paused in Concourse, it will:
+Once the pipeline is unpaused in Concourse, it will:
 
 1. Automatically execute its first two jobs (`Build-It` and `Test-It`) for every new release of the monitored repository
 

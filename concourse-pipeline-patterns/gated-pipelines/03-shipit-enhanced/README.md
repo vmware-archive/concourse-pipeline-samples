@@ -34,7 +34,7 @@ To create the sample pipeline in your concourse server:
 `fly -t <your-concourse-alias> set-pipeline -p shipt-it-enhanced -c gated-pipeline-03-shipit-enhanced.yml -l params.yml`
 
 
-Once the pipeline is un-paused in Concourse, it will:
+Once the pipeline is unpaused in Concourse, it will:
 
 1. Automatically execute the first two jobs (`Build-It` and `Test-It`) for every new release of the monitored repository
 

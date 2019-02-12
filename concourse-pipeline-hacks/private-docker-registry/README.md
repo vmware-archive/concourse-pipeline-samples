@@ -61,7 +61,7 @@ This article does not provide any recommendation on how to setup a private Docke
    ...
 ```
 
-  Access the Concourse web interface, un-pause the pipeline you just configured and then run it to check if its tasks appropriately download the Docker image from your local registry.
+  Access the Concourse web interface, unpause the pipeline you just configured and then run it to check if its tasks appropriately download the Docker image from your local registry.
 
 
 ## References

@@ -135,7 +135,7 @@ jobs:
 3. Configure the sample pipeline in Concourse with the *fly* command:  
    __fly -t <your-concourse-alias> set-pipeline -p gcs-bucket-pipeline -c pipeline.yml__  
 
-4. Access to the Concourse web interface, click on the list of pipelines, un-pause the *gcs-bucket-pipeline* and then click on its link to visualize its pipeline diagram  
+4. Access to the Concourse web interface, click on the list of pipelines, unpause the *gcs-bucket-pipeline* and then click on its link to visualize its pipeline diagram  
 
 5. To execute the pipeline, click on the ```1-build-and-save-release-to-gcs``` job and then click on the ```+``` sign to execute the pipeline.
 

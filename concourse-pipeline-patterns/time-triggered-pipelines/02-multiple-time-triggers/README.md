@@ -22,7 +22,7 @@ To create the sample pipeline in your concourse server:
 1. issue the following fly command:   
 `fly -t <your-concourse-alias> set-pipeline -p multiple-timers -c scheduled-pipeline-02.yml`
 
-Then un-paused the `multiple-timers` pipeline in Concourse and it will be triggered either automatically in the interval of every 4 or every 10 minutes or manually by running job `manual-trigger`.
+Then unpaused the `multiple-timers` pipeline in Concourse and it will be triggered either automatically in the interval of every 4 or every 10 minutes or manually by running job `manual-trigger`.
 
 
 Note:

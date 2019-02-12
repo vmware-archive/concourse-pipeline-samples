@@ -33,7 +33,7 @@ The pipeline below provides a sample of multiple jobs that are automatically tri
 To create the sample pipeline in your concourse server, download file [scheduled-pipeline-01](scheduled-pipeline-01.yml) and issue the following fly command:   
 `fly -t <your-concourse-alias> set-pipeline -p simple-timer -c scheduled-pipeline-01.yml`
 
-Then un-paused the pipeline in Concourse and it should automatically get triggered within 3 minutes.
+Then unpaused the pipeline in Concourse and it should automatically get triggered within 3 minutes.
 
 
 ### See also

@@ -44,7 +44,7 @@ It defines a manual job between two other jobs that are automatically trigger up
 To create the sample pipeline in your concourse server, download file [gated-pipeline-01-simple.yml](gated-pipeline-01-simple.yml) and issue the following fly command:   
 `fly -t <your-concourse-alias> set-pipeline -p simple-gate -c gated-pipeline-01-simple.yml`
 
-You will notice that, once the pipeline is un-paused in Concourse, it will automatically execute its first job (`Run-automatically`). Then, you will have to click on the second job (`Manually-trigger-me`) and click its `+` icon to manually run it. Only then, the second and third jobs will be executed with the corresponding resource version processed by the first job.
+You will notice that, once the pipeline is unpaused in Concourse, it will automatically execute its first job (`Run-automatically`). Then, you will have to click on the second job (`Manually-trigger-me`) and click its `+` icon to manually run it. Only then, the second and third jobs will be executed with the corresponding resource version processed by the first job.
 
 This example illustrates the typical pattern of building and unit testing code in the first half of the CI/CD pipeline and then deploying it to a more tightly controlled environment (the second half of the pipeline) only upon a manual pipeline job trigger by an authorized user.
 

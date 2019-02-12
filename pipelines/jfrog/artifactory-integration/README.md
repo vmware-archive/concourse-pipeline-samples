@@ -103,7 +103,7 @@ This pipeline definition file can also be downloaded from [this repository](http
 3. Configure the sample pipeline in Concourse with the *fly* command:  
    __fly -t <your-concourse-alias> set-pipeline -p artifactory-pipeline -c pipeline.yml__  
 
-4. Access to the Concourse web interface, click on the list of pipelines, un-pause the _artifactory-pipeline_ and then click on its link to visualize its pipeline diagram
+4. Access to the Concourse web interface, click on the list of pipelines, unpause the _artifactory-pipeline_ and then click on its link to visualize its pipeline diagram
 5. To execute the pipeline, click on the ```1-build-an-artifact``` job and then click on the ```+``` sign to execute the pipeline.
 
 After job ```1-build-an-artifact``` is executed, you should see a new version of the created file in the Artifactory server. Subsequently, you should see job ```2-trigger-when-new-file-is-added-to-artifactory``` automatically triggered to retrieve that latest file version from Artifactory.

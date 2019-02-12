@@ -24,7 +24,7 @@ Once you have a Concourse server setup to deploy this sample pipeline:
    `fly -t local set-pipeline -p email-with-metadata -c email_with_metadata.yml`  
 
 
-4. Go into the Concourse web interface, un-pause the new pipeline and run the send-email-with-metadata job.
+4. Go into the Concourse web interface, unpause the new pipeline and run the send-email-with-metadata job.
 
 ---
 ### Notes and hints

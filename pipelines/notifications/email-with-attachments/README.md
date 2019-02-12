@@ -74,7 +74,7 @@ _```email-to```:_ the list of comma separated destination emails without encodin
 3. Configure the sample pipeline in Concourse with the following commands:  
    __fly -t <your-concourse-alias> set-pipeline -p email-pipeline -c ci/pipeline.yml -l ci/credentials.yml__  
 
-4. Access to the Concourse web interface, click on the list of pipelines, un-pause the _email-pipeline_ and then click on its link to visualize its pipeline diagram
+4. Access to the Concourse web interface, click on the list of pipelines, unpause the _email-pipeline_ and then click on its link to visualize its pipeline diagram
 5. To execute the pipeline, click on the ```send-email-with-attachment``` job and then click on the ```+``` sign to execute the pipeline.
 
 The recipients listed you your ```email-to``` parameter should receive an email shortly after the pipeline is run successfully.
