@@ -42,7 +42,6 @@ Sample code and recipes on Concourse CI pipelines and deployments.
 <img src="http://www.cbronline.com/wp-content/uploads/2017/07/Pivotal-Cloud-Foundry.png" alt="Pipeline Samples" width="50" align="right" style="margin: 20px;"/>
 
 ### **[Sample PCF Pipelines](.)**  
-  - [PKS tile](pipelines/pcf/pks/install-pks)  
   - [VMWare Harbor tile](pipelines/vmware/install-harbor)  
   - [Monitor about-to-expire PCF TLS Certificates](pipelines/pcf/certificates/monitor-expiring-certificates)  
 
