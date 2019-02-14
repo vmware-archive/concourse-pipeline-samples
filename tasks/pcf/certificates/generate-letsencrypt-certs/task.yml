@@ -1,0 +1,26 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: neilpang/acme.sh
+
+inputs:
+- name: pcf-pipelines-utils
+
+outputs:
+- name: generated-certs
+
+params:
+  # To see what DNS_TYPES are available and what parameters must be set for them,
+  # reference is available here:
+  #
+  # https://github.com/Neilpang/acme.sh/tree/master/dnsapi
+  #
+  DNS_TYPE: 
+  DNS_TIMEOUT: 30
+  DOMAINS: 
+
+run:
+  path: pcf-pipelines-utils/tasks/pcf/certificates/generate-letsencrypt-certs/task.sh
