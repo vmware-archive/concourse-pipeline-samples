@@ -35,7 +35,7 @@ jobs:
           echo "Your test procedures would go here. If successfull, update deployment control repo with verified version information"
           export LATEST_GOOD_VERSION=$(cat ./project-release/version)
           export CURRENT_TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-          cp -R deployment-control-repo/. deployment-control-repo-updated  # duplicate git repo files for update
+          git clone deployment-control-repo deployment-control-repo-updated  # duplicate git repo files for update
           cd deployment-control-repo-updated
           git checkout build    # make changes to a branch other than master
           sed -i "s/\"version\": .*/\"version\": \"$LATEST_GOOD_VERSION\",/g" {{github-environment-control-file-path}}
